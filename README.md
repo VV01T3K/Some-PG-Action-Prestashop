@@ -1,2 +1,2 @@
-# SomePgAction_Prestashop
+# SomePgAction_PrestaShop
 Clone of [action.com](https://www.action.com/pl-pl/) in [PrestaShop 1.7.8.11](https://build.prestashop-project.org/news/2024/prestashop-1-7-8-11-maintenance-release/)
