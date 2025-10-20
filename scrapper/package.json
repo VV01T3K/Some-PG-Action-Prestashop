@@ -1,16 +1,20 @@
 {
-  "name": "scrapper",
+  "name": "scrapper_demo",
   "module": "index.ts",
   "type": "module",
   "private": true,
-  "scripts": {
-    "dev": "bun run index.ts",
-    "deps": "bun install"
-  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "prettier": "^3.6.2"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "scripts": {
+    "dev": "bun run --watch index.ts",
+    "start": "bun index.ts > products.json"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2"
   }
 }
