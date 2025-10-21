@@ -65,8 +65,7 @@ const productFromScrapper = async (url: string): Promise<Product> => {
 
   const card_description = $('[data-testid="product-description"]').first();
   const description_list = $(card_description).find('li').map((_, el) => $(el).text()).get();
-
-  //TODO: section aria-label="Images"
+  const description_long = $(card_description).find('[data-testid="product-description-long"]').text();
 
   //TODO: maybe just flags Nowość, Promocja Tygodnia?
   const product_tag = $('[data-testid="product-tag"]').map((_, el) => $(el).text().trim()).get(); 
@@ -95,8 +94,12 @@ const productFromScrapper = async (url: string): Promise<Product> => {
     return acc;
   }, {} as Record<string, string>);
 
+  const images_section = $('[aria-label="Images"]').first();
+  const image_urls = $(images_section).find('li').map((_, el) => $(el).find('img').attr('src')).get();
+  const thumbnail_urls = $(images_section).find('[data-testid="thumbnail-list"]').find('img').map((_, el) => $(el).attr('src')).get();
+
   return {url, name, subtitle, price_whole, price_fraction, price, price_description, price_original, price_discount_percentage, price_discount_footnote, 
-    description_list, product_tag, product_specifications, linked_categories_list
+    description_list, description_long, product_tag, product_specifications, linked_categories_list, image_urls, thumbnail_urls
   };
 
 };
@@ -126,3 +129,6 @@ const products = await Promise.all(productPromises);
 
 // console.log(JSON.stringify(products, null, 2));
 writeFileSync("products.json", JSON.stringify(products, null, 2));
+
+// const product_example = await productFromScrapper(category_page_output.product_links[0]);
+// console.log(JSON.stringify(product_example, null, 2));

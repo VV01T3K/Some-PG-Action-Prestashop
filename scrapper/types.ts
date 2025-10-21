@@ -10,8 +10,10 @@ export interface Product {
   price_discount_percentage: string;
   price_discount_footnote: string;
   description_list: string[];
+  description_long: string;
   product_tag: string[];
   product_specifications: Record<string, string>;
   linked_categories_list: Record<string, string>;
-  images?: string[]; // TODO:
+  image_urls: string[];
+  thumbnail_urls: string[]; // maybe not needed, also there are a few cases without scrapped thumbnails
 }
