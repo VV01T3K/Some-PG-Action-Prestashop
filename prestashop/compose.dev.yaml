@@ -1,0 +1,80 @@
+services:
+  caddy:
+    build:
+      context: .
+      dockerfile: Dockerfile.caddy
+    container_name: caddy
+    ports:
+      - 443:443
+      - 8080:80
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./src:/var/www/html
+    environment:
+      - SHOP_DOMAIN=shop.pg.wojtecs.com
+    depends_on:
+      - prestashop
+    networks:
+      - frontend
+      - backend
+
+  prestashop:
+    build:
+      context: .
+      dockerfile: Dockerfile.prestashop
+      target: dev
+    container_name: prestashop
+    depends_on:
+      - db
+    environment:
+      - DB_SERVER=db
+      - DB_PORT=3306
+      - DB_NAME=prestashop
+      - DB_USER=root
+      - DB_PASSWD=dev
+      - DB_PREFIX=ps_
+      - PS_DOMAIN=shop.pg.wojtecs.com
+      - PS_INSTALL_AUTO=1
+      - PS_ERASE_DB=1
+      - PS_INSTALL_DB=1
+      - PS_FOLDER_ADMIN=admin
+      - PS_FOLDER_INSTALL=install
+      - PS_HANDLE_DYNAMIC_DOMAIN=0
+      - PS_ENABLE_SSL=1
+      - PS_DEMO_MODE=0
+      - PS_LANGUAGE=pl
+      - PS_COUNTRY=PL
+      - ADMIN_MAIL=admin@example.com
+      - ADMIN_PASSWD=admin123
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - backend
+  db:
+    image: mariadb:12.0
+    restart: unless-stopped
+    container_name: db
+    expose:
+      - 3306
+    # ports: # for dev purposes only
+    #   - 3306:3306
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: dev
+      MYSQL_DATABASE: prestashop
+    networks:
+      - backend
+
+volumes:
+  # prestashop_data:
+  mariadb-data:
+  caddy_data:
+  caddy_config:
+
+
+networks:
+  frontend:
+  backend:

@@ -1,0 +1,28 @@
+FROM prestashop/prestashop:1.7.8.11-fpm AS base
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    libssl-dev
+
+RUN pecl install redis && \
+    docker-php-ext-enable redis
+
+# Experimental
+RUN echo 'session.save_handler = redis' > /usr/local/etc/php/conf.d/zz-redis-sessions.ini && \
+    echo 'session.save_path = "tcp://valkey:6379?database=2&prefix=ps_sess:"' >> /usr/local/etc/php/conf.d/zz-redis-sessions.ini
+# ============
+
+RUN apt-get purge -y --auto-remove \
+    build-essential \
+    libssl-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+FROM base AS prod
+COPY --chown=www-data:www-data prestashop /var/www/html
+
+FROM base AS dev
+COPY Prestashop.gitignore /tmp/Prestashop.gitignore
+COPY Prestashop.entrypoint.sh /tmp/docker_run.sh
+RUN chmod +x /tmp/docker_run.sh

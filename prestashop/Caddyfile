@@ -1,0 +1,144 @@
+(prestashop) {
+	encode zstd gzip
+
+	root * /var/www/html
+
+	@forbidden {
+		path /.editorconfig
+		path /.git*
+		path /.ht*
+		path /.bash*
+		path /.env
+		path *.lock
+	}
+	respond @forbidden 404
+
+	@coreProtected path_regexp coreProtected ^/(app|bin|cache|classes|config|controllers|docs|localization|override|src|tests|tools|translations|var|vendor)(/|$)
+	respond @coreProtected 404
+
+	@moduleVendors path_regexp moduleVendors ^/modules/[^/]+/vendor/
+	respond @moduleVendors 404
+
+	@phpInImg path_regexp phpInImg ^/img/.*\.php$
+	respond @phpInImg 404
+
+	@phpInUpload path_regexp phpInUpload ^/upload/.*\.php$
+	respond @phpInUpload 404
+
+	@productImageLevel1 path_regexp productImageLevel1 ^/([0-9])(-[\w-]+)?(-[0-9]+)?/.+\.jpg$
+	rewrite @productImageLevel1 /img/p/{http.regexp.productImageLevel1.1}/{http.regexp.productImageLevel1.1}{http.regexp.productImageLevel1.2}{http.regexp.productImageLevel1.3}.jpg
+
+	@productImageLevel2 path_regexp productImageLevel2 ^/([0-9])([0-9])(-[\w-]+)?(-[0-9]+)?/.+\.jpg$
+	rewrite @productImageLevel2 /img/p/{http.regexp.productImageLevel2.1}/{http.regexp.productImageLevel2.2}/{http.regexp.productImageLevel2.1}{http.regexp.productImageLevel2.2}{http.regexp.productImageLevel2.3}{http.regexp.productImageLevel2.4}.jpg
+
+	@productImageLevel3 path_regexp productImageLevel3 ^/([0-9])([0-9])([0-9])(-[\w-]+)?(-[0-9]+)?/.+\.jpg$
+	rewrite @productImageLevel3 /img/p/{http.regexp.productImageLevel3.1}/{http.regexp.productImageLevel3.2}/{http.regexp.productImageLevel3.3}/{http.regexp.productImageLevel3.1}{http.regexp.productImageLevel3.2}{http.regexp.productImageLevel3.3}{http.regexp.productImageLevel3.4}{http.regexp.productImageLevel3.5}.jpg
+
+	@productImageLevel4 path_regexp productImageLevel4 ^/([0-9])([0-9])([0-9])([0-9])(-[\w-]+)?(-[0-9]+)?/.+\.jpg$
+	rewrite @productImageLevel4 /img/p/{http.regexp.productImageLevel4.1}/{http.regexp.productImageLevel4.2}/{http.regexp.productImageLevel4.3}/{http.regexp.productImageLevel4.4}/{http.regexp.productImageLevel4.1}{http.regexp.productImageLevel4.2}{http.regexp.productImageLevel4.3}{http.regexp.productImageLevel4.4}{http.regexp.productImageLevel4.5}{http.regexp.productImageLevel4.6}.jpg
+
+	@productImageLevel5 path_regexp productImageLevel5 ^/([0-9])([0-9])([0-9])([0-9])([0-9])(-[\w-]+)?(-[0-9]+)?/.+\.jpg$
+	rewrite @productImageLevel5 /img/p/{http.regexp.productImageLevel5.1}/{http.regexp.productImageLevel5.2}/{http.regexp.productImageLevel5.3}/{http.regexp.productImageLevel5.4}/{http.regexp.productImageLevel5.5}/{http.regexp.productImageLevel5.1}{http.regexp.productImageLevel5.2}{http.regexp.productImageLevel5.3}{http.regexp.productImageLevel5.4}{http.regexp.productImageLevel5.5}{http.regexp.productImageLevel5.6}{http.regexp.productImageLevel5.7}.jpg
+
+	@productImageLevel6 path_regexp productImageLevel6 ^/([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])(-[\w-]+)?(-[0-9]+)?/.+\.jpg$
+	rewrite @productImageLevel6 /img/p/{http.regexp.productImageLevel6.1}/{http.regexp.productImageLevel6.2}/{http.regexp.productImageLevel6.3}/{http.regexp.productImageLevel6.4}/{http.regexp.productImageLevel6.5}/{http.regexp.productImageLevel6.6}/{http.regexp.productImageLevel6.1}{http.regexp.productImageLevel6.2}{http.regexp.productImageLevel6.3}{http.regexp.productImageLevel6.4}{http.regexp.productImageLevel6.5}{http.regexp.productImageLevel6.6}{http.regexp.productImageLevel6.7}{http.regexp.productImageLevel6.8}.jpg
+
+	@productImageLevel7 path_regexp productImageLevel7 ^/([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])(-[\w-]+)?(-[0-9]+)?/.+\.jpg$
+	rewrite @productImageLevel7 /img/p/{http.regexp.productImageLevel7.1}/{http.regexp.productImageLevel7.2}/{http.regexp.productImageLevel7.3}/{http.regexp.productImageLevel7.4}/{http.regexp.productImageLevel7.5}/{http.regexp.productImageLevel7.6}/{http.regexp.productImageLevel7.7}/{http.regexp.productImageLevel7.1}{http.regexp.productImageLevel7.2}{http.regexp.productImageLevel7.3}{http.regexp.productImageLevel7.4}{http.regexp.productImageLevel7.5}{http.regexp.productImageLevel7.6}{http.regexp.productImageLevel7.7}{http.regexp.productImageLevel7.8}{http.regexp.productImageLevel7.9}.jpg
+
+	@productImageLevel8 path_regexp productImageLevel8 ^/([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])([0-9])(-[\w-]+)?(-[0-9]+)?/.+\.jpg$
+	rewrite @productImageLevel8 /img/p/{http.regexp.productImageLevel8.1}/{http.regexp.productImageLevel8.2}/{http.regexp.productImageLevel8.3}/{http.regexp.productImageLevel8.4}/{http.regexp.productImageLevel8.5}/{http.regexp.productImageLevel8.6}/{http.regexp.productImageLevel8.7}/{http.regexp.productImageLevel8.8}/{http.regexp.productImageLevel8.1}{http.regexp.productImageLevel8.2}{http.regexp.productImageLevel8.3}{http.regexp.productImageLevel8.4}{http.regexp.productImageLevel8.5}{http.regexp.productImageLevel8.6}{http.regexp.productImageLevel8.7}{http.regexp.productImageLevel8.8}{http.regexp.productImageLevel8.9}{http.regexp.productImageLevel8.10}.jpg
+
+	@categoryImageNumeric path_regexp categoryImageNumeric ^/c/([0-9]+)(-[._a-zA-Z0-9-]*)?(-[0-9]+)?/.+\.jpg$
+	rewrite @categoryImageNumeric /img/c/{http.regexp.categoryImageNumeric.1}{http.regexp.categoryImageNumeric.2}{http.regexp.categoryImageNumeric.3}.jpg
+
+	@categoryImageAlpha path_regexp categoryImageAlpha ^/c/([a-zA-Z_-]+)(-[0-9]+)?/.+\.jpg$
+	rewrite @categoryImageAlpha /img/c/{http.regexp.categoryImageAlpha.1}{http.regexp.categoryImageAlpha.2}.jpg
+
+	@alphaImageLoader path_regexp alphaImageLoader ^/images_ie/?([^/]+)\.(jpe?g|png|gif)$
+	rewrite @alphaImageLoader /js/jquery/plugins/fancybox/images/{http.regexp.alphaImageLoader.1}.{http.regexp.alphaImageLoader.2}
+
+	@api path_regexp api ^/api/?(.*)$
+
+	@installSandbox path_regexp installSandbox ^/(install(?:-dev)?/sandbox)/.*
+	rewrite @installSandbox /{http.regexp.installSandbox.1}/test.php
+
+	@admin path_regexp admin ^/(admin[^/]*)(/.*)?$
+
+	@apiHasQuery expression {query} != ""
+
+	@static {
+		path *.css *.js *.jpg *.jpeg *.png *.gif *.ico *.svg *.webp *.avif
+		path *.woff *.woff2 *.ttf *.eot *.pdf *.txt *.xml *.json *.map
+		path *.mp4 *.webm *.ogg *.ogv *.zip
+	}
+
+	handle @static {
+		file_server
+		header Cache-Control "public, max-age=31536000, immutable"
+	}
+
+	route @api {
+		handle @apiHasQuery {
+			rewrite * /webservice/dispatcher.php?url={http.regexp.api.1}&{query}
+			php_fastcgi prestashop:9000 {
+				resolve_root_symlink
+			}
+			header Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+		}
+
+		handle {
+			rewrite * /webservice/dispatcher.php?url={http.regexp.api.1}
+			php_fastcgi prestashop:9000 {
+				resolve_root_symlink
+			}
+			header Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+		}
+	}
+
+	handle @admin {
+		try_files {path} {path}/ /{http.regexp.admin.1}/index.php
+		php_fastcgi prestashop:9000 {
+			resolve_root_symlink
+		}
+		file_server
+		header Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+	}
+
+	handle {
+		try_files {path} {path}/ /index.php
+		php_fastcgi prestashop:9000 {
+			resolve_root_symlink
+		}
+		file_server
+		header Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+	}
+
+	header {
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+
+	handle_errors {
+		@notFound expression {http.error.status_code} == 404
+		rewrite @notFound /index.php?controller=404
+		php_fastcgi prestashop:9000 {
+			resolve_root_symlink
+		}
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}
+
+localhost {
+	redir * https://{$SHOP_DOMAIN}{http.request.uri} permanent
+}
+
+{$SHOP_DOMAIN} {
+	tls internal
+	import prestashop
+}
