@@ -1,0 +1,8 @@
+{
+  "name": "selenium",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "uv run main.py"
+  }
+}
