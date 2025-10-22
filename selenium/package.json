@@ -3,6 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "uv run main.py"
+    "dev": "uv run main.py",
+    "deps": "uv sync"
   }
 }
