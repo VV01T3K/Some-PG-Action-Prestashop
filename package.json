@@ -1,0 +1,8 @@
+{
+  "name": "some-pg-action-prestashop",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "hello": "echo 'Hello World'"
+  }
+}
