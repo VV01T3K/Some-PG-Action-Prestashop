@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "bun presta:restart",
+    "all:del": "bun presta:del && (cd selenium && bun sel:down) && (cd scrapper && echo 'WIP')",
+    "all:down": "bun presta:down && (cd selenium && bun sel:down)",
     "all:setup": "bun all:deps && (bun db:restore || true) && bun db:down && echo 'Setup complete. You can now `bun presta:up` to start the PrestaShop environment.'",
     "all:deps": "bun presta:deps && (cd scrapper && bun deps) && (cd selenium && bun deps)",
     "presta:deps": "cd prestashop && docker compose -f compose.dev.yaml pull && docker compose -f compose.dev.yaml build",
