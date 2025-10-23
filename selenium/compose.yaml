@@ -6,6 +6,10 @@ x-node-environment: &node-env
   SE_START_VNC: ${SE_START_VNC:-false}
   SE_VNC_NO_PASSWORD: 1
 
+x-hosts: &hosts
+  - "host.docker.internal:host-gateway"
+  - "${SHOP_DOMAIN-shop.pg.wojtecs.com}:host-gateway"
+
 services:
   selenium-hub:
     image: selenium/hub:4.15.0
@@ -27,6 +31,7 @@ services:
     shm_size: 2gb
     ports:
       - "7900:7900"
+    extra_hosts: *hosts
 
   firefox:
     image: selenium/node-firefox:4.15.0
@@ -40,3 +45,4 @@ services:
     shm_size: 2gb
     ports:
       - "7901:7900"
+    extra_hosts: *hosts
