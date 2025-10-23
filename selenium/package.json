@@ -3,7 +3,13 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "uv run main.py",
-    "deps": "uv sync"
+    "test:google": "uv run tests/google.py",
+    "deps": "uv sync && docker compose pull && docker compose build",
+    "sel:up": "SE_START_VNC=false docker compose up -d",
+    "sel:down": "docker compose down",
+    "sel:up:vnc": "SE_START_VNC=true docker compose up -d",
+    "sel:down:vnc": "bun run sel:down",
+    "sel:restart": "SE_START_VNC=false docker compose down && docker compose up -d",
+    "sel:restart:vnc": "SE_START_VNC=true docker compose down && docker compose up -d"
   }
 }
