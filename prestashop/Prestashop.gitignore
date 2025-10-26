@@ -1,1 +1,33 @@
 !.env*
+
+# Cache files - regenerated at runtime
+# cache/ # causes broken behavior (5xx)
+var/cache/
+app/cache/
+app/test/cache/
+
+# Theme asset cache
+themes/*/assets/cache/
+
+# Logs - regenerated at runtime
+var/logs/
+app/logs/
+admin*/themes/*/img/process-icon-refresh-cache.png
+
+# Session data
+var/sessions/
+
+# Temporary/upload directories
+img/tmp/
+upload/
+download/
+
+# Compiled/minified assets
+themes/*/assets/js/compiled/
+themes/*/assets/css/compiled/
+
+# Temporary files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
