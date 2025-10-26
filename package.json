@@ -9,7 +9,7 @@
     "all:setup": "bun all:deps && (bun db:restore || true) && bun db:down && echo 'Setup complete. You can now `bun presta:up` to start the PrestaShop environment.'",
     "all:deps": "bun presta:deps && (cd scrapper && bun deps) && (cd selenium && bun deps)",
     "presta:deps": "cd prestashop && docker compose -f compose.dev.yaml pull && docker compose -f compose.dev.yaml build",
-    "presta:up": "cd prestashop && docker compose -f compose.dev.yaml up -d",
+    "presta:up": "cd prestashop && docker compose -f compose.dev.yaml up -d --build",
     "presta:down": "cd prestashop && docker compose -f compose.dev.yaml down",
     "presta:del": "bun presta:down && sudo rm -rf prestashop/src && docker volume rm prestashop_mariadb-data prestashop_caddy_data prestashop_caddy_config prestashop_valkey_data",
     "presta:restart": "bun presta:down && bun presta:up",
