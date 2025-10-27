@@ -8,7 +8,7 @@ set -e
 
 CONTAINER="db"
 DB="prestashop"
-BACKUP_DIR="./prestashop/db_backup"
+BACKUP_DIR="./prestashop/backup"
 
 mkdir -p "$BACKUP_DIR"
 
