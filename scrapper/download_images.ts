@@ -1,5 +1,5 @@
 import fs from 'fs';
-import products from './products.json' assert { type: 'json' };
+import products from '../scrapper-results/products.json' assert { type: 'json' };
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
