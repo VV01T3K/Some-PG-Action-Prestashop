@@ -128,7 +128,7 @@ const productPromises = category_page_output.product_links.map(link => productFr
 const products = await Promise.all(productPromises);
 
 // console.log(JSON.stringify(products, null, 2));
-writeFileSync("products.json", JSON.stringify(products, null, 2));
+writeFileSync("../scrapper-results/products.json", JSON.stringify(products, null, 2));
 
 // const product_example = await productFromScrapper(category_page_output.product_links[0]);
 // console.log(JSON.stringify(product_example, null, 2));

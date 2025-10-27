@@ -22,7 +22,7 @@ async function downloadImage(url: string, filepath: string) {
 }
 
 for (let product of products){
-    const productDir = `images/${product.product_specifications['Numer produktu']}`;
+    const productDir = `../scrapper-results/images/${product.product_specifications['Numer produktu']}`;
     for (let i = 0; i < product.image_urls.length; i++){
 
         if (!fs.existsSync(productDir)){
