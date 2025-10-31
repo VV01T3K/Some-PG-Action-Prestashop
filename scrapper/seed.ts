@@ -1,5 +1,5 @@
 import * as api from './api';
-import { cleanDatabase } from './cleanDatabase';
+import { cleanDatabase } from './clean_database';
 import type { ProductApiPayload } from "./types";
 
 const exampleProduct: ProductApiPayload = {
