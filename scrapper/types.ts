@@ -17,3 +17,11 @@ export interface Product {
   image_urls: string[];
   thumbnail_urls: string[]; // maybe not needed, also there are a few cases without scrapped thumbnails
 }
+
+export interface ProductApiPayload {
+  category_id: string;
+  name: string;
+  description: string;
+  price: string;
+  ean13: string;
+}
