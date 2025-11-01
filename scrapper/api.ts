@@ -33,6 +33,28 @@ export async function createCategory(name: string) {
     const result = await res.text();
     console.log("✅ Kategoria dodana pomyślnie:\n", result);
 }
+export async function createSubCategory(name: string, parent_id: number) {
+    let XML = readFileSync("./xml_templates/category_template.xml", "utf8");
+    XML = substitutePlaceholders(XML, { name, parent_id: parent_id.toString() });
+    const res = await fetch(`${API_URL}/subcategories?ws_key=${API_KEY}`, {
+        method: "POST",
+        headers: {
+        "Content-Type": "text/xml",
+        },
+        body: XML,
+    });
+
+    if (!res.ok) {
+        console.error(`❌ Błąd: ${res.status} ${res.statusText}`);
+        const text = await res.text();
+        console.error("Odpowiedź serwera:\n", text);
+        return;
+    }
+
+    const result = await res.text();
+    console.log("✅ Podkategoria dodana pomyślnie:\n", result);
+}
+
 export async function createProduct(product: ProductApiPayload) {
     const { category_id, name, description, price, ean13 } = product;
     
@@ -208,3 +230,4 @@ function substitutePlaceholders(xmlTemplate: string, placeholders: { [key: strin
     }
     return xmlTemplate;
 }
+createCategory("abc");
