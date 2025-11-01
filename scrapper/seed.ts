@@ -1,9 +1,10 @@
-import * as api from './api';
 import { seedCategories } from './category_manager';
 import { cleanDatabase } from './clean_database';
 import type { Product, ProductApiPayload } from "./types";
 import products from '../scrapper-results/products.json' assert { type: 'json' };
-import { createProduct, PRESTASHOP_DEFAULT_CAT_ID } from './api';
+import { createProduct, PRESTASHOP_DEFAULT_CAT_ID, uploadProductImage } from './api';
+import { readdirSync } from 'fs';
+import { IMAGES_PATH } from './download_images';
 
 
 export async function seedShop() {
@@ -12,6 +13,8 @@ export async function seedShop() {
     for(const product of products) {
         const categoryNames = Object.keys(product.linked_categories_list);
         if (categoryNames.length === 0) continue;
+        
+        //retrieve category prestashop ids
         const categoryIds = categoryNames
             .map(name => categoryNameIdMap.get(name))
             .filter((id): id is number => id !== undefined);
@@ -19,9 +22,11 @@ export async function seedShop() {
         const productPayload = createProductApiPayload(product as unknown as Product, categoryIds);
         const productId = await createProduct(productPayload);
 
+        //upload all images for the product
+        const productImagesDirId = product.product_specifications['Numer produktu'];
+        uploadAllProductImages(productId, productImagesDirId);
 
-
-        return 0;
+        return 0; //delete this line to seed all products
     }
 }
 // await cleanDatabase();
@@ -49,5 +54,16 @@ function generateRandomEAN13(): string {
     const checkDigit = (10 - (sum % 10)) % 10;
     return digits.join("") + checkDigit;
 }
-// seedShop();
+export async function uploadAllProductImages(productId: number, productImagesDirId: string) {
+    const imageDir = `${IMAGES_PATH}${productImagesDirId}/`;
+    const imageFileNames = readdirSync(imageDir);
+    const imagePaths = imageFileNames.map(name => `${imageDir}${name}`);
+    
+    for (const imagePath of imagePaths) {
+        await uploadProductImage(productId, imagePath);
+    }
+
+}
+
+seedShop();
 

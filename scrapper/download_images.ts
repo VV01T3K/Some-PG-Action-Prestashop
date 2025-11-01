@@ -2,6 +2,8 @@ import fs from 'fs';
 import products from '../scrapper-results/products.json' assert { type: 'json' };
 import sharp from 'sharp';
 
+export const IMAGES_PATH = '../scrapper-results/images/';
+
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function downloadImage(url: string, filepath: string) {
@@ -24,7 +26,7 @@ async function downloadImage(url: string, filepath: string) {
 }
 
 for (let product of products){
-    const productDir = `../scrapper-results/images/${product.product_specifications['Numer produktu']}`;
+    const productDir = `${IMAGES_PATH}${product.product_specifications['Numer produktu']}`;
     for (let i = 0; i < product.image_urls.length; i++){
 
         if (!fs.existsSync(productDir)){
