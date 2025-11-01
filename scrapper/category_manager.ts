@@ -59,24 +59,35 @@ function createCategoryMapWithCorrectOrder(): Map<string, CategoryInfo> {
     const unsortedMap = createCategoryMap(extractUniqueCategories(products as unknown as Product[], 'linked_categories_list')); 
     return sortCategoryMapByDepth(unsortedMap);
 }
-function addAllCategoriesThroughApi(categoryMap: Map<string, CategoryInfo>){
+async function addAllCategoriesThroughApi(categoryMap: Map<string, CategoryInfo>): Promise<Map<string, number>>{
     const categoryUrlKeyIdMap = new Map<string, number>();
+    const categoryNameIdMap = new Map<string, number>();
     for (const [categoryName, categoryInfo] of categoryMap) {
         const parentUrlKey = categoryInfo.parentUrlKey;
         if (parentUrlKey == undefined) { //then it's category
-            createCategory(categoryName); // we receive the id?? TODO: ADD AWAIT!
-            categoryUrlKeyIdMap.set(categoryInfo.urlKey, 5); //TODO:
+            const createdId: number = await createCategory(categoryName); // we receive the id
+            categoryUrlKeyIdMap.set(categoryInfo.urlKey, createdId);
+            categoryNameIdMap.set(categoryName, createdId);
         } else { //subcategory
             const parent_id = categoryUrlKeyIdMap.get(parentUrlKey); //parents are added first, so it should already be in that map
             if (!parent_id) {
                 console.log("Critical error occurred, parent category not found in map!");
-                return;
+                return new Map<string, number>();
             }
-            createSubCategory(categoryName, parent_id);// TODO: ADD AWAIT!
-            categoryUrlKeyIdMap.set(categoryInfo.urlKey, 5); //TODO:
+            const createdId: number = await createSubCategory(categoryName, parent_id);
+            categoryUrlKeyIdMap.set(categoryInfo.urlKey, createdId);
+            categoryNameIdMap.set(categoryName, createdId);
         }
     }
+    return categoryNameIdMap;
 }
 
-const categoryMap: Map<string, CategoryInfo> = createCategoryMapWithCorrectOrder();
-// now you can start creating categories/subcategories
+export async function seedCategories(): Promise<Map<string, number>> {
+    const categoryMap: Map<string, CategoryInfo> = createCategoryMapWithCorrectOrder();
+    const categoryNameIdMap = await addAllCategoriesThroughApi(categoryMap);
+    console.log(categoryNameIdMap);
+    return categoryNameIdMap;
+}
+
+
+

@@ -19,7 +19,8 @@ export interface Product {
 }
 
 export interface ProductApiPayload {
-  category_id: string;
+  category_default_id: string;
+  category_ids_xml: string;
   name: string;
   description: string;
   price: string;

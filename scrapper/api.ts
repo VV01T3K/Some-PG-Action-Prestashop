@@ -3,18 +3,19 @@ import { readFileSync } from "fs";
 import path from "path";
 import * as cheerio from 'cheerio';
 import type { ProductApiPayload } from "./types";
+import { sleep } from "bun";
 
 const API_URL = "https://shop.pg.wojtecs.com/api";
 const API_KEY = "Z6TH1XF6IKEE9HMVU3XMS8LKW3HBN58V"; //todo: maybe move it later to .env or sth
-const ROOT_CAT_ID = "1";
-const DEFAULT_CAT_ID = "2";
+export const PRESTASHOP_ROOT_CAT_ID = "1";
+export const PRESTASHOP_DEFAULT_CAT_ID = "2";
 
 
 
 /* ==== CREATE ==== */
-export async function createCategory(name: string) {
-    let XML = readFileSync("./xml_templates/category_template.xml", "utf8");
-    XML = substitutePlaceholders(XML, { name });
+async function createCategoryOrSubcategory(name: string, parent_id: string): Promise<number> {
+    let XML = readFileSync("./xml_templates/subcategory_template.xml", "utf8");
+    XML = substitutePlaceholders(XML, { name, parent_id: parent_id });
     const res = await fetch(`${API_URL}/categories?ws_key=${API_KEY}`, {
         method: "POST",
         headers: {
@@ -27,39 +28,28 @@ export async function createCategory(name: string) {
         console.error(`❌ Błąd: ${res.status} ${res.statusText}`);
         const text = await res.text();
         console.error("Odpowiedź serwera:\n", text);
-        return;
+        throw new Error(`Couldn't create a new category with name: ${name}`);
     }
 
-    const result = await res.text();
-    console.log("✅ Kategoria dodana pomyślnie:\n", result);
+    const xmlText = await res.text();
+    const $ = cheerio.load(xmlText, { xmlMode: true });
+    const createdId = $("category > id").text();
+    
+    // console.log("✅ Podkategoria dodana pomyślnie:\n", xmlText);
+    return parseInt(createdId);
+}
+export async function createCategory(name: string) {
+    return createCategoryOrSubcategory(name, PRESTASHOP_DEFAULT_CAT_ID);
 }
 export async function createSubCategory(name: string, parent_id: number) {
-    let XML = readFileSync("./xml_templates/category_template.xml", "utf8");
-    XML = substitutePlaceholders(XML, { name, parent_id: parent_id.toString() });
-    const res = await fetch(`${API_URL}/subcategories?ws_key=${API_KEY}`, {
-        method: "POST",
-        headers: {
-        "Content-Type": "text/xml",
-        },
-        body: XML,
-    });
-
-    if (!res.ok) {
-        console.error(`❌ Błąd: ${res.status} ${res.statusText}`);
-        const text = await res.text();
-        console.error("Odpowiedź serwera:\n", text);
-        return;
-    }
-
-    const result = await res.text();
-    console.log("✅ Podkategoria dodana pomyślnie:\n", result);
+    return createCategoryOrSubcategory(name, parent_id.toString());
 }
-
-export async function createProduct(product: ProductApiPayload) {
-    const { category_id, name, description, price, ean13 } = product;
+export async function createProduct(product: ProductApiPayload): Promise<number>{
+    const { category_default_id, category_ids_xml, name, description, price, ean13 } = product;
     
-    let XML = readFileSync("./xml_templates/product_template.xml", "utf8");
-    XML = substitutePlaceholders(XML, {category_id, name, description, price, ean13});
+    let XML = readFileSync("./xml_templates/product_template2.xml", "utf8");
+    XML = substitutePlaceholders(XML, {category_default_id, name, description, price, ean13, categories_xml: category_ids_xml});
+
     const res = await fetch(`${API_URL}/products?ws_key=${API_KEY}`, {
         method: "POST",
         headers: {
@@ -69,15 +59,15 @@ export async function createProduct(product: ProductApiPayload) {
     });
     if (!res.ok) {
         //500 code is probably also fine and the product was uploaded succesfully :>
-        console.error(`❌ Błąd: ${res.status} ${res.statusText}`);
+        // console.error(`❌ Błąd: ${res.status} ${res.statusText}`);
         const text = await res.text();
-        console.error("Odpowiedź serwera:\n", text);
-        return;
+        // console.error("Odpowiedź serwera:\n", text);
     }
-
-    const result = await res.text();
-    console.log("✅ Produkt dodany pomyślnie:\n", result);
+    //we have to call it bcs POST request won't give as the createdId
+    return getProductIdByEan(ean13);
 }
+
+
 export async function uploadProductImage(productId: number, imagePath: string) {
     const blob = new Blob([readFileSync(imagePath)], { type: "image/jpeg" });
     // FormData Bun
@@ -145,18 +135,19 @@ export async function deleteCategoryById(categoryId: number) {
         method: "DELETE",
     });
     if (!responseCat.ok) {
+        //probably also error == doesn't matter 
         console.error(`❌ Błąd przy usuwaniu kategorii ${categoryId}: ${responseCat.status} ${responseCat.statusText}`);
         console.error(await responseCat.text());
     }
 }
 export async function deleteAllCategories() {
-    const response = await fetch(`${API_URL}/categories?ws_key=${API_KEY}`);
+    const response = await fetch(`${API_URL}/categories?ws_key=${API_KEY}&filter[active]=1`);
     const xmlText = await response.text(); 
 
     const $ = cheerio.load(xmlText);
     const categoryIds = $("category").map((_, el) => $(el).attr("id")).get();
     for (const catId of categoryIds) {
-        if (!catId || catId == ROOT_CAT_ID || catId == DEFAULT_CAT_ID) continue;
+        if (!catId || catId == PRESTASHOP_ROOT_CAT_ID || catId == PRESTASHOP_DEFAULT_CAT_ID) continue;
         await deleteCategoryById(Number(catId));
     }
 }
@@ -221,6 +212,16 @@ export async function deleteAllSuppliers() {
     }
 }
 
+/* ==== GET ==== */
+export async function getProductIdByEan(ean13: string): Promise<number>{
+    const responseGet = await fetch(`${API_URL}/products?ws_key=${API_KEY}&filter[ean13]=[${ean13}]`);
+    const xmlText = await responseGet.text();
+
+    const $ = cheerio.load(xmlText);
+    const productId = $("product").attr("id") ?? "-1";
+    return parseInt(productId);
+}
+
 
 
 /* ==== HELPERS ==== */
@@ -230,4 +231,3 @@ function substitutePlaceholders(xmlTemplate: string, placeholders: { [key: strin
     }
     return xmlTemplate;
 }
-createCategory("abc");
