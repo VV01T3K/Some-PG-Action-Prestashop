@@ -1,5 +1,6 @@
 import fs from 'fs';
 import products from '../scrapper-results/products.json' assert { type: 'json' };
+import sharp from 'sharp';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -11,14 +12,15 @@ async function downloadImage(url: string, filepath: string) {
         }
         const buffer = Buffer.from(await response.arrayBuffer());
 
-        fs.writeFileSync(filepath, buffer);
+        //Convert .webp to .jpg
+        const jpgBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer();
+
+        fs.writeFileSync(filepath, jpgBuffer);
         console.log(`Image downloaded and saved to ${filepath}`);
     } catch (err) {
         console.error(`Error downloading image from ${url}:`, err);
         return;
     }   
-    
-
 }
 
 for (let product of products){
