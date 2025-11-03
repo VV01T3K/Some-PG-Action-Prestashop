@@ -3,8 +3,13 @@ import type { Product } from './types';
 import { writeFileSync } from "fs";
 
 
-const pagesToScrape = 21;
 const baseUrl = "https://www.action.com";
+
+// list of categories
+const categories = [
+  { path: "/pl-pl/c/hobby", pages: 21 },
+  { path: "/pl-pl/c/zrob-to-sam", pages: 25 } 
+];
 
 const headers = {
   "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
@@ -25,8 +30,8 @@ const headers = {
 };
 
 // Function to scrape a single category page and return product links
-async function scrapeCategoryPage(pageNumber: number): Promise<string[]> {
-  const response = await fetch(`${baseUrl}/pl-pl/c/hobby?page=${pageNumber}`, {
+async function scrapeCategoryPage(categoryPath: string, pageNumber: number): Promise<string[]> {
+  const response = await fetch(`${baseUrl}${categoryPath}?page=${pageNumber}`, {
     headers,
     body: null,
     method: "GET"
@@ -105,26 +110,21 @@ const productFromScrapper = async (url: string): Promise<Product> => {
 };
 
 
-// Scrape all pages in parallel
-const pagePromises = Array.from({ length: pagesToScrape }, (_, i) => 
-  scrapeCategoryPage(i + 1)
-);
+const allCategoryLinks: string[] = [];
 
-const results = await Promise.all(pagePromises);
- 
-// Flatten all results into one array
-const all_product_links = results.flat();
+for (const { path, pages } of categories) {
+  const pagePromises = Array.from({ length: pages }, (_, i) =>
+    scrapeCategoryPage(path, i + 1)
+  );
 
-const category_page_output = {
-  total: all_product_links.length,
-  product_links: all_product_links
-};
+  const results = await Promise.all(pagePromises);
+  const category_links = results.flat();
+  allCategoryLinks.push(...category_links);
+}
 
 
-
-// Scrape all products in parallel
-const productPromises = category_page_output.product_links.map(link => productFromScrapper(link));
-
+// 2. Scrape szczegóły produktów
+const productPromises = allCategoryLinks.map(link => productFromScrapper(link));
 const products = await Promise.all(productPromises);
 
 // console.log(JSON.stringify(products, null, 2));
