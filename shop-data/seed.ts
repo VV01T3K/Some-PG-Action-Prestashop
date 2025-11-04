@@ -2,14 +2,19 @@ import { seedCategories } from './api/category_manager';
 import { cleanDatabase } from './api/clean_database';
 import type { Product, ProductApiPayload } from "./types";
 import products from './scrapper-results/products.json' assert { type: 'json' };
-import { createProduct, PRESTASHOP_DEFAULT_CAT_ID, uploadProductImage } from './api/api';
+import { createProduct, uploadProductImage } from './api/api';
 import { readdirSync } from 'fs';
-import { IMAGES_PATH } from './scrapper/download_images';
+import { PRESTASHOP_DEFAULT_CAT_ID } from './constants';
 
+const IMAGES_PATH = "./scrapper-results/images/";
 
 export async function seedShop() {
+    await cleanDatabase();
     const categoryNameIdMap = await seedCategories();
-
+    await seedProducts(categoryNameIdMap);
+    
+}
+async function seedProducts(categoryNameIdMap: Map<string, number>) {
     for(const product of products) {
         const categoryNames = Object.keys(product.linked_categories_list);
         if (categoryNames.length === 0) continue;
@@ -19,17 +24,18 @@ export async function seedShop() {
             .map(name => categoryNameIdMap.get(name))
             .filter((id): id is number => id !== undefined);
         
+        //create payload -> create product
         const productPayload = createProductApiPayload(product as unknown as Product, categoryIds);
         const productId = await createProduct(productPayload);
-
+        console.log(`Created product with id:${productId}`);
         //upload all images for the product
         const productImagesDirId = product.product_specifications['Numer produktu'];
         uploadAllProductImages(productId, productImagesDirId);
-
-        return 0; //delete this line to seed all products
+        console.log(`Uploaded product's images`);
+        // return 0; //delete this line to seed all products
     }
 }
-// await cleanDatabase();
+
 //TODO: add rest of the fields
 function createProductApiPayload(product: Product, categoryIds: number[]){
     const categoriesXml = categoryIds

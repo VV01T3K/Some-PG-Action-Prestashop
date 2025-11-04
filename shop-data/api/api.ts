@@ -4,11 +4,9 @@ import path from "path";
 import * as cheerio from 'cheerio';
 import type { ProductApiPayload } from "../types";
 import { sleep } from "bun";
+import { API_KEY, API_URL, PRESTASHOP_DEFAULT_CAT_ID, PRESTASHOP_ROOT_CAT_ID } from "../constants";
 
-const API_URL = "https://shop.pg.wojtecs.com/api";
-const API_KEY = "Z6TH1XF6IKEE9HMVU3XMS8LKW3HBN58V"; //todo: maybe move it later to .env or sth
-export const PRESTASHOP_ROOT_CAT_ID = "1";
-export const PRESTASHOP_DEFAULT_CAT_ID = "2";
+
 
 
 
@@ -82,9 +80,9 @@ export async function uploadProductImage(productId: number, imagePath: string) {
 
     if (!res.ok) {
         // Probably error 500 is fine and the image was uploaded succesfully :))
-        console.error(`❌ Błąd przy uploadzie obrazu dla produktu ${productId}: ${res.status} ${res.statusText}`);
-        console.error(await res.text());
-        return;
+        // console.error(`❌ Błąd przy uploadzie obrazu dla produktu ${productId}: ${res.status} ${res.statusText}`);
+        // console.error(await res.text());
+        // return;
     }
 
     console.log(`✅ Obraz dla produktu ${productId} został przesłany.`);
@@ -102,6 +100,7 @@ export async function deleteProductById(productId: number) {
     //     // console.error(await responseProd.text());
     //     // return;
     // }
+    console.log(`Deleted product with ID ${productId}, response status: ${responseProd.status}`);
     deleteProductImagesById(productId);
     
 }
@@ -135,8 +134,8 @@ export async function deleteCategoryById(categoryId: number) {
     });
     if (!responseCat.ok) {
         //probably also error == doesn't matter 
-        console.error(`❌ Błąd przy usuwaniu kategorii ${categoryId}: ${responseCat.status} ${responseCat.statusText}`);
-        console.error(await responseCat.text());
+        // console.error(`❌ Błąd przy usuwaniu kategorii ${categoryId}: ${responseCat.status} ${responseCat.statusText}`);
+        // console.error(await responseCat.text());
     }
 }
 export async function deleteAllCategories() {
@@ -162,7 +161,7 @@ export async function deleteAllProductFeatureValues() {
         const responseDel = await fetch(`${API_URL}/product_feature_values/${valueId}?ws_key=${API_KEY}`, {
             method: "DELETE",
         });
-        // console.log(`Deleted feature value ID ${valueId}, response status: ${responseDel.status}`);
+        console.log(`Deleted feature value ID ${valueId}, response status: ${responseDel.status}`);
     }
 }
 export async function deleteAllProductFeatures() {
@@ -177,7 +176,7 @@ export async function deleteAllProductFeatures() {
         const responseDel = await fetch(`${API_URL}/product_features/${featureId}?ws_key=${API_KEY}`, {
             method: "DELETE",
         });
-        // console.log(`Deleted feature ID ${featureId}, response status: ${responseDel.status}`);
+        console.log(`Deleted feature ID ${featureId}, response status: ${responseDel.status}`);
     }
 }
 export async function deleteAllManufacturers() {
@@ -192,7 +191,7 @@ export async function deleteAllManufacturers() {
         const responseDel = await fetch(`${API_URL}/manufacturers/${manufacturerId}?ws_key=${API_KEY}`, {
             method: "DELETE",
         });
-        // console.log(`Deleted manufacturer ID ${manufacturerId}, response status: ${responseDel.status}`);
+        console.log(`Deleted manufacturer ID ${manufacturerId}, response status: ${responseDel.status}`);
     }
 }
 export async function deleteAllSuppliers() {
@@ -207,7 +206,7 @@ export async function deleteAllSuppliers() {
         const responseDel = await fetch(`${API_URL}/suppliers/${supplierId}?ws_key=${API_KEY}`, {
             method: "DELETE",
         });
-        // console.log(`Deleted supplier ID ${supplierId}, response status: ${responseDel.status}`);
+        console.log(`Deleted supplier ID ${supplierId}, response status: ${responseDel.status}`);
     }
 }
 
