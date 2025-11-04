@@ -1,10 +1,10 @@
-import { seedCategories } from './category_manager';
-import { cleanDatabase } from './clean_database';
+import { seedCategories } from './api/category_manager';
+import { cleanDatabase } from './api/clean_database';
 import type { Product, ProductApiPayload } from "./types";
-import products from '../scrapper-results/products.json' assert { type: 'json' };
-import { createProduct, PRESTASHOP_DEFAULT_CAT_ID, uploadProductImage } from './api';
+import products from './scrapper-results/products.json' assert { type: 'json' };
+import { createProduct, PRESTASHOP_DEFAULT_CAT_ID, uploadProductImage } from './api/api';
 import { readdirSync } from 'fs';
-import { IMAGES_PATH } from './download_images';
+import { IMAGES_PATH } from './scrapper/download_images';
 
 
 export async function seedShop() {

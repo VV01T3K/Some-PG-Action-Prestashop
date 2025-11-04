@@ -1,6 +1,6 @@
 import products from '../scrapper-results/products.json' assert { type: 'json' };
 import { createCategory, createSubCategory } from './api';
-import type { Product } from './types';
+import type { Product } from '../types';
 
 interface CategoryInfo {
     parentUrlKey: string | undefined;
@@ -8,7 +8,7 @@ interface CategoryInfo {
     depth: number;
 }
 
-
+//analyzes products.json and extract all kategories 
 function extractUniqueCategories(data: Product[], categories_field_name: keyof Product): Map<string, string> {
     const uniqueCategories = new Map<string, string>();
     for (const product of data) {
@@ -21,6 +21,8 @@ function extractUniqueCategories(data: Product[], categories_field_name: keyof P
     }   
     return uniqueCategories;
 }
+//creates a map of CategoryName("Hobby",...) and parentUrlKey(needed later)("hobby", "zrob-to-sam",...), 
+// ourUrlKey + depth num(e.g. 4==mainCategory, 5==subCategory, 6==subsubCategory,...)
 function createCategoryMap(categories: Map<string, string>): Map<string, CategoryInfo> {
     const categoryMap = new Map<string, CategoryInfo>();
     

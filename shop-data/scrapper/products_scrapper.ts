@@ -1,8 +1,8 @@
 import * as cheerio from 'cheerio';
-import type { Product } from './types';
+import type { Product } from '../types';
 import { writeFileSync } from "fs";
 
-
+const OUTPUT_PATH = "../scrapper-results/products.json";
 const baseUrl = "https://www.action.com";
 
 // list of categories
@@ -128,7 +128,7 @@ const productPromises = allCategoryLinks.map(link => productFromScrapper(link));
 const products = await Promise.all(productPromises);
 
 // console.log(JSON.stringify(products, null, 2));
-writeFileSync("../scrapper-results/products.json", JSON.stringify(products, null, 2));
+writeFileSync(OUTPUT_PATH, JSON.stringify(products, null, 2));
 
 // const product_example = await productFromScrapper(category_page_output.product_links[0]);
 // console.log(JSON.stringify(product_example, null, 2));

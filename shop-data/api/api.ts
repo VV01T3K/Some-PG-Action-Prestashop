@@ -2,7 +2,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //temporary fix for ssl todo:
 import { readFileSync } from "fs";
 import path from "path";
 import * as cheerio from 'cheerio';
-import type { ProductApiPayload } from "./types";
+import type { ProductApiPayload } from "../types";
 import { sleep } from "bun";
 
 const API_URL = "https://shop.pg.wojtecs.com/api";
@@ -97,11 +97,11 @@ export async function deleteProductById(productId: number) {
         method: "DELETE",
     });
 
-    if (!responseProd.ok) {
-        console.error(`❌ Błąd przy usuwaniu produktu ${productId}: ${responseProd.status} ${responseProd.statusText}`);
-        console.error(await responseProd.text());
-        // return;
-    }
+    // if (!responseProd.ok) {
+    //     // console.error(`❌ Błąd przy usuwaniu produktu ${productId}: ${responseProd.status} ${responseProd.statusText}`);
+    //     // console.error(await responseProd.text());
+    //     // return;
+    // }
     deleteProductImagesById(productId);
     
 }
@@ -120,9 +120,8 @@ export async function deleteProductImagesById(productId: number) {
     }
 }
 export async function deleteAllProducts() {
-    const response = await fetch(`${API_URL}/products?ws_key=${API_KEY}`);
+    const response = await fetch(`${API_URL}/products?ws_key=${API_KEY}&rand=${Date.now()}`);
     const xmlText = await response.text(); 
-
     const $ = cheerio.load(xmlText);
     const productIds = $("product").map((_, el) => $(el).attr("id")).get();
     for (const productId of productIds) {
@@ -163,7 +162,7 @@ export async function deleteAllProductFeatureValues() {
         const responseDel = await fetch(`${API_URL}/product_feature_values/${valueId}?ws_key=${API_KEY}`, {
             method: "DELETE",
         });
-        console.log(`Deleted feature value ID ${valueId}, response status: ${responseDel.status}`);
+        // console.log(`Deleted feature value ID ${valueId}, response status: ${responseDel.status}`);
     }
 }
 export async function deleteAllProductFeatures() {
@@ -178,7 +177,7 @@ export async function deleteAllProductFeatures() {
         const responseDel = await fetch(`${API_URL}/product_features/${featureId}?ws_key=${API_KEY}`, {
             method: "DELETE",
         });
-        console.log(`Deleted feature ID ${featureId}, response status: ${responseDel.status}`);
+        // console.log(`Deleted feature ID ${featureId}, response status: ${responseDel.status}`);
     }
 }
 export async function deleteAllManufacturers() {
@@ -193,7 +192,7 @@ export async function deleteAllManufacturers() {
         const responseDel = await fetch(`${API_URL}/manufacturers/${manufacturerId}?ws_key=${API_KEY}`, {
             method: "DELETE",
         });
-        console.log(`Deleted manufacturer ID ${manufacturerId}, response status: ${responseDel.status}`);
+        // console.log(`Deleted manufacturer ID ${manufacturerId}, response status: ${responseDel.status}`);
     }
 }
 export async function deleteAllSuppliers() {
@@ -208,7 +207,7 @@ export async function deleteAllSuppliers() {
         const responseDel = await fetch(`${API_URL}/suppliers/${supplierId}?ws_key=${API_KEY}`, {
             method: "DELETE",
         });
-        console.log(`Deleted supplier ID ${supplierId}, response status: ${responseDel.status}`);
+        // console.log(`Deleted supplier ID ${supplierId}, response status: ${responseDel.status}`);
     }
 }
 
