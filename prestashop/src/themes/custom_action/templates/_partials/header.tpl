@@ -29,15 +29,15 @@
 {/block}
 
 {block name='header_nav'}
-  <nav class="header-nav">
-    <div class="container">
-      <div class="row">
-        <div class="hidden-sm-down">
-          <div class="col-md-5 col-xs-12">
+  <nav class="header-nav bg-neutral-0 shadow">
+    <div class="container mx-auto px-4 md:px-6 lg:px-12">
+      <div class="flex items-center justify-between py-2">
+        <div class="hidden-sm-down flex w-full items-center justify-between gap-4">
+          <div class="flex-1">
             {hook h='displayNav1'}
           </div>
-          <div class="col-md-7 right-nav">
-              {hook h='displayNav2'}
+          <div class="flex items-center gap-4">
+            {hook h='displayNav2'}
           </div>
         </div>
         <div class="hidden-md-up text-sm-center mobile">
@@ -55,10 +55,10 @@
 {/block}
 
 {block name='header_top'}
-  <div class="header-top">
-    <div class="container">
-       <div class="row">
-        <div class="col-md-2 hidden-sm-down" id="_desktop_logo">
+  <div class="header-top bg-neutral-0">
+    <div class="container mx-auto px-4 md:px-6 lg:px-12">
+      <div class="flex items-center py-4 gap-6">
+        <div class="hidden-sm-down" id="_desktop_logo">
           {if $shop.logo_details}
             {if $page.page_name == 'index'}
               <h1>
@@ -69,7 +69,7 @@
             {/if}
           {/if}
         </div>
-        <div class="header-top-right col-md-10 col-sm-12 position-static">
+        <div class="header-top-right flex-1 position-static flex items-center justify-end gap-4">
           {hook h='displayTop'}
         </div>
       </div>

@@ -28,42 +28,43 @@
 <!doctype html>
 <html lang="{$language.locale}">
 
-  <head>
-    {block name='head'}
-      {include file='_partials/head.tpl'}
+<head>
+  {block name='head'}
+    {include file='_partials/head.tpl'}
+  {/block}
+</head>
+
+<body id="{$page.page_name}" class="{$page.body_classes|classnames}">
+
+  {block name='hook_after_body_opening_tag'}
+    {hook h='displayAfterBodyOpeningTag'}
+  {/block}
+
+  <main>
+    {block name='product_activation'}
+      {include file='catalog/_partials/product-activation.tpl'}
     {/block}
-  </head>
 
-  <body id="{$page.page_name}" class="{$page.body_classes|classnames}">
+    <header id="header">
+      {block name='header'}
+        {include file='_partials/header.tpl'}
+      {/block}
+    </header>
 
-    {block name='hook_after_body_opening_tag'}
-      {hook h='displayAfterBodyOpeningTag'}
-    {/block}
-
-    <main>
-      {block name='product_activation'}
-        {include file='catalog/_partials/product-activation.tpl'}
+    <section id="wrapper">
+      {block name='notifications'}
+        {include file='_partials/notifications.tpl'}
       {/block}
 
-      <header id="header">
-        {block name='header'}
-          {include file='_partials/header.tpl'}
-        {/block}
-      </header>
-
-      <section id="wrapper">
-        {block name='notifications'}
-          {include file='_partials/notifications.tpl'}
+      {hook h="displayWrapperTop"}
+      <div class="container mx-auto px-4 md:px-6 lg:px-12">
+        {block name='breadcrumb'}
+          {include file='_partials/breadcrumb.tpl'}
         {/block}
 
-        {hook h="displayWrapperTop"}
-        <div class="container">
-          {block name='breadcrumb'}
-            {include file='_partials/breadcrumb.tpl'}
-          {/block}
-
+        <div class="flex flex-col md:flex-row gap-6 mt-4">
           {block name="left_column"}
-            <div id="left-column" class="col-xs-12 col-sm-4 col-md-3">
+            <div id="left-column" class="w-full md:w-1/4">
               {if $page.page_name == 'product'}
                 {hook h='displayLeftColumnProduct'}
               {else}
@@ -73,7 +74,7 @@
           {/block}
 
           {block name="content_wrapper"}
-            <div id="content-wrapper" class="js-content-wrapper left-column right-column col-sm-4 col-md-6">
+            <div id="content-wrapper" class="js-content-wrapper left-column right-column w-full md:w-2/4">
               {hook h="displayContentWrapperTop"}
               {block name="content"}
                 <p>Hello world! This is HTML5 Boilerplate.</p>
@@ -83,7 +84,7 @@
           {/block}
 
           {block name="right_column"}
-            <div id="right-column" class="col-xs-12 col-sm-4 col-md-3">
+            <div id="right-column" class="w-full md:w-1/4">
               {if $page.page_name == 'product'}
                 {hook h='displayRightColumnProduct'}
               {else}
@@ -93,23 +94,23 @@
           {/block}
         </div>
         {hook h="displayWrapperBottom"}
-      </section>
+    </section>
 
-      <footer id="footer" class="js-footer">
-        {block name="footer"}
-          {include file="_partials/footer.tpl"}
-        {/block}
-      </footer>
+    <footer id="footer" class="js-footer">
+      {block name="footer"}
+        {include file="_partials/footer.tpl"}
+      {/block}
+    </footer>
 
-    </main>
+  </main>
 
-    {block name='javascript_bottom'}
-      {include file="_partials/javascript.tpl" javascript=$javascript.bottom}
-    {/block}
+  {block name='javascript_bottom'}
+    {include file="_partials/javascript.tpl" javascript=$javascript.bottom}
+  {/block}
 
-    {block name='hook_before_body_closing_tag'}
-      {hook h='displayBeforeBodyClosingTag'}
-    {/block}
-  </body>
+  {block name='hook_before_body_closing_tag'}
+    {hook h='displayBeforeBodyClosingTag'}
+  {/block}
+</body>
 
 </html>

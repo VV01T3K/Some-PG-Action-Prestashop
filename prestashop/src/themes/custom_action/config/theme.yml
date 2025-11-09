@@ -34,8 +34,13 @@ assets:
   # Uncomment and change value to start loading css or js files
  css:
    all:
-     - id: custom-lib-style
-       path: assets/css/custom-lib.css
+     - id: custom-action-style-0
+       path: assets/css/action/6cb475be98083983.css
+     - id: custom-action-style-1
+       path: assets/css/action/45a79668ce14deac.css
+     - id: custom-action-style-2
+       path: assets/css/action/d236b0a36f7b4c9b.css
+
 #    product:
 #      - id: product-style
 #        path: assets/css/product.css

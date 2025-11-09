@@ -22,28 +22,28 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-<div class="container">
-  <div class="row">
+<div class="container mx-auto px-4 md:px-6 lg:px-12">
+  <div class="flex flex-col">
     {block name='hook_footer_before'}
       {hook h='displayFooterBefore'}
     {/block}
   </div>
 </div>
-<div class="footer-container">
-  <div class="container">
-    <div class="row">
+<div class="footer-container bg-neutral-50 mt-8 pt-8">
+  <div class="container mx-auto px-4 md:px-6 lg:px-12">
+    <div class="flex flex-wrap gap-8">
       {block name='hook_footer'}
         {hook h='displayFooter'}
       {/block}
     </div>
-    <div class="row">
+    <div class="flex flex-wrap gap-4 mt-4">
       {block name='hook_footer_after'}
         {hook h='displayFooterAfter'}
       {/block}
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <p class="text-sm-center">
+    <div class="mt-4">
+      <div>
+        <p class="text-center text-body-small text-neutral-500">
           {block name='copyright_link'}
             <a href="https://www.prestashop.com" target="_blank" rel="noopener noreferrer nofollow">
               {l s='%copyright% %year% - Ecommerce software by %prestashop%' sprintf=['%prestashop%' => 'PrestaShop™', '%year%' => 'Y'|date, '%copyright%' => '©'] d='Shop.Theme.Global'}
