@@ -75,7 +75,7 @@
                           <input type="hidden" name="controller" value="search">
                           <div class="relative flex h-full w-full items-center">
                             <div class="h-full grow"><input type="text" autocomplete="off"
-                                class="bg-neutral-0 box-border h-full w-full rounded-full py-[10px] text-neutral-900 placeholder:text-neutral-700 focus-visible:outline-none pl-4 pr-24"
+                                class="bg-neutral-0 box-border h-full w-full rounded-full py-[10px] text-neutral-900 placeholder:text-neutral-700 focus-visible:outline-none pl-2 pr-24"
                                 data-testid="search-bar" placeholder="Czego szukasz?" name="s"
                                 value="{$search_string|default:''}"></div>
                             <div class="search-actions absolute top-0 right-0 flex h-full items-center pr-4">

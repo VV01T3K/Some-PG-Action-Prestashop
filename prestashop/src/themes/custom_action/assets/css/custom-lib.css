@@ -26,6 +26,7 @@
     background-color: transparent;
     border: none;
     box-shadow: none;
+    padding-left: 1rem !important;
 }
 
 #search_widget .search-field input[data-testid="search-bar"]:focus {
