@@ -1,1 +1,284 @@
-/*  */
+/* Hide wishlist button */
+.wishlist-button-add {
+    display: none !important;
+}
+
+
+#search_widget,
+#search_widget search,
+#search_widget [data-testid="search-bar-container"],
+#search_widget .search-field {
+    width: 100%;
+}
+
+#search_widget search,
+#search_widget [data-testid="search-bar-container"] {
+    display: block;
+}
+
+#search_widget .search-field {
+    background-color: #fff;
+    border-radius: 9999px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#search_widget .search-field input[data-testid="search-bar"] {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+#search_widget .search-field input[data-testid="search-bar"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#search_widget .search-field:focus-within {
+    border-color: #001489;
+    border: 2px solid #001489;
+}
+
+#search_widget .search-actions {
+    align-items: center;
+    height: 100%;
+}
+
+#search_widget .search-actions button {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
+#search_widget .search-actions button:focus-visible {
+    outline: 2px solid #001489;
+    outline-offset: 2px;
+}
+
+#search_widget .search-submit svg path {
+    fill: #001489;
+}
+
+#search_widget .search-clear svg path {
+    fill: #001489;
+}
+
+#search_widget .search-clear {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+}
+
+#search_widget .search-clear:focus-visible {
+    outline: 2px solid #001489;
+    outline-offset: 2px;
+}
+
+#search_widget .search-divider {
+    display: none;
+    width: 1px;
+    height: 24px;
+    background-color: rgba(80, 88, 98, 0.3);
+}
+
+#search_widget .search-field:focus-within .search-clear,
+#search_widget .search-field:has(input[data-testid="search-bar"]:not(:placeholder-shown)) .search-clear,
+#search_widget .search-field.search-field--has-value .search-clear {
+    display: flex;
+}
+
+#search_widget .search-field:focus-within .search-divider,
+#search_widget .search-field:has(input[data-testid="search-bar"]:not(:placeholder-shown)) .search-divider,
+#search_widget .search-field.search-field--has-value .search-divider {
+    display: block;
+}
+
+
+/* search bar dropdown */
+ul.ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content.ui-corner-all.searchbar-autocomplete  {
+    border-radius: 6px;
+    padding: 12px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-width: 100%;
+    background: #ffffff;
+}
+
+/* Search result items */
+ul.searchbar-autocomplete li.search-result-item {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+}
+
+ul.searchbar-autocomplete li.search-result-item .product-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    background: #ffffff;
+    transition: background-color 0.2s ease;
+}
+
+ul.searchbar-autocomplete li.search-result-item:hover .product-row,
+ul.searchbar-autocomplete li.search-result-item.ui-state-active .product-row {
+    background: #f5f6f7;
+}
+
+ul.searchbar-autocomplete li.search-result-item .product-link {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Product image */
+ul.searchbar-autocomplete li.search-result-item .product-image-container {
+    position: relative;
+    height: 64px;
+    min-width: 64px;
+    width: 64px;
+    flex-shrink: 0;
+}
+
+ul.searchbar-autocomplete li.search-result-item .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Product details */
+ul.searchbar-autocomplete li.search-result-item .product-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+    padding-left: 8px;
+}
+
+ul.searchbar-autocomplete li.search-result-item .product-title {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #001489;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+ul.searchbar-autocomplete li.search-result-item .product-description {
+    font-size: 12px;
+    line-height: 1.4;
+    color: #505862;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Price container */
+ul.searchbar-autocomplete li.search-result-item .product-price-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2px;
+}
+
+ul.searchbar-autocomplete li.search-result-item .product-price-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+ul.searchbar-autocomplete li.search-result-item .product-price-label {
+    font-size: 12px;
+    color: #505862;
+    line-height: 1.4;
+}
+
+ul.searchbar-autocomplete li.search-result-item .product-price-amount {
+    font-size: 16px;
+    font-weight: 700;
+    color: #001489;
+    line-height: 1.4;
+}
+
+/* Wishlist button */
+ul.searchbar-autocomplete li.search-result-item .product-wishlist {
+    display: flex;
+    align-items: flex-start;
+}
+
+ul.searchbar-autocomplete li.search-result-item .wishlist-btn {
+    padding: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ul.searchbar-autocomplete li.search-result-item .wishlist-btn:hover {
+    opacity: 0.7;
+}
+
+ul.searchbar-autocomplete li.search-result-item .wishlist-btn:focus {
+    outline: 2px solid #001489;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+ul.searchbar-autocomplete li.search-result-item .wishlist-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Remove default jQuery UI autocomplete styles */
+ul.searchbar-autocomplete li.search-result-item.ui-menu-item {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.searchbar-autocomplete li.search-result-item.ui-state-active,
+ul.searchbar-autocomplete li.search-result-item.ui-state-focus {
+    background: transparent;
+    border: none;
+    margin: 0;
+}
+
+/* Dim page when search dropdown open */
+body.search-dropdown-open {
+    position: relative;
+}
+
+body.search-dropdown-open::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* below header/logo adjustments if needed */
+}
+
+/* Keep search dropdown and search widget above the overlay */
+#search_widget,
+ul.ui-autocomplete.searchbar-autocomplete {
+    position: relative;
+    z-index: 1000;
+}
