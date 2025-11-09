@@ -8,8 +8,8 @@ author:
 
 meta:
   compatibility:
-      from: 1.7.0.0
-      to: ~
+    from: 1.7.0.0
+    to: ~
 
   available_layouts:
     layout-full-width:
@@ -24,22 +24,36 @@ meta:
     layout-right-column:
       name: Two Columns, small right column
       description: Two columns with a small right column
+    layout-home:
+      name: Home Page Layout
+      description: Custom full-width layout optimized for the home page
 
 assets:
   # If you're using this theme as child and you want to load
   # the parent theme assets, uncomment this line.
-#  use_parent_assets: true
+  #  use_parent_assets: true
 
   # The following lines are showing how to load assets in your page
   # Uncomment and change value to start loading css or js files
- css:
-   all:
-     - id: custom-action-style-0
-       path: assets/css/action/6cb475be98083983.css
-     - id: custom-action-style-1
-       path: assets/css/action/45a79668ce14deac.css
-     - id: custom-action-style-2
-       path: assets/css/action/d236b0a36f7b4c9b.css
+  css:
+    all:
+      - id: custom-action-style-0
+        path: assets/css/action/6cb475be98083983.css
+      - id: custom-action-style-1
+        path: assets/css/action/45a79668ce14deac.css
+      - id: custom-action-style-2
+        path: assets/css/action/d236b0a36f7b4c9b.css
+      - id: custom-lib-style
+        path: assets/css/custom-lib.css
+    index:
+      - id: custom-action-style-0
+        path: assets/css/action/6cb475be98083983.css
+      - id: custom-action-style-1
+        path: assets/css/action/45a79668ce14deac.css
+      - id: custom-action-style-2
+        path: assets/css/action/d236b0a36f7b4c9b.css
+      - id: custom-lib-style
+        path: assets/css/custom-lib.css
 
 #    product:
 #      - id: product-style
@@ -51,13 +65,12 @@ assets:
 #      - id: cat-extra-lib
 #        path: assets/js/cart-lib.js
 
-
 global_settings:
   configuration:
     PS_IMAGE_QUALITY: png
   modules:
-   to_enable:
-     - ps_linklist
+    to_enable:
+      - ps_linklist
   hooks:
     modules_to_hook:
       displayAfterBodyOpeningTag:
@@ -145,6 +158,7 @@ global_settings:
 theme_settings:
   default_layout: layout-full-width
   layouts:
+    index: layout-home
     category: layout-left-column
     best-sales: layout-left-column
     new-products: layout-left-column
