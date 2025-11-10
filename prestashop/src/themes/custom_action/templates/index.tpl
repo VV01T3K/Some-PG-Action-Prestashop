@@ -2317,7 +2317,8 @@
     </div>
   </section>
 
-  {* TODO - Ostatnio oglądane (js + ps) *}
 
+
+  {* TODO - Ostatnio oglądane (js + ps) *}
 
 {/block}
