@@ -98,7 +98,7 @@
 
 
 /* search bar dropdown */
-ul.ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content.ui-corner-all.searchbar-autocomplete  {
+ul.ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content.ui-corner-all.searchbar-autocomplete {
     border-radius: 6px;
     padding: 12px;
     border: none;
@@ -274,7 +274,8 @@ body.search-dropdown-open::before {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 999; /* below header/logo adjustments if needed */
+    z-index: 999;
+    /* below header/logo adjustments if needed */
 }
 
 /* Keep search dropdown and search widget above the overlay */
@@ -282,4 +283,33 @@ body.search-dropdown-open::before {
 ul.ui-autocomplete.searchbar-autocomplete {
     position: relative;
     z-index: 1000;
+}
+
+section.splide[aria-label="Simple Splide Carousel"] .splide__arrow--prev {
+    left: 48px;
+}
+
+section.splide[aria-label="Simple Splide Carousel"] .splide__arrow--next {
+    right: 48px;
+}
+
+section.splide[aria-label="Simple Splide Carousel"] .splide__arrow {
+    top: calc(50% - 2vw);
+    scale: 1.12;
+}
+
+section.splide[aria-label="Simple Splide Carousel"] .splide__arrow--prev svg {
+    left: 48px;
+    translate: -9px 9px;
+}
+
+section.splide[aria-label="Simple Splide Carousel"] .splide__arrow--next svg {
+    right: 48px;
+    translate: 9px 9px;
+}
+
+section.splide[aria-label="Simple Splide Carousel"] .splide__arrow svg {
+    fill: #001489;
+    height: 48px;
+    width: 48px;
 }

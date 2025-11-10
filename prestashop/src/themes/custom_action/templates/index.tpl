@@ -2,26 +2,300 @@
 
 {block name='content'}
 
-  {* TODO - category navigation (js + ps) *}
-
-  <section class="splide bg-neutral-50 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="Simple Splide Carousel">
+  <div class="hidden h-8 lg:block"></div>
+  <section class="splide bg-neutral-0 px-20 pt-6 md:pt-8 pb-12 md:pb-8 lg:pt-0" aria-label="Simple Splide Carousel">
     <div class="splide__track">
       <ul class="splide__list">
         <li class="splide__slide">
-          <div class="flex items-center justify-center h-64 bg-blue-500 text-white text-2xl font-bold">
-            Slide 01
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
           </div>
         </li>
         <li class="splide__slide">
-          <div class="flex items-center justify-center h-64 bg-green-500 text-white text-2xl font-bold">
-            Slide 02
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
           </div>
         </li>
         <li class="splide__slide">
-          <div class="flex items-center justify-center h-64 bg-red-500 text-white text-2xl font-bold">
-            Slide 03
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
           </div>
         </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center">
+            <a class="group flex flex-col gap-2">
+              <span class="relative aspect-square w-full shrink-0 rounded-full overflow-clip">
+                <img loading="lazy" decoding="async" data-nimg="fill"
+                  class="object-contain object-center group-hover:scale-110 transition-all duration-300 h-full w-full"
+                  sizes="(min-width: 1280px) calc(1280px / 8), (min-width: 1024px) calc(100vw / 8), (min-width: 768px) calc(100vw / 6), (min-width: 640px) calc(100vw / 5), calc(100vw / 4)"
+                  srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Categoryslider_Decoration_Home__2024_qatudm.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Categoryslider_Decoration_Home__2024_qatudm.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Categoryslider_Decoration_Home__2024_qatudm.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Categoryslider_Decoration_Home__2024_qatudm.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp 1920w"
+                  src="https://asset.action.com/image/upload/t_digital_square/w_1920/Categoryslider_Decoration_Home__2024_qatudm.webp">
+              </span>
+              <span
+                class="line-clamp-2 text-center break-words text-caption text-dark-blue-500 md:text-body-small font-medium">Wyposażenie
+                domu
+              </span>
+            </a>
+          </div>
+        </li>
+
       </ul>
     </div>
   </section>

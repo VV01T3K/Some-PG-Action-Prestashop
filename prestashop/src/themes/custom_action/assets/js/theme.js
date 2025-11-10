@@ -52,14 +52,31 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Initialize Splide carousel
 	if (typeof Splide !== 'undefined') {
 		new Splide('.splide', {
-			type: 'loop',
-			perPage: 1,
-			autoplay: true,
-			interval: 3000,
-			pauseOnHover: true,
-			pagination: true,
+			type: 'slide',
+			perPage: 8,
+			gap: 16,
 			arrows: true,
-			height: '400px',
+			pagination: false,
+			arrowPath: 'M13 19a1 1 0 0 1-.707-1.707L16.586 13H5a1 1 0 0 1 0-2h11.586l-4.293-4.293a1 1 0 1 1 1.414-1.414l6 6a1 1 0 0 1 .293.704v.006a1 1 0 0 1-.293.704l-6 6A1 1 0 0 1 13 19',
+			breakpoints: {
+				1280: {
+					perPage: 6,
+					gap: 16,
+				},
+				1024: {
+					perPage: 6,
+					gap: 16,
+				},
+				768: {
+					perPage: 3,
+					gap: 16,
+				},
+				480: {
+					perPage: 2,
+					gap: 16,
+				},
+			},
+
 		}).mount();
 	}
 });
