@@ -85,6 +85,8 @@ global_settings:
         - blockwishlist
       displayNav1:
         - ps_contactinfo
+      displayCart:
+        - ps_shoppingcart
       displayNav2:
         - ps_languageselector
         - ps_currencyselector

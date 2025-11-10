@@ -1,8 +1,6 @@
 {block name='header'}
   {assign var='logged' value=Context::getContext()->customer->isLogged()}
   {assign var='customerName' value=Context::getContext()->customer->firstname|cat:' '|cat:Context::getContext()->customer->lastname}
-  {assign var='cart' value=Context::getContext()->cart}
-  {assign var='cart_url' value=$urls.pages.cart}
   <header>
     <div id="skiptocontent" class="sr-only focus-within:not-sr-only">
       <div class="bg-orange-300 px-4 py-1"><a class="text-body-small text-dark-blue-500 font-medium underline"
@@ -149,23 +147,7 @@
                 </svg></div>
             </div>
             <div class="-mr-2 flex items-center object-cover">
-              <div class="relative flex"><a class="btn-base group btn-light w-fit" href="{$cart_url}" aria-label="Cart"
-                  data-testid="cart-button"><span class="btn-content-icon"><svg aria-hidden="true"
-                      data-testid="ShoppingCart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
-                      viewBox="0 0 24 24">
-                      <path fill="#505862"
-                        d="M12 21a1 1 0 0 1-.486-.126C11.126 20.658 2 15.514 2 9c0-3.665 2.218-5.425 4.293-5.849 2.171-.44 4.328.402 5.707 2.113 1.38-1.712 3.537-2.552 5.707-2.113C19.782 3.575 22 5.335 22 9.001c0 6.513-9.126 11.657-9.515 11.873A1 1 0 0 1 12 21M7.4 5.041q-.368 0-.707.07C5.007 5.456 4 6.91 4 9.001c0 4.584 6.197 8.728 8 9.836 1.804-1.108 8-5.252 8-9.837 0-2.09-1.007-3.544-2.693-3.889-1.482-.3-3.479.346-4.387 2.475a1 1 0 0 1-1.84 0C10.31 5.78 8.755 5.04 7.4 5.04">
-                      </path>
-                    </svg></span></a>
-                {if $cart->nbProducts() > 0}
-                  <div class="pointer-events-none absolute top-0 right-0">
-                    <div class="bg-orange inline-flex rounded-full py-0.5 px-[5px]" data-testid="cart-button-badge">
-                      <span class="cart-products-count text-caption text-neutral-0"
-                        data-testid="cart-button-badge-text">{$cart->nbProducts()}</span>
-                    </div>
-                  </div>
-                {/if}
-              </div>
+              {hook h='displayCart'}
             </div>
           </div>
         </div>
