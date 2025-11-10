@@ -2,7 +2,7 @@ import { seedCategories } from './api/category_manager';
 import { cleanDatabase } from './api/clean_database';
 import type { Product, ProductApiPayload } from "./types";
 import products from './scrapper-results/products.json' assert { type: 'json' };
-import { createProduct, uploadProductImage } from './api/api';
+import { createProduct, updateStockAvailable, uploadProductImage } from './api/api';
 import { readdirSync } from 'fs';
 import { PRESTASHOP_DEFAULT_CAT_ID } from './constants';
 
@@ -32,6 +32,8 @@ async function seedProducts(categoryNameIdMap: Map<string, number>) {
         const productImagesDirId = product.product_specifications['Numer produktu'];
         uploadAllProductImages(productId, productImagesDirId);
         console.log(`Uploaded product's images`);
+        const QUANTITY_TO_SET = 5; //TODO: change it to random or sth
+        updateStockAvailable(productId, QUANTITY_TO_SET);
         // return 0; //delete this line to seed all products
     }
 }

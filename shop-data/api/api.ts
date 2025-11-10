@@ -12,29 +12,34 @@ import { API_KEY, API_URL, PRESTASHOP_DEFAULT_CAT_ID, PRESTASHOP_ROOT_CAT_ID } f
 
 /* ==== CREATE ==== */
 async function createCategoryOrSubcategory(name: string, parent_id: string): Promise<number> {
-    let XML = readFileSync("./xml_templates/subcategory_template.xml", "utf8");
-    XML = substitutePlaceholders(XML, { name, parent_id: parent_id });
-    const res = await fetch(`${API_URL}/categories?ws_key=${API_KEY}`, {
-        method: "POST",
-        headers: {
-        "Content-Type": "text/xml",
-        },
-        body: XML,
-    });
+    const maxRetries = 5;
+    for (let attempt = 1; attempt <= maxRetries; attempt++){
+        let XML = readFileSync("./xml_templates/subcategory_template.xml", "utf8");
+        XML = substitutePlaceholders(XML, { name, parent_id: parent_id });
+        const res = await fetch(`${API_URL}/categories?ws_key=${API_KEY}`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "text/xml",
+            },
+            body: XML,
+        });
+        const xmlText = await res.text();
+        if (res.status >= 500) {
+            console.warn(`⚠️ Błąd serwera (Status ${res.status}) dla ${name}. Ponawiam próbę za 2s... (Próba ${attempt}/${maxRetries})`);
+            console.error("Odpowiedź serwera:\n", xmlText);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            continue;
+        } else {
+            const $ = cheerio.load(xmlText, { xmlMode: true });
+            const createdId = $("category > id").text();
+            
+            // console.log("✅ Podkategoria dodana pomyślnie:\n", xmlText);
+            return parseInt(createdId);
+        }
 
-    if (!res.ok) {
-        console.error(`❌ Błąd: ${res.status} ${res.statusText}`);
-        const text = await res.text();
-        console.error("Odpowiedź serwera:\n", text);
-        throw new Error(`Couldn't create a new category with name: ${name}`);
     }
-
-    const xmlText = await res.text();
-    const $ = cheerio.load(xmlText, { xmlMode: true });
-    const createdId = $("category > id").text();
+    throw new Error(`Couldn't create a new category with name: ${name}`);
     
-    // console.log("✅ Podkategoria dodana pomyślnie:\n", xmlText);
-    return parseInt(createdId);
 }
 export async function createCategory(name: string) {
     return createCategoryOrSubcategory(name, PRESTASHOP_DEFAULT_CAT_ID);
@@ -221,6 +226,34 @@ export async function getProductIdByEan(ean13: string): Promise<number>{
 }
 
 
+export async function updateStockAvailable(productId: number, stockNum: number){
+    const res = await fetch(`${API_URL}/stock_availables?ws_key=${API_KEY}&filter[id_product]=[${productId}]`);
+    const xmlText = await res.text();
+
+    const $ = cheerio.load(xmlText);
+    const stock_availableId = $("stock_available").attr("id");
+    if(!stock_availableId) {
+        console.error(`Not found stock_available record for product with id: ${productId}`);
+        return;
+    }
+
+    let modifiedStockXml = readFileSync("./xml_templates/stock_template.xml", "utf8");
+    modifiedStockXml = substitutePlaceholders(modifiedStockXml, { stock_id: stock_availableId, product_id: productId.toString(), stock: stockNum.toString() });
+
+    const updateRes = await fetch(`${API_URL}/stock_availables/${stock_availableId}?ws_key=${API_KEY}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/xml',
+        },
+        body: modifiedStockXml
+    });
+    if (updateRes.ok) {
+        console.log(`Successfully updated stock for product ID: ${productId} to quantity: ${stockNum}`);
+    } else {
+        const errorText = await updateRes.text();
+        console.error(`Failed to update stock for product ID: ${productId}. Status: ${updateRes.status}`, errorText);
+    }
+}
 
 /* ==== HELPERS ==== */
 function substitutePlaceholders(xmlTemplate: string, placeholders: { [key: string]: string }): string {
