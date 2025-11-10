@@ -28,11 +28,13 @@ async function seedProducts(categoryNameIdMap: Map<string, number>) {
         const productPayload = createProductApiPayload(product as unknown as Product, categoryIds);
         const productId = await createProduct(productPayload);
         console.log(`Created product with id:${productId}`);
+                
         //upload all images for the product
         const productImagesDirId = product.product_specifications['Numer produktu'];
         uploadAllProductImages(productId, productImagesDirId);
         console.log(`Uploaded product's images`);
-        const QUANTITY_TO_SET = 5; //TODO: change it to random or sth
+        
+        const QUANTITY_TO_SET = 8; //TODO: change it to random or sth
         updateStockAvailable(productId, QUANTITY_TO_SET);
         // return 0; //delete this line to seed all products
     }

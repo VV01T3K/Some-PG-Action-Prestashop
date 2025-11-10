@@ -63,7 +63,7 @@ export async function createProduct(product: ProductApiPayload): Promise<number>
     if (!res.ok) {
         //500 code is probably also fine and the product was uploaded succesfully :>
         // console.error(`❌ Błąd: ${res.status} ${res.statusText}`);
-        const text = await res.text();
+        // const text = await res.text();
         // console.error("Odpowiedź serwera:\n", text);
     }
     //we have to call it bcs POST request won't give as the createdId
@@ -227,32 +227,38 @@ export async function getProductIdByEan(ean13: string): Promise<number>{
 
 
 export async function updateStockAvailable(productId: number, stockNum: number){
-    const res = await fetch(`${API_URL}/stock_availables?ws_key=${API_KEY}&filter[id_product]=[${productId}]`);
-    const xmlText = await res.text();
-
-    const $ = cheerio.load(xmlText);
-    const stock_availableId = $("stock_available").attr("id");
-    if(!stock_availableId) {
-        console.error(`Not found stock_available record for product with id: ${productId}`);
-        return;
-    }
-
-    let modifiedStockXml = readFileSync("./xml_templates/stock_template.xml", "utf8");
-    modifiedStockXml = substitutePlaceholders(modifiedStockXml, { stock_id: stock_availableId, product_id: productId.toString(), stock: stockNum.toString() });
-
-    const updateRes = await fetch(`${API_URL}/stock_availables/${stock_availableId}?ws_key=${API_KEY}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/xml',
-        },
-        body: modifiedStockXml
-    });
-    if (updateRes.ok) {
-        console.log(`Successfully updated stock for product ID: ${productId} to quantity: ${stockNum}`);
-    } else {
-        const errorText = await updateRes.text();
-        console.error(`Failed to update stock for product ID: ${productId}. Status: ${updateRes.status}`, errorText);
-    }
+    const MAX_RETRIES = 3;
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++){
+        const res = await fetch(`${API_URL}/stock_availables?ws_key=${API_KEY}&filter[id_product]=[${productId}]`);
+        const xmlText = await res.text();
+    
+        const $ = cheerio.load(xmlText);
+        const stock_availableId = $("stock_available").attr("id");
+        if(!stock_availableId) {
+            console.warn(`⚠️ Stock ID not found for ${productId}. Retrying in 1s... (Attempt ${attempt}/${MAX_RETRIES})`);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            continue;
+        }
+    
+        let modifiedStockXml = readFileSync("./xml_templates/stock_template.xml", "utf8");
+        modifiedStockXml = substitutePlaceholders(modifiedStockXml, { stock_id: stock_availableId, product_id: productId.toString(), stock: stockNum.toString() });
+    
+        const updateRes = await fetch(`${API_URL}/stock_availables/${stock_availableId}?ws_key=${API_KEY}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/xml',
+            },
+            body: modifiedStockXml
+        });
+        if (updateRes.ok) {
+            console.log(`Successfully updated stock for product ID: ${productId} to quantity: ${stockNum}`);
+            return;
+        } else {
+            const errorText = await updateRes.text();
+            console.error(`Failed to update stock for product ID: ${productId}. Status: ${updateRes.status}. Retrying in 1s... (Attempt ${attempt}/${MAX_RETRIES})`);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    }    
 }
 
 /* ==== HELPERS ==== */
