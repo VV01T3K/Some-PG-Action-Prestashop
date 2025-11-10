@@ -4,6 +4,28 @@
 
   {* TODO - category navigation (js + ps) *}
 
+  <section class="splide bg-neutral-50 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="Simple Splide Carousel">
+    <div class="splide__track">
+      <ul class="splide__list">
+        <li class="splide__slide">
+          <div class="flex items-center justify-center h-64 bg-blue-500 text-white text-2xl font-bold">
+            Slide 01
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center h-64 bg-green-500 text-white text-2xl font-bold">
+            Slide 02
+          </div>
+        </li>
+        <li class="splide__slide">
+          <div class="flex items-center justify-center h-64 bg-red-500 text-white text-2xl font-bold">
+            Slide 03
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
   <section class="bg-neutral-50 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="Promocja Tygodnia"
     data-testid="cms-weekdeals-product-carousel">
     <div class="relative flex w-full flex-col px-4 lg:px-8">

@@ -45,6 +45,8 @@ assets:
         path: assets/css/action/d236b0a36f7b4c9b.css
       - id: custom-lib-style
         path: assets/css/custom-lib.css
+      - id: custom-lib-splide
+        path: assets/css/splide.min.css
     index:
       - id: custom-action-style-0
         path: assets/css/action/6cb475be98083983.css
@@ -54,16 +56,21 @@ assets:
         path: assets/css/action/d236b0a36f7b4c9b.css
       - id: custom-lib-style
         path: assets/css/custom-lib.css
+      - id: custom-lib-splide
+        path: assets/css/splide.min.css
 
 #    product:
 #      - id: product-style
 #        path: assets/css/product.css
 #        media: all
 #        priority: 200
-#  js:
-#    cart:
-#      - id: cat-extra-lib
-#        path: assets/js/cart-lib.js
+  js:
+    all:
+      - id: cat-extra-lib-splide
+        path: assets/js/splide.min.js
+  index:
+      - id: cat-extra-lib-splide
+        path: assets/js/splide.min.js
 
 global_settings:
   configuration:
