@@ -87,6 +87,8 @@ global_settings:
         - ps_contactinfo
       displayCart:
         - ps_shoppingcart
+      displayAccount:
+        - ps_customersignin
       displayNav2:
         - ps_languageselector
         - ps_currencyselector
