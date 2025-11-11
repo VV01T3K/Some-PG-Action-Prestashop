@@ -318,8 +318,9 @@
           <div class="@container relative" style="--numberOfPages: 2.25; --currentPage: 0;">
             <div
               class="xl:[--columns:var(--columnsXl)] xl:[--rows:var(--rowsXl)] lg:[--columns:var(--columnsLg)] lg:[--rows:var(--rowsLg)] md:[--columns:var(--columnsMd)] md:[--rows:var(--rowsMd)] sm:[--columns:var(--columnsSm)] sm:[--rows:var(--rowsSm)] [--columns:var(--columnsDefault)] [--rows:var(--rowsDefault)] [--itemSpacing:8px] md:[--itemSpacing:16px] [--lastItemPartial:16px] sm:[--lastItemPartial:32px] [--itemWidth:calc((100cqw-var(--itemSpacing)*var(--columns)-var(--lastItemPartial))/var(--columns))] lg:[--itemWidth:calc((100cqw-var(--itemSpacing)*(var(--columns)-1))/var(--columns))] pointer-fine:[--itemWidth:calc((100cqw-var(--itemSpacing)*(var(--columns)-1))/var(--columns))] [--isMultiRow:calc(min(1,var(--rows)-1))] [--isSingleRow:calc(1-var(--isMultiRow))]">
-              <div class="pointer-events-none absolute inset-0 z-1"><button type="button" inert="" aria-label="Poprzednia"
-                  class="absolute -translate-y-1/2 top-1/2 bg-neutral-0 shadow-overlay-button rounded-full p-4 hidden lg:block pointer-fine:block transition duration-200 hover:scale-[1.15] -left-2 lg:-left-4 xl:-left-7 pointer-events-none opacity-0"
+              <div class="pointer-events-none absolute inset-0 z-1"><button type="button" aria-label="Poprzednia"
+                  onclick="prevCarouselPage(this)"
+                  class="absolute -translate-y-1/2 top-1/2 bg-neutral-0 shadow-overlay-button rounded-full p-4 hidden lg:block pointer-fine:block transition duration-200 hover:scale-[1.15] -left-2 lg:-left-4 xl:-left-7 pointer-events-auto"
                   data-testid="carousel-previous-navigation-button"><svg aria-hidden="true" data-testid="ArrowLeftMd"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path fill="#001489"
@@ -361,31 +362,33 @@
                       <div class="border-neutral-150 border bg-neutral-0 relative h-full w-full"
                         data-testid="product-card" data-content-king="product-card" analytics="[object Object]"><a
                           class="group relative flex h-full w-full flex-col p-3 xs:p-4"
-                          href="/pl-pl/p/3208222/banknoty-z-czekolady-smikkelhuys/" data-testid="product-card-link"><span
+                          href="/pl-pl/p/3217516/wafelki-jajeczne-cookies-crumbs-orzech-laskowy/"
+                          data-testid="product-card-link"><span
                             class="xs:max-h-[180px] relative aspect-square w-full md:max-h-[230px]"><img
                               data-testid="product-card-image" alt="" loading="lazy" decoding="async" data-nimg="fill"
                               class="object-contain object-center py-2 transition-transform duration-250 group-hover:scale-105 md:py-4 h-full w-full"
                               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                               sizes="(min-width: 1280px) calc(1280px / 5), (min-width: 1024px) calc(100vw / 4), (min-width: 768px) calc(100vw / 3), (min-width: 640px) calc(100vw / 3), calc(100vw / 2)"
-                              srcset="https://asset.action.com/image/upload/t_digital_product_image/w_128/3208222_8720874510048-110_01_pa4lit.webp 128w, https://asset.action.com/image/upload/t_digital_product_image/w_256/3208222_8720874510048-110_01_pa4lit.webp 256w, https://asset.action.com/image/upload/t_digital_product_image/w_640/3208222_8720874510048-110_01_pa4lit.webp 640w, https://asset.action.com/image/upload/t_digital_product_image/w_1080/3208222_8720874510048-110_01_pa4lit.webp 1080w, https://asset.action.com/image/upload/t_digital_product_image/w_1920/3208222_8720874510048-110_01_pa4lit.webp 1920w"
-                              src="https://asset.action.com/image/upload/t_digital_product_image/w_1920/3208222_8720874510048-110_01_pa4lit.webp"><span
+                              srcset="https://asset.action.com/image/upload/t_digital_product_image/w_128/3217516_8713627082466-111_01_fv9x3z.webp 128w, https://asset.action.com/image/upload/t_digital_product_image/w_256/3217516_8713627082466-111_01_fv9x3z.webp 256w, https://asset.action.com/image/upload/t_digital_product_image/w_640/3217516_8713627082466-111_01_fv9x3z.webp 640w, https://asset.action.com/image/upload/t_digital_product_image/w_1080/3217516_8713627082466-111_01_fv9x3z.webp 1080w, https://asset.action.com/image/upload/t_digital_product_image/w_1920/3217516_8713627082466-111_01_fv9x3z.webp 1920w"
+                              src="https://asset.action.com/image/upload/t_digital_product_image/w_1920/3217516_8713627082466-111_01_fv9x3z.webp"><span
                               class="absolute bottom-0 flex flex-col gap-2"></span></span><span
                             class="mt-2 mb-3 flex grow flex-col gap-1 leading-tight sm:mb-4"><span
                               class="xs:text-[16px] xs:leading-5 text-sm leading-[18px] font-medium text-dark-blue-500 line-clamp-2 break-words"
-                              data-testid="product-card-title">Banknoty z czekolady Smikkelhuys</span><span
+                              data-testid="product-card-title">Wafelki jajeczne Cookies &amp; Crumbs Orzech
+                              laskowy</span><span
                               class="max-h-fit text-sm leading-[18px] font-normal line-clamp-2 grow break-words text-neutral-700"
-                              data-testid="product-card-description">150 gramów</span></span><span
-                            aria-label="7,79&nbsp;zł 57,28&nbsp;zł/kg" class="flex flex-col"><span
+                              data-testid="product-card-description">270 g</span></span><span
+                            aria-label="6,95&nbsp;zł 25,74&nbsp;zł/kg" class="flex flex-col"><span
                               data-testid="product-card-price-description"
-                              class="mb-1 block w-max text-xs leading-[12px] text-neutral-700">57,28&nbsp;zł/kg</span><span
+                              class="mb-1 block w-max text-xs leading-[12px] text-neutral-700">25,74&nbsp;zł/kg</span><span
                               class="flex items-start text-orange-500"><span data-testid="product-card-price-whole"
-                                class="font-bold tracking-[1px] text-[40px] leading-[28px] md:text-[48px] md:leading-[33px]">7</span><span
+                                class="font-bold tracking-[1px] text-[40px] leading-[28px] md:text-[48px] md:leading-[33px]">6</span><span
                                 class="inline-flex items-baseline"><span data-testid="product-card-price-fractional"
-                                  class="font-bold tracking-[1px] text-[20px] leading-[14px] md:text-[28px] md:leading-[19px]">79</span></span></span></span><span
+                                  class="font-bold tracking-[1px] text-[20px] leading-[14px] md:text-[28px] md:leading-[19px]">95</span></span></span></span><span
                             class="flex leading-none text-neutral-700 mt-1 flex-row items-baseline self-baseline"
                             data-testid="product-card-price-discount"><span class="flex items-center"
                               data-testid="product-card-price-original-amount"><span
-                                class="text-center text-[12px] font-normal line-through">8,79&nbsp;zł</span><span
+                                class="text-center text-[12px] font-normal line-through">7,88&nbsp;zł</span><span
                                 class="pl-0.5 text-xs">*</span></span><span
                               class="ml-1 rounded border border-neutral-700 px-[2px] py-px text-xs leading-[12px] font-medium"
                               data-testid="product-card-price-discount-percentage">-11%</span></span><span
@@ -767,8 +770,9 @@
               </div>
               <div class="pointer-events-none absolute inset-0"><button type="button" aria-label="Następna"
                   class="absolute -translate-y-1/2 top-1/2 bg-neutral-0 shadow-overlay-button rounded-full p-4 hidden lg:block pointer-fine:block transition duration-200 hover:scale-[1.15] -right-2 lg:-right-4 xl:-right-7 pointer-events-auto"
-                  data-testid="carousel-next-navigation-button"><svg aria-hidden="true" data-testid="ArrowRightMd"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  data-testid="carousel-next-navigation-button" onclick="nextCarouselPage(this)">
+                  <svg aria-hidden="true" data-testid="ArrowRightMd" xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" fill="none" viewBox="0 0 24 24">
                     <path fill="#001489"
                       d="M13 19a1 1 0 0 1-.707-1.707L16.586 13H5a1 1 0 0 1 0-2h11.586l-4.293-4.293a1 1 0 1 1 1.414-1.414l6 6a1 1 0 0 1 .293.704v.006a1 1 0 0 1-.293.704l-6 6A1 1 0 0 1 13 19">
                     </path>
@@ -781,8 +785,8 @@
                 więcej</span></a></div>
         </div>
         {* <script type="application/ld+json">
-{"itemListElement":[{"@type":"ListItem","position":1,"url":"https://www.action.com/pl-pl/p/3208222/banknoty-z-czekolady-smikkelhuys/"},{"@type":"ListItem","position":2,"url":"https://www.action.com/pl-pl/p/2554979/rekawiczki-thermolate/"},{"@type":"ListItem","position":3,"url":"https://www.action.com/pl-pl/p/3218319/obracajacy-sie-czubek-na-choinke/"},{"@type":"ListItem","position":4,"url":"https://www.action.com/pl-pl/p/3007233/opakowanie-zbiorcze-haribo-slodkie-lub-kwasne/"},{"@type":"ListItem","position":5,"url":"https://www.action.com/pl-pl/p/3207853/grzejnik-konwektorowy-lsc-smart-connect/"},{"@type":"ListItem","position":6,"url":"https://www.action.com/pl-pl/p/3218152/kamera-ptz-zasilana-energia-sloneczna-lsc-smart-connect/"},{"@type":"ListItem","position":7,"url":"https://www.action.com/pl-pl/p/3215097/widelce/"},{"@type":"ListItem","position":8,"url":"https://www.action.com/pl-pl/p/3204627/kolorowanka-paw-patrol/"}],"@context":"https://schema.org","@type":"ItemList"}
-        </script> *}
+{"itemListElement":[{"@type":"ListItem","position":1,"url":"https://www.action.com/pl-pl/p/3217516/wafelki-jajeczne-cookies-crumbs-orzech-laskowy/"},{"@type":"ListItem","position":2,"url":"https://www.action.com/pl-pl/p/2554979/rekawiczki-thermolate/"},{"@type":"ListItem","position":3,"url":"https://www.action.com/pl-pl/p/3218319/obracajacy-sie-czubek-na-choinke/"},{"@type":"ListItem","position":4,"url":"https://www.action.com/pl-pl/p/3007233/opakowanie-zbiorcze-haribo-slodkie-lub-kwasne/"},{"@type":"ListItem","position":5,"url":"https://www.action.com/pl-pl/p/3207853/grzejnik-konwektorowy-lsc-smart-connect/"},{"@type":"ListItem","position":6,"url":"https://www.action.com/pl-pl/p/3218152/kamera-ptz-zasilana-energia-sloneczna-lsc-smart-connect/"},{"@type":"ListItem","position":7,"url":"https://www.action.com/pl-pl/p/3215097/widelce/"},{"@type":"ListItem","position":8,"url":"https://www.action.com/pl-pl/p/3204627/kolorowanka-paw-patrol/"}],"@context":"https://schema.org","@type":"ItemList"}
+      </script> *}
       </div>
     </div>
   </section>
