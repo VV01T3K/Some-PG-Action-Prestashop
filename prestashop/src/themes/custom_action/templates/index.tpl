@@ -9,7 +9,7 @@
       <div class="mx-auto w-full max-w-7xl">
         <div class="flex flex-col gap-4 md:gap-6"
           style="--rowsXl:1;--columnsXl:8;--rowsLg:1;--columnsLg:8;--rowsMd:1;--columnsMd:6;--rowsSm:1;--columnsSm:5;--rowsDefault:1;--columnsDefault:4">
-          <div class="@container relative" style="--numberOfPages: 2.5; --currentPage: 1;">
+          <div class="@container relative" style="--numberOfPages: 2.5; --currentPage: 0;">
             <div
               class="xl:[--columns:var(--columnsXl)] xl:[--rows:var(--rowsXl)] lg:[--columns:var(--columnsLg)] lg:[--rows:var(--rowsLg)] md:[--columns:var(--columnsMd)] md:[--rows:var(--rowsMd)] sm:[--columns:var(--columnsSm)] sm:[--rows:var(--rowsSm)] [--columns:var(--columnsDefault)] [--rows:var(--rowsDefault)] [--itemSpacing:8px] md:[--itemSpacing:16px] [--lastItemPartial:16px] sm:[--lastItemPartial:32px] [--itemWidth:calc((100cqw-var(--itemSpacing)*var(--columns)-var(--lastItemPartial))/var(--columns))] lg:[--itemWidth:calc((100cqw-var(--itemSpacing)*(var(--columns)-1))/var(--columns))] pointer-fine:[--itemWidth:calc((100cqw-var(--itemSpacing)*(var(--columns)-1))/var(--columns))] [--isMultiRow:calc(min(1,var(--rows)-1))] [--isSingleRow:calc(1-var(--isMultiRow))]">
               <div class="pointer-events-none absolute inset-0 z-1"><button type="button" aria-label="Poprzednia"
@@ -864,7 +864,7 @@
                 Co tydzień 150 nowych produktów</p>
             </div>
           </div>
-          <div class="@container relative" style="--numberOfPages: 2.6666666666666665; --currentPage: 1;">
+          <div class="@container relative" style="--numberOfPages: 2.6666666666666665; --currentPage: 0;">
             <div
               class="xl:[--columns:var(--columnsXl)] xl:[--rows:var(--rowsXl)] lg:[--columns:var(--columnsLg)] lg:[--rows:var(--rowsLg)] md:[--columns:var(--columnsMd)] md:[--rows:var(--rowsMd)] sm:[--columns:var(--columnsSm)] sm:[--rows:var(--rowsSm)] [--columns:var(--columnsDefault)] [--rows:var(--rowsDefault)] [--itemSpacing:8px] md:[--itemSpacing:16px] [--lastItemPartial:16px] sm:[--lastItemPartial:32px] [--itemWidth:calc((100cqw-var(--itemSpacing)*var(--columns)-var(--lastItemPartial))/var(--columns))] lg:[--itemWidth:calc((100cqw-var(--itemSpacing)*(var(--columns)-1))/var(--columns))] pointer-fine:[--itemWidth:calc((100cqw-var(--itemSpacing)*(var(--columns)-1))/var(--columns))] [--isMultiRow:calc(min(1,var(--rows)-1))] [--isSingleRow:calc(1-var(--isMultiRow))]">
               <div class="pointer-events-none absolute inset-0 z-1"><button type="button" aria-label="Poprzednia"
@@ -1928,7 +1928,7 @@
               <div class="relative">
                 <div class="flex flex-col gap-4 md:gap-6"
                   style="--rowsXl:1;--columnsXl:5;--rowsLg:1;--columnsLg:4;--rowsMd:1;--columnsMd:3;--rowsSm:1;--columnsSm:3;--rowsDefault:1;--columnsDefault:2">
-                  <div class="@container relative" style="--numberOfPages: 2.6666666666666665; --currentPage: 1;">
+                  <div class="@container relative" style="--numberOfPages: 2.6666666666666665; --currentPage: 0;">
                     <div
                       class="xl:[--columns:var(--columnsXl)] xl:[--rows:var(--rowsXl)] lg:[--columns:var(--columnsLg)] lg:[--rows:var(--rowsLg)] md:[--columns:var(--columnsMd)] md:[--rows:var(--rowsMd)] sm:[--columns:var(--columnsSm)] sm:[--rows:var(--rowsSm)] [--columns:var(--columnsDefault)] [--rows:var(--rowsDefault)] [--itemSpacing:8px] md:[--itemSpacing:16px] [--lastItemPartial:16px] sm:[--lastItemPartial:32px] [--itemWidth:calc((100cqw-var(--itemSpacing)*var(--columns)-var(--lastItemPartial))/var(--columns))] lg:[--itemWidth:calc((100cqw-var(--itemSpacing)*(var(--columns)-1))/var(--columns))] pointer-fine:[--itemWidth:calc((100cqw-var(--itemSpacing)*(var(--columns)-1))/var(--columns))] [--isMultiRow:calc(min(1,var(--rows)-1))] [--isSingleRow:calc(1-var(--isMultiRow))]">
                       <div class="pointer-events-none absolute inset-0 z-1"><button type="button" aria-label="Poprzednia"
@@ -3032,7 +3032,7 @@
         <h2 class="heading-xl pb-2" data-testid="title-view-title">Ostatnio oglądane</h2>
         <div class="flex flex-col gap-4 md:gap-6"
           style="--rowsXl: 1; --columnsXl: 5; --rowsLg: 1; --columnsLg: 4; --rowsMd: 1; --columnsMd: 3; --rowsSm: 1; --columnsSm: 3; --rowsDefault: 1; --columnsDefault: 2;">
-          <div class="@container relative" style="--numberOfPages: 2.6666666666666665; --currentPage: 1;">
+          <div class="@container relative" style="--numberOfPages: 2.6666666666666665; --currentPage: 0;">
             <div
               class="xl:[--columns:var(--columnsXl)] xl:[--rows:var(--rowsXl)] lg:[--columns:var(--columnsLg)] lg:[--rows:var(--rowsLg)] md:[--columns:var(--columnsMd)] md:[--rows:var(--rowsMd)] sm:[--columns:var(--columnsSm)] sm:[--rows:var(--rowsSm)] [--columns:var(--columnsDefault)] [--rows:var(--rowsDefault)] [--itemSpacing:8px] md:[--itemSpacing:16px] [--lastItemPartial:16px] sm:[--lastItemPartial:32px] [--itemWidth:calc((100cqw-var(--itemSpacing)*var(--columns)-var(--lastItemPartial))/var(--columns))] lg:[--itemWidth:calc((100cqw-var(--itemSpacing)*(var(--columns)-1))/var(--columns))] pointer-fine:[--itemWidth:calc((100cqw-var(--itemSpacing)*(var(--columns)-1))/var(--columns))] [--isMultiRow:calc(min(1,var(--rows)-1))] [--isSingleRow:calc(1-var(--isMultiRow))]">
               <div class="pointer-events-none absolute inset-0 z-1"><button type="button" aria-label="Poprzednia"
