@@ -313,3 +313,20 @@ section.splide[aria-label="Simple Splide Carousel"] .splide__arrow svg {
     height: 48px;
     width: 48px;
 }
+
+[data-testid="carousel-next-navigation-button"],
+[data-testid="carousel-previous-navigation-button"] {
+    transition: opacity 0.2s ease;
+}
+
+[data-testid="carousel-previous-navigation-button"].custom-invisible,
+[data-testid="carousel-next-navigation-button"].custom-invisible {
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-testid="carousel-previous-navigation-button"]:not(.custom-invisible),
+[data-testid="carousel-next-navigation-button"]:not(.custom-invisible) {
+    opacity: 1;
+    pointer-events: auto;
+}
