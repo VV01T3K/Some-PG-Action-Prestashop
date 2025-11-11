@@ -2,6 +2,24 @@
 
 {block name='content'}
 
+  {* Assign the home category id *}
+  {assign var='homeId' value=Configuration::get('PS_HOME_CATEGORY')}
+
+  {* Get nested categories starting from home category *}
+  {assign var='categories' value=Category::getNestedCategories($homeId, $language.id, true)}
+
+  {* Example: Get all top-level categories *}
+  {assign var='topCategories' value=Category::getCategories($language.id, true, false)}
+
+  <script>
+    var categories = {$categories|json_encode nofilter};
+    console.log(categories);
+    var topCategories = {$topCategories|json_encode nofilter};
+    console.log(topCategories);
+    var homeId = {$homeId|json_encode nofilter};
+    console.log(homeId);
+  </script>
+
   <div class="hidden h-8 lg:block"></div>
   <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8 lg:pt-0" aria-label="Kategorie"
     data-testid="cms-category-carousel">
