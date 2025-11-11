@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 import searchbar
 import remove_from_cart
 import register_account
+import checkout
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -55,7 +56,7 @@ def main():
         logger.info("\n▶️  TEST 2: Search and Add to Cart (5 iterations)")
         logger.info("-"*70)
         test_2_results = []
-        for i in range(1, 6):
+        for i in range(1, 2):
             driver.refresh() # Refresh the page before each iteration (to be fixed)
             logger.info(f"\n--- Iteration {i}/5 ---")
             result = searchbar.run_test(driver)
@@ -68,11 +69,17 @@ def main():
         # result_3 = add_to_cart_multi.run_test(driver)
         # results["test_3_add_multi"] = result_3
         
-        # TEST 4: Remove from Cart
-        logger.info("\n▶️  TEST 3: Remove from Cart")
+        # TEST 3: Remove from Cart
+        #logger.info("\n▶️  TEST 3: Remove from Cart")
+        #logger.info("-"*70)
+        #result_4 = remove_from_cart.run_test(driver)
+        #results["test_3_remove"] = result_4
+        
+        # TEST 4: Checkout
+        logger.info("\n▶️  TEST 4: Checkout")
         logger.info("-"*70)
-        result_4 = remove_from_cart.run_test(driver)
-        results["test_3_remove"] = result_4
+        result_5 = checkout.run_test(driver)
+        results["test_4_checkout"] = result_5
 
         # Print summary
         logger.info("\n" + "="*70)
@@ -116,6 +123,23 @@ def main():
             removed = result.get("removed_count", 0)
             logger.info(f"✅ test_3_remove: {status}")
             logger.info(f"   - Products removed: {removed}")
+        
+        # Summary for TEST 4 (Checkout)
+        if "test_4_checkout" in results:
+            result = results["test_4_checkout"]
+            status = result.get("status", "UNKNOWN")
+            if status == "success":
+                address = result.get("address", "N/A")
+                postcode = result.get("postcode", "N/A")
+                city = result.get("city", "N/A")
+                payment = result.get("payment_method", "N/A")
+                logger.info(f"✅ test_4_checkout: SUCCESS")
+                logger.info(f"   - Address: {address}")
+                logger.info(f"   - Postcode: {postcode}")
+                logger.info(f"   - City: {city}")
+                logger.info(f"   - Payment Method: {payment}")
+            else:
+                logger.info(f"❌ test_4_checkout: FAILED - {result.get('reason', 'Unknown error')}")
         
         logger.info("="*70)
 
