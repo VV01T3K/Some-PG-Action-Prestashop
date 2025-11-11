@@ -1,46 +1,3 @@
-{* {block name='login_form'}
-
-  {block name='login_form_errors'}
-    {include file='_partials/form-errors.tpl' errors=$errors['']}
-  {/block}
-
-  <form id="login-form" action="{block name='login_form_actionurl'}{$action}{/block}" method="post">
-
-    <div>
-      {block name='login_form_fields'}
-        {foreach from=$formFields item="field"}
-          {block name='form_field'}
-            {form_field field=$field}
-          {/block}
-        {/foreach}
-      {/block}
-      <div class="forgot-password">
-        <a href="{$urls.pages.password}" rel="nofollow">
-          {l s='Forgot your password?' d='Shop.Theme.Customeraccount'}
-        </a>
-      </div>
-    </div>
-
-    {block name='login_form_footer'}
-      <footer class="form-footer text-sm-center clearfix">
-        <input type="hidden" name="submitLogin" value="1">
-        {block name='form_buttons'}
-          <button id="submit-login" class="btn btn-primary" data-link-action="sign-in" type="submit"
-            class="form-control-submit">
-            {l s='Sign in' d='Shop.Theme.Actions'}
-          </button>
-        {/block}
-      </footer>
-    {/block}
-
-  </form>
-{/block}
-
-<script>
-var urls = {$urls.pages|json_encode nofilter};
-  console.log(urls);
-</script> *}
-
 <main id="layout-page-content" class="relative flex flex-1 flex-col">
   <div class="px-4 lg:px-8"></div>
   <div class="relative flex w-full flex-col px-4 lg:px-8">
@@ -50,8 +7,27 @@ var urls = {$urls.pages|json_encode nofilter};
           <div class="mx-auto mt-6 mb-8 md:max-w-sm lg:mx-0">
             <section aria-labelledby="_R_5fiupfivjap5snpfivb_">
               <h1 id="_R_5fiupfivjap5snpfivb_" class="heading-2xl mb-6" data-testid="login-page-header">Zaloguj się</h1>
-              {include file='_partials/form-errors.tpl' errors=$errors['']}
-              <form novalidate="" data-testid="login-form" action="{$action}" method="post">
+              {if isset($errors['']) && $errors['']|count}
+                <div class="mb-4">
+                  <div class="text-neutral-0 flex gap-2 p-2 text-sm bg-error-500" data-testid="error-alert">
+                    <div class="flex items-center">
+                      <svg aria-hidden="true" data-testid="CircleWarningSolid" xmlns="http://www.w3.org/2000/svg"
+                        width="20" height="20" fill="none" viewBox="0 0 24 24">
+                        <path fill="#ffffff" fill-rule="evenodd"
+                          d="M12 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10m-1.05-6.45c0 .552.548 1 1.1 1a1 1 0 0 0 1-1v-.1c0-.552-.548-1-1.1-1s-1 .548-1 1.1m.05-3.1a1 1 0 0 0 2 0v-4a1 1 0 0 0-2 0z"
+                          clip-rule="evenodd"></path>
+                      </svg>
+                    </div>
+                    <div class="flex w-full flex-col items-start">
+                      {foreach from=$errors[''] item=error}
+                        {$error}<br>
+                      {/foreach}
+                    </div>
+                  </div>
+                </div>
+              {/if}
+              <form novalidate="" data-testid="login-form" action="{block name='login_form_actionurl'}{$action}{/block}"
+                method="post">
 
                 <div>
                   {block name='login_form_fields'}
@@ -65,10 +41,26 @@ var urls = {$urls.pages|json_encode nofilter};
                             </label>
                             <div class="relative">
                               <input id="{$field.name}"
-                                class="bg-neutral-0 box-border w-full p-2.5 text-neutral-900 outline-none rounded-lg border-2 placeholder:text-neutral disabled:text-neutral disabled:cursor-not-allowed disabled:bg-neutral-50 focus:border-dark-blue border-neutral-300"
+                                class="bg-neutral-0 box-border w-full p-2.5 text-neutral-900 outline-none rounded-lg placeholder:text-neutral disabled:text-neutral disabled:cursor-not-allowed disabled:bg-neutral-50 {if $field.errors}border-2 border-negative focus:border-negative{else}rounded-lg border-2 border-neutral-300 focus:border-dark-blue{/if}"
                                 data-testid="input" {if $field.required}required="" {/if} type="{$field.type}"
-                                autocomplete="email" placeholder="Adres e-mail" name="{$field.name}">
+                                autocomplete="{$field.autocomplete}" placeholder="Adres e-mail" name="{$field.name}"
+                                value="{$field.value}">
+                              {if $field.errors}
+                                <div class="absolute top-3 right-4 flex gap-2">
+                                  <svg aria-hidden="true" data-testid="CircleWarningSolid" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path fill="#c21e1e" fill-rule="evenodd"
+                                      d="M12 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10m-1.05-6.45c0 .552.548 1 1.1 1a1 1 0 0 0 1-1v-.1c0-.552-.548-1-1.1-1s-1 .548-1 1.1m.05-3.1a1 1 0 0 0 2 0v-4a1 1 0 0 0-2 0z"
+                                      clip-rule="evenodd"></path>
+                                  </svg>
+                                </div>
+                              {/if}
                             </div>
+                            {if $field.errors}
+                              <div class="relative mt-2 flex flex-row items-center gap-2 text-error-500" data-testid="input-hint">
+                                <p class="text-body-small" data-testid="input-hint-error">{$field.errors[0]}</p>
+                              </div>
+                            {/if}
                           </div>
                         {elseif $field.name == 'password'}
                           <div data-testid="password-input">
@@ -78,12 +70,20 @@ var urls = {$urls.pages|json_encode nofilter};
                             </label>
                             <div class="relative">
                               <input type="password" id="{$field.name}"
-                                class="bg-neutral-0 box-border w-full p-2.5 text-neutral-900 outline-none rounded-lg border-2 placeholder:text-neutral disabled:text-neutral disabled:cursor-not-allowed disabled:bg-neutral-50 pr-12 focus:border-dark-blue border-neutral-300"
-                                data-testid="input" autocomplete="current-password" {if $field.required}required="" {/if}
+                                class="bg-neutral-0 box-border w-full p-2.5 text-neutral-900 outline-none placeholder:text-neutral disabled:text-neutral disabled:cursor-not-allowed disabled:bg-neutral-50 pr-12 {if $field.errors}border-2 border-negative focus:border-negative rounded-lg pr-20{else}rounded-lg border-2 border-neutral-300 focus:border-dark-blue{/if}"
+                                data-testid="input" autocomplete="{$field.autocomplete}" {if $field.required}required="" {/if}
                                 placeholder="Hasło" name="{$field.name}">
                               <div class="absolute top-3 right-4 flex gap-2">
+                                {if $field.errors}
+                                  <svg aria-hidden="true" data-testid="CircleWarningSolid" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path fill="#c21e1e" fill-rule="evenodd"
+                                      d="M12 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10m-1.05-6.45c0 .552.548 1 1.1 1a1 1 0 0 0 1-1v-.1c0-.552-.548-1-1.1-1s-1 .548-1 1.1m.05-3.1a1 1 0 0 0 2 0v-4a1 1 0 0 0-2 0z"
+                                      clip-rule="evenodd"></path>
+                                  </svg>
+                                {/if}
                                 <button type="button" data-testid="password-input-visiblity-toggle" class=""
-                                  aria-label="{l s='Show/Hide password' d='Shop.Theme.Customeraccount'}">
+                                  aria-label="{l s='Show password' d='Shop.Theme.Customeraccount'}">
                                   <svg aria-hidden="true" data-testid="Show" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" fill="none" viewBox="0 0 24 24">
                                     <g fill="#001489">
@@ -96,8 +96,43 @@ var urls = {$urls.pages|json_encode nofilter};
                                     </g>
                                   </svg>
                                 </button>
+                                <script>
+                                  document.addEventListener('DOMContentLoaded', function() {
+                                    var passwordInput = document.getElementById('{$field.name}');
+                                    var toggleBtn = document.querySelector(
+                                      '[data-testid="password-input-visiblity-toggle"]');
+                                    var icon = toggleBtn.querySelector('svg');
+
+                                    if (!passwordInput || !toggleBtn) return;
+
+                                    function showIcon() {
+                                      icon.setAttribute('data-testid', 'Hide');
+                                      toggleBtn.setAttribute('aria-label', "{l s='Hide password' d='Shop.Theme.Customeraccount'}");
+                                    }
+
+                                    function hideIcon() {
+                                      icon.setAttribute('data-testid', 'Show');
+                                      toggleBtn.setAttribute('aria-label', "{l s='Show password' d='Shop.Theme.Customeraccount'}");
+                                    }
+
+                                    toggleBtn.addEventListener('click', function() {
+                                      if (passwordInput.type === 'password') {
+                                        passwordInput.type = 'text';
+                                        showIcon();
+                                      } else {
+                                        passwordInput.type = 'password';
+                                        hideIcon();
+                                      }
+                                    });
+                                  });
+                                </script>
                               </div>
                             </div>
+                            {if $field.errors}
+                              <div class="relative mt-2 flex flex-row items-center gap-2 text-error-500" data-testid="input-hint">
+                                <p class="text-body-small" data-testid="input-hint-error">{$field.errors[0]}</p>
+                              </div>
+                            {/if}
                           </div>
                         {else}
                           {form_field field=$field}
