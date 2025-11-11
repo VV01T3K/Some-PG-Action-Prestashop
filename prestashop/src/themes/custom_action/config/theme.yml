@@ -167,7 +167,7 @@ global_settings:
       scope: [stores]
 
 theme_settings:
-  default_layout: layout-full-width
+  default_layout: layout-home
   layouts:
     index: layout-home
     category: layout-left-column

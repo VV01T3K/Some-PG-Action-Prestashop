@@ -113,7 +113,7 @@
         <div class="mx-auto w-full max-w-7xl">
           <nav lang="en" aria-label="Main" data-testid="desktop-navigation" class="flex justify-between">
             <div lang="pl-pl" class="flex gap-6 pt-1">
-              <div class="group/submenu relative"><button
+              {* <div class="group/submenu relative"><button
                   class="text-body-normal text-dark-blue-500 flex flex-row pt-3 pb-4 font-medium group-hover/submenu:shadow-[inset_0_-2px_0]"
                   aria-expanded="true">Produkty<svg aria-hidden="true" data-testid="CaretDownMd"
                     class="transition-transform duration-300 rotate-180" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -144,8 +144,8 @@
                         <div
                           class="w-full flex flex-col pt-2 pb-4 transition-all duration-300 ease-in-out opacity-0 -translate-x-2 hidden">
                           <a class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
-                            href="/pl-pl/c/wyposaenie-domu/"><span class="group-hover:shadow-bottom-border py-1">Wszystko
-                              z kategorii wyposażenie
+                            href="/pl-pl/c/wyposaenie-domu/"><span
+                              class="group-hover:shadow-bottom-border py-1">Wszystko z kategorii wyposażenie
                               domu</span></a><a class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/wyposaenie-domu/pociel-i-poszewki/"><span
                               class="group-hover:shadow-bottom-border py-1">Pościel i poszewki</span></a><a
@@ -187,8 +187,7 @@
                               class="group-hover:shadow-bottom-border py-1">Tekstylia łazienkowe</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/wyposaenie-domu/wazony-i-doniczki/"><span
-                              class="group-hover:shadow-bottom-border py-1">Wazony i doniczki</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Wazony i doniczki</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -238,8 +237,7 @@
                               class="group-hover:shadow-bottom-border py-1">Obrusy</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/kuchnia/podkadki-na-sto/"><span
-                              class="group-hover:shadow-bottom-border py-1">Podkładki na stół</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Podkładki na stół</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -274,10 +272,12 @@
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/sprztanie-i-przechowywanie/odkurzacze-i-worki-do-odkurzacza/"><span
                               class="group-hover:shadow-bottom-border py-1">Odkurzacze i worki do
-                              odkurzacza</span></a><a class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
+                              odkurzacza</span></a><a
+                            class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/sprztanie-i-przechowywanie/papier-toaletowy-i-rczniki-papierowe/"><span
                               class="group-hover:shadow-bottom-border py-1">Papier toaletowy i ręczniki
-                              papierowe</span></a><a class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
+                              papierowe</span></a><a
+                            class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/sprztanie-i-przechowywanie/wentylatory/"><span
                               class="group-hover:shadow-bottom-border py-1">Wentylatory</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
@@ -285,8 +285,7 @@
                               class="group-hover:shadow-bottom-border py-1">Akcesoria do łazienki</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/sprztanie-i-przechowywanie/pranie-i-prasowanie/"><span
-                              class="group-hover:shadow-bottom-border py-1">Pranie i prasowanie</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Pranie i prasowanie</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -325,8 +324,7 @@
                               class="group-hover:shadow-bottom-border py-1">Notesy i papier</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/szkoa-i-biuro/artykuy-papiernicze/"><span
-                              class="group-hover:shadow-bottom-border py-1">Artykuły papiernicze</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Artykuły papiernicze</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -414,8 +412,7 @@
                               class="group-hover:shadow-bottom-border py-1">Oświetlenie</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/zrob-to-sam/tapety/"><span
-                              class="group-hover:shadow-bottom-border py-1">Tapety</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Tapety</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -431,8 +428,9 @@
                             href="/pl-pl/c/zabawki/"><span class="group-hover:shadow-bottom-border py-1">Wszystko z
                               kategorii zabawki</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
-                            href="/pl-pl/c/zabawki/gry-i-zabawy/"><span class="group-hover:shadow-bottom-border py-1">Gry
-                              i zabawy</span></a><a class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
+                            href="/pl-pl/c/zabawki/gry-i-zabawy/"><span
+                              class="group-hover:shadow-bottom-border py-1">Gry i zabawy</span></a><a
+                            class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/zabawki/pluszaki-i-lalki/"><span
                               class="group-hover:shadow-bottom-border py-1">Pluszaki i lalki</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
@@ -455,8 +453,7 @@
                               class="group-hover:shadow-bottom-border py-1">Figurki i zestawy do zabawy</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/zabawki/pojazdy/"><span
-                              class="group-hover:shadow-bottom-border py-1">Pojazdy</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Pojazdy</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -506,8 +503,7 @@
                               class="group-hover:shadow-bottom-border py-1">Grillowanie i akcesoria</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/ogrod/baseny/"><span
-                              class="group-hover:shadow-bottom-border py-1">Baseny</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Baseny</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -545,8 +541,7 @@
                               class="group-hover:shadow-bottom-border py-1">Akcesoria podróżne</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/podroe/odzie-przeciwdeszczowa/"><span
-                              class="group-hover:shadow-bottom-border py-1">Odzież przeciwdeszczowa</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Odzież przeciwdeszczowa</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -599,8 +594,7 @@
                               class="group-hover:shadow-bottom-border py-1">Okulary i soczewki</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/pielgnacja/ochrona-przed-owadami/"><span
-                              class="group-hover:shadow-bottom-border py-1">Ochrona przed owadami</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Ochrona przed owadami</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -636,8 +630,7 @@
                               class="group-hover:shadow-bottom-border py-1">Napoje</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/jedzenie-i-napoje/jedzenie/"><span
-                              class="group-hover:shadow-bottom-border py-1">Jedzenie</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Jedzenie</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -675,8 +668,7 @@
                               class="group-hover:shadow-bottom-border py-1">Karty pamięci</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/multimedia/akcesoria-multimedialne/"><span
-                              class="group-hover:shadow-bottom-border py-1">Akcesoria multimedialne</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Akcesoria multimedialne</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -714,8 +706,7 @@
                               class="group-hover:shadow-bottom-border py-1">Zegarki i biżuteria</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/moda/stroje-kpielowe/"><span
-                              class="group-hover:shadow-bottom-border py-1">Stroje kąpielowe</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Stroje kąpielowe</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -747,8 +738,7 @@
                               class="group-hover:shadow-bottom-border py-1">Odzież sportowa</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/sport/ywno-i-pielgnacja/"><span
-                              class="group-hover:shadow-bottom-border py-1">Żywność i pielęgnacja</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Żywność i pielęgnacja</span></a></div>
                       </div>
                     </div>
                     <div><button
@@ -780,8 +770,7 @@
                               class="group-hover:shadow-bottom-border py-1">Pies</span></a><a
                             class="group text-body-small text-dark-blue-500 px-6 py-3 text-left"
                             href="/pl-pl/c/zwierzta/kot/"><span
-                              class="group-hover:shadow-bottom-border py-1">Kot</span></a>
-                        </div>
+                              class="group-hover:shadow-bottom-border py-1">Kot</span></a></div>
                       </div>
                     </div>
                     <div class="sr-only focus-within:not-sr-only"><button type="button"
@@ -789,7 +778,7 @@
                           class="truncate px-1">Zamknij</span></button></div>
                   </div>
                 </div>
-              </div>
+</div> *}
               <a class="text-body-normal text-dark-blue-500 pt-3 pb-4 font-medium hover:shadow-[inset_0_-2px_0]"
                 href="/pl-pl/nowosci/">Nowości</a><a
                 class="text-body-normal text-dark-blue-500 pt-3 pb-4 font-medium hover:shadow-[inset_0_-2px_0]"
