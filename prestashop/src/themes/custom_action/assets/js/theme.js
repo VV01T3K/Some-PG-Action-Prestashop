@@ -84,10 +84,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Simple helper for CSS variable based carousels
+function updateCarouselPages(root) {
+	if (!root) return;
+	// Use numberOfItems + itemsPerPage (via CSS var or fallback) to recompute pages.
+	var cs = getComputedStyle(root);
+	var items = parseFloat(cs.getPropertyValue('--numberOfItems')) || 0;
+	var perPage = parseFloat(cs.getPropertyValue('--itemsPerPage')) || parseFloat(cs.getPropertyValue('--items-per-page')) || 1;
+	var currentTotal = parseFloat(cs.getPropertyValue('--numberOfPages')) || 1;
+	if (!items || !perPage) return;
+	var pages = Math.max(1, Math.ceil(items / perPage));
+	if (pages !== currentTotal) {
+		root.style.setProperty('--numberOfPages', pages);
+		// Clamp currentPage if it exceeds new max index
+		var current = parseFloat(cs.getPropertyValue('--currentPage')) || 0;
+		if (current > pages - 1) {
+			root.style.setProperty('--currentPage', pages - 1);
+		}
+	}
+}
+
 function nextCarouselPage(buttonEl) {
 	if (!buttonEl) return;
 	var root = buttonEl.closest('[style*="--numberOfPages"]');
 	if (!root) return;
+	updateCarouselPages(root);
 	var cs = getComputedStyle(root);
 	var current = parseFloat(cs.getPropertyValue('--currentPage')) || 0;
 	var total = parseFloat(cs.getPropertyValue('--numberOfPages')) || 1;
@@ -99,6 +119,7 @@ function prevCarouselPage(buttonEl) {
 	if (!buttonEl) return;
 	var root = buttonEl.closest('[style*="--numberOfPages"]');
 	if (!root) return;
+	updateCarouselPages(root);
 	var cs = getComputedStyle(root);
 	var current = parseFloat(cs.getPropertyValue('--currentPage')) || 0;
 	var next = Math.max(current - 1, 0);
