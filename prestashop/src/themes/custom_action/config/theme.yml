@@ -120,8 +120,9 @@ global_settings:
         - blockwishlist
       displayFooterAfter:
         - blockreassurance
-      displayLeftColumn:
+      displaycategoryTree:
         - ps_categorytree
+      displayLeftColumn:
         - ps_facetedsearch
       displaySearch:
         - ps_searchbar
