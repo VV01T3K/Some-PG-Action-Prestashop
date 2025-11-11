@@ -57,7 +57,7 @@ function sortCategoryMapByDepth(categoryMap: Map<string, CategoryInfo>): Map<str
     return sortedMap;
 }
 function createCategoryMapWithCorrectOrder(): Map<string, CategoryInfo> {
-    const unsortedMap = createCategoryMap(extractUniqueCategories(products as unknown as Product[], 'linked_categories_list')); 
+    const unsortedMap = createCategoryMap(extractUniqueCategories(products as unknown as Product[], 'category_list')); 
     return sortCategoryMapByDepth(unsortedMap);
 }
 async function addAllCategoriesThroughApi(categoryMap: Map<string, CategoryInfo>): Promise<Map<string, number>>{

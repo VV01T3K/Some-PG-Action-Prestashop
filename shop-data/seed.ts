@@ -16,7 +16,7 @@ export async function seedShop() {
 }
 async function seedProducts(categoryNameIdMap: Map<string, number>) {
     for(const product of products) {
-        const categoryNames = Object.keys(product.linked_categories_list);
+        const categoryNames = Object.keys(product.category_list);
         if (categoryNames.length === 0) continue;
         
         //retrieve category prestashop ids

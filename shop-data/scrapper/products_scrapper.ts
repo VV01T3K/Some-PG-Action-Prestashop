@@ -89,6 +89,14 @@ const productFromScrapper = async (url: string): Promise<Product> => {
     return acc;
   }, {} as Record<string, string>);
 
+  const category_list = $('[data-testid="breadcrumb-link"]').toArray().reduce((acc, el) => {
+    const link = $(el).attr('href');
+    const category_name = $(el).text();
+    if(link && category_name){
+      acc[category_name] = link;
+    }
+    return acc;
+  }, {} as Record<string, string>);
 
   const linked_categories_list = $('[data-testid="links-list-link"]').toArray().reduce((acc, el) => {
     const link = $(el).attr('href');
@@ -104,7 +112,7 @@ const productFromScrapper = async (url: string): Promise<Product> => {
   const thumbnail_urls = $(images_section).find('[data-testid="thumbnail-list"]').find('img').map((_, el) => $(el).attr('src')).get();
 
   return {url, name, subtitle, price_whole, price_fraction, price, price_description, price_original, price_discount_percentage, price_discount_footnote, 
-    description_list, description_long, product_tag, product_specifications, linked_categories_list, image_urls, thumbnail_urls
+    description_list, description_long, product_tag, product_specifications, category_list, linked_categories_list, image_urls, thumbnail_urls
   };
 
 };

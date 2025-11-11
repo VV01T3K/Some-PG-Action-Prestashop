@@ -13,6 +13,7 @@ export interface Product {
   description_long: string;
   product_tag: string[];
   product_specifications: Record<string, string>;
+  category_list: Record<string, string>;
   linked_categories_list: Record<string, string>;
   image_urls: string[];
   thumbnail_urls: string[]; // maybe not needed, also there are a few cases without scrapped thumbnails
