@@ -22,25 +22,19 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-{extends file='page.tpl'}
+{extends file=$layout}
 
-{block name='page_title'}
-  {l s='Log in to your account' d='Shop.Theme.Customeraccount'}
+{block name='breadcrumb'}
 {/block}
 
-{block name='page_content'}
+{block name='content'}
+  {block name='page_content'}
     {block name='login_form_container'}
-      <section class="login-form">
-        {render file='customer/_partials/login-form.tpl' ui=$login_form}
-      </section>
-      <hr/>
+      {render file='customer/_partials/login-form.tpl' ui=$login_form}
+      <hr />
       {block name='display_after_login_form'}
         {hook h='displayCustomerLoginFormAfter'}
       {/block}
-      <div class="no-account">
-        <a href="{$urls.pages.register}" data-link-action="display-register-form">
-          {l s='No account? Create one here' d='Shop.Theme.Customeraccount'}
-        </a>
-      </div>
     {/block}
+  {/block}
 {/block}
