@@ -113,6 +113,8 @@ function nextCarouselPage(buttonEl) {
 	var total = parseFloat(cs.getPropertyValue('--numberOfPages')) || 1;
 	var next = Math.min(current + 1, total - 1);
 	root.style.setProperty('--currentPage', next);
+	var prevButton = root.querySelector('[data-testid="carousel-previous-navigation-button"]');
+	carouselButtonVisibility(buttonEl, prevButton, total, next);
 }
 
 function prevCarouselPage(buttonEl) {
@@ -122,8 +124,28 @@ function prevCarouselPage(buttonEl) {
 	updateCarouselPages(root);
 	var cs = getComputedStyle(root);
 	var current = parseFloat(cs.getPropertyValue('--currentPage')) || 0;
+	var total = parseFloat(cs.getPropertyValue('--numberOfPages')) || 1;
 	var next = Math.max(current - 1, 0);
 	root.style.setProperty('--currentPage', next);
+	var nextButton = root.querySelector('[data-testid="carousel-next-navigation-button"]');
+	carouselButtonVisibility(nextButton, buttonEl, total, next);
+}
+
+function carouselButtonVisibility(next, prev, total, current) {
+	if (prev) {
+		if (current <= 0) {
+			prev.classList.add('custom-invisible');
+		} else {
+			prev.classList.remove('custom-invisible');
+		}
+	}
+	if (next) {
+		if (current >= total - 1) {
+			next.classList.add('custom-invisible');
+		} else {
+			next.classList.remove('custom-invisible');
+		}
+	}
 }
 
 
