@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -73,9 +74,11 @@ class Ps_CategoryTree extends Module implements WidgetInterface
 
     public function uninstall()
     {
-        if (!parent::uninstall() ||
+        if (
+            !parent::uninstall() ||
             !Configuration::deleteByName('BLOCK_CATEG_MAX_DEPTH') ||
-            !Configuration::deleteByName('BLOCK_CATEG_ROOT_CATEGORY')) {
+            !Configuration::deleteByName('BLOCK_CATEG_ROOT_CATEGORY')
+        ) {
             return false;
         }
 
@@ -114,11 +117,16 @@ class Ps_CategoryTree extends Module implements WidgetInterface
             }
         }
 
+        // Check if category image exists
+        $imageDir = _PS_IMG_DIR_ . 'c/';
+        $idImage = file_exists($imageDir . (int)$rawCategory['id_category'] . '.jpg') ? (int)$rawCategory['id_category'] : false;
+
         return [
             'id' => $rawCategory['id_category'],
             'link' => $this->context->link->getCategoryLink($rawCategory['id_category'], $rawCategory['link_rewrite']),
             'name' => $rawCategory['name'],
             'desc' => $rawCategory['description'],
+            'image' => $idImage ? $this->context->link->getCatImageLink($rawCategory['name'], $idImage) : '',
             'children' => $children,
             'in_path' => in_array($rawCategory['id_category'], $idsOfCategoriesInPath),
         ];
@@ -297,6 +305,7 @@ class Ps_CategoryTree extends Module implements WidgetInterface
         return [
             'categories' => $this->getCategories($rootCategory),
             'currentCategory' => $rootCategory->id,
+            'carousel' => isset($configuration['carousel']) ? $configuration['carousel'] : false,
         ];
     }
 
