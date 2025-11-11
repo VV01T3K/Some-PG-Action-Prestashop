@@ -33,7 +33,7 @@ async function createCategoryOrSubcategory(name: string, parent_id: string): Pro
             const $ = cheerio.load(xmlText, { xmlMode: true });
             const createdId = $("category > id").text();
             
-            // console.log("✅ Podkategoria dodana pomyślnie:\n", xmlText);
+            console.log(`✅ Kategoria dodana pomyślnie. Nazwa: ${name}, createdId: ${createdId}`);
             return parseInt(createdId);
         }
 
@@ -62,9 +62,6 @@ export async function createProduct(product: ProductApiPayload): Promise<number>
     });
     if (!res.ok) {
         //500 code is probably also fine and the product was uploaded succesfully :>
-        // console.error(`❌ Błąd: ${res.status} ${res.statusText}`);
-        // const text = await res.text();
-        // console.error("Odpowiedź serwera:\n", text);
     }
     //we have to call it bcs POST request won't give as the createdId
     return getProductIdByEan(ean13);
@@ -72,25 +69,30 @@ export async function createProduct(product: ProductApiPayload): Promise<number>
 
 
 export async function uploadProductImage(productId: number, imagePath: string) {
-    const blob = new Blob([readFileSync(imagePath)], { type: "image/jpeg" });
-    // FormData Bun
+    const MAX_RETRIES = 2;
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        const blob = new Blob([readFileSync(imagePath)], { type: "image/jpeg" });
 
-    const formData = new FormData();
-    formData.append("image", blob, path.basename(imagePath));
+        const formData = new FormData();
+        formData.append("image", blob, path.basename(imagePath));
 
-    const res = await fetch(`${API_URL}/images/products/${productId}?ws_key=${API_KEY}`, {
-        method: "POST",
-        body: formData
-    });
+        const res = await fetch(`${API_URL}/images/products/${productId}?ws_key=${API_KEY}`, {
+            method: "POST",
+            body: formData
+        });
 
-    if (!res.ok) {
-        // Probably error 500 is fine and the image was uploaded succesfully :))
-        // console.error(`❌ Błąd przy uploadzie obrazu dla produktu ${productId}: ${res.status} ${res.statusText}`);
-        // console.error(await res.text());
-        // return;
-    }
-
-    console.log(`✅ Obraz dla produktu ${productId} został przesłany.`);
+        if(res.status == 400) {
+            if (attempt == MAX_RETRIES) {
+                console.log(`❌ Obraz dla produktu ${productId} nie został przesłany. Status: ${res.status}`)
+                return;
+            }
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            continue;
+        } else {
+            console.log(`✅ Obraz dla produktu ${productId} został przesłany. Status: ${res.status}`);
+            return;         
+        }
+    } 
 }
 
 /* ==== DELETE ====*/
@@ -100,11 +102,6 @@ export async function deleteProductById(productId: number) {
         method: "DELETE",
     });
 
-    // if (!responseProd.ok) {
-    //     // console.error(`❌ Błąd przy usuwaniu produktu ${productId}: ${responseProd.status} ${responseProd.statusText}`);
-    //     // console.error(await responseProd.text());
-    //     // return;
-    // }
     console.log(`Deleted product with ID ${productId}, response status: ${responseProd.status}`);
     deleteProductImagesById(productId);
     
@@ -139,9 +136,8 @@ export async function deleteCategoryById(categoryId: number) {
     });
     if (!responseCat.ok) {
         //probably also error == doesn't matter 
-        // console.error(`❌ Błąd przy usuwaniu kategorii ${categoryId}: ${responseCat.status} ${responseCat.statusText}`);
-        // console.error(await responseCat.text());
     }
+    console.log(`Deleted category with ID ${categoryId}, response status: ${responseCat.status}`);
 }
 export async function deleteAllCategories() {
     const response = await fetch(`${API_URL}/categories?ws_key=${API_KEY}&filter[active]=1`);

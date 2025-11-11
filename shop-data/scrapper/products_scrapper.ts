@@ -65,7 +65,7 @@ const productFromScrapper = async (url: string): Promise<Product> => {
   const price_description = $(card_price).find('[data-testid="product-card-price-description"]').text();
   const price_original = $(card_price).find('[data-testid="product-card-price-original-amount"]').text();
   const price_discount_percentage = $(card_price).find('[data-testid="product-card-price-discount-percentage"]').text();
-  //????????????????????????///// TODO:
+  //???
   const price_discount_footnote = $(card_price).find('[data-testid="product-card-price-discount-footnote"]').text();
 
   const card_description = $('[data-testid="product-description"]').first();
@@ -76,7 +76,7 @@ const productFromScrapper = async (url: string): Promise<Product> => {
   const product_tag = $('[data-testid="product-tag"]').map((_, el) => $(el).text().trim()).get(); 
 
   const card_product_specifications = $('[data-testid="productions-specifications-table"]').first();
-  const product_specifications = $(card_product_specifications) //WARNING: types of keys are ok?
+  const product_specifications = $(card_product_specifications)
   .find('tr') //rows
   .toArray()
   .reduce((acc, el) => {
@@ -91,8 +91,8 @@ const productFromScrapper = async (url: string): Promise<Product> => {
 
 
   const linked_categories_list = $('[data-testid="links-list-link"]').toArray().reduce((acc, el) => {
-    const link = $(el).attr('href'); //TODO: add baseUrl??
-    const category_name = $(el).text(); // WARNING: types of keys are ok??
+    const link = $(el).attr('href');
+    const category_name = $(el).text();
     if(link && category_name){
       acc[category_name] = link;
     } 
@@ -127,8 +127,4 @@ for (const { path, pages } of categories) {
 const productPromises = allCategoryLinks.map(link => productFromScrapper(link));
 const products = await Promise.all(productPromises);
 
-// console.log(JSON.stringify(products, null, 2));
 writeFileSync(OUTPUT_PATH, JSON.stringify(products, null, 2));
-
-// const product_example = await productFromScrapper(category_page_output.product_links[0]);
-// console.log(JSON.stringify(product_example, null, 2));

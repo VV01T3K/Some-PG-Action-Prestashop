@@ -33,7 +33,6 @@ function createCategoryMap(categories: Map<string, string>): Map<string, Categor
         let parentCategoryUrlKey: string | undefined = undefined;
         if (depth >= 6){ //then it's a subcategory
             parentCategoryUrlKey = parts[depth - 3];
-            // console.log(`Category: ${categoryName} (URL: ${categoryUrl}) is a subcategory of ${parentCategoryName}`);
         } 
         if(!urlKey){
             console.log("Something went wrong. UrlKey not found");

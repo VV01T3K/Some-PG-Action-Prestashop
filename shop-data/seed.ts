@@ -4,7 +4,7 @@ import type { Product, ProductApiPayload } from "./types";
 import products from './scrapper-results/products.json' assert { type: 'json' };
 import { createProduct, updateStockAvailable, uploadProductImage } from './api/api';
 import { readdirSync } from 'fs';
-import { PRESTASHOP_DEFAULT_CAT_ID } from './constants';
+import { PRESTASHOP_DEFAULT_CAT_ID, PRESTASHOP_DEFAULT_CAT_ID_NUM } from './constants';
 
 const IMAGES_PATH = "./scrapper-results/images/";
 
@@ -26,15 +26,15 @@ async function seedProducts(categoryNameIdMap: Map<string, number>) {
         
         //create payload -> create product
         const productPayload = createProductApiPayload(product as unknown as Product, categoryIds);
+        const productImagesDirId = product.product_specifications['Numer produktu'];
+        const QUANTITY_TO_SET = 8; //TODO: change it to random or sth
+
         const productId = await createProduct(productPayload);
         console.log(`Created product with id:${productId}`);
                 
         //upload all images for the product
-        const productImagesDirId = product.product_specifications['Numer produktu'];
         uploadAllProductImages(productId, productImagesDirId);
-        console.log(`Uploaded product's images`);
         
-        const QUANTITY_TO_SET = 8; //TODO: change it to random or sth
         updateStockAvailable(productId, QUANTITY_TO_SET);
         // return 0; //delete this line to seed all products
     }
@@ -42,10 +42,13 @@ async function seedProducts(categoryNameIdMap: Map<string, number>) {
 
 //TODO: add rest of the fields
 function createProductApiPayload(product: Product, categoryIds: number[]){
-    const categoriesXml = categoryIds
+    const categoryDefaultId = categoryIds[0] ?? PRESTASHOP_DEFAULT_CAT_ID;
+    //???we need to add also default category(id=2)
+    const finalCategoryIds: number[] = [...categoryIds, PRESTASHOP_DEFAULT_CAT_ID_NUM];
+
+    const categoriesXml = finalCategoryIds
         .map(id => `<category><id><![CDATA[${id}]]></id></category>`)
         .join("");
-    const categoryDefaultId = categoryIds[0] ?? PRESTASHOP_DEFAULT_CAT_ID;
     const ean13 = generateRandomEAN13();
 
     const productPayload: ProductApiPayload = {
@@ -69,10 +72,8 @@ export async function uploadAllProductImages(productId: number, productImagesDir
     const imageFileNames = readdirSync(imageDir);
     const imagePaths = imageFileNames.map(name => `${imageDir}${name}`);
     
-    for (const imagePath of imagePaths) {
-        await uploadProductImage(productId, imagePath);
-    }
-
+    const uploadPromises = imagePaths.map(imagePath => uploadProductImage(productId, imagePath));
+    await Promise.all(uploadPromises);
 }
 
 seedShop();
