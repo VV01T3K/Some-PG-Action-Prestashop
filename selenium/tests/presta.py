@@ -14,6 +14,7 @@ import searchbar
 import remove_from_cart
 import register_account
 import checkout
+import order_status
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -80,6 +81,12 @@ def main():
         logger.info("-"*70)
         result_5 = checkout.run_test(driver)
         results["test_4_checkout"] = result_5
+        
+        # TEST 5: Check Order Status
+        logger.info("\n▶️  TEST 5: Check Order Status")
+        logger.info("-"*70)
+        result_6 = order_status.run_test(driver)
+        results["test_5_order_status"] = result_6
 
         # Print summary
         logger.info("\n" + "="*70)
@@ -140,6 +147,17 @@ def main():
                 logger.info(f"   - Payment Method: {payment}")
             else:
                 logger.info(f"❌ test_4_checkout: FAILED - {result.get('reason', 'Unknown error')}")
+        
+        # Summary for TEST 5 (Order Status)
+        if "test_5_order_status" in results:
+            result = results["test_5_order_status"]
+            status = result.get("status", "UNKNOWN")
+            if status == "success":
+                order_status_text = result.get("order_status", "N/A")
+                logger.info(f"✅ test_5_order_status: SUCCESS")
+                logger.info(f"   - Order Status: {order_status_text}")
+            else:
+                logger.info(f"❌ test_5_order_status: FAILED - {result.get('reason', 'Unknown error')}")
         
         logger.info("="*70)
 
