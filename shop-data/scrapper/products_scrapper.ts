@@ -3,6 +3,7 @@ import type { Product } from '../types';
 import { writeFileSync } from "fs";
 
 const OUTPUT_PATH = "../scrapper-results/products.json";
+const OUTPUT_CAT_PATH = "../scrapper-results/categories.json";
 const baseUrl = "https://www.action.com";
 
 // list of categories
@@ -117,22 +118,51 @@ const productFromScrapper = async (url: string): Promise<Product> => {
 
 };
 
+async function scrapeLinksToProducts() {
+  const allProductLinks: string[] = [];
 
-const allCategoryLinks: string[] = [];
+  for (const { path, pages } of categories) {
+    const pagePromises = Array.from({ length: pages }, (_, i) =>
+      scrapeCategoryPage(path, i + 1)
+    );
 
-for (const { path, pages } of categories) {
-  const pagePromises = Array.from({ length: pages }, (_, i) =>
-    scrapeCategoryPage(path, i + 1)
-  );
-
-  const results = await Promise.all(pagePromises);
-  const category_links = results.flat();
-  allCategoryLinks.push(...category_links);
+    const results = await Promise.all(pagePromises);
+    const category_links = results.flat();
+    allProductLinks.push(...category_links);
+  }
+  return allProductLinks;
 }
 
+async function scrapeProducts() {
+  
+  const allProductLinks = await scrapeLinksToProducts();
+  // 2. Scrape szczegóły produktów
+  const productPromises = allProductLinks.map(link => productFromScrapper(link));
+  const products = await Promise.all(productPromises);
 
-// 2. Scrape szczegóły produktów
-const productPromises = allCategoryLinks.map(link => productFromScrapper(link));
-const products = await Promise.all(productPromises);
+  writeFileSync(OUTPUT_PATH, JSON.stringify(products, null, 2));
+}
 
-writeFileSync(OUTPUT_PATH, JSON.stringify(products, null, 2));
+async function scrapeCategoryImageLinks() {
+  const response = await fetch(`${baseUrl}/pl-pl/`, {
+  headers,
+  body: null,
+  method: "GET"
+  });
+
+  const text = await response.text();
+  const $ = cheerio.load(text);
+  const categoryCarousel = $('[data-testid="cms-category-carousel"]');
+  const category_images = $(categoryCarousel).find('[data-testid="category-card"]').toArray().reduce((acc, el) => {
+  const cat_name = $(el).find('[data-testid="category-card-title"]').text();
+  const cat_img_link = $(el).find('[data-testid="category-card-image"]').attr('src');
+  if(cat_name && cat_img_link) {
+    acc[cat_name] = cat_img_link;
+  }
+  return acc;
+  }, {} as Record<string, string>);
+  writeFileSync(OUTPUT_CAT_PATH, JSON.stringify(category_images, null, 2));
+}
+
+await scrapeProducts();
+await scrapeCategoryImageLinks();

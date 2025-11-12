@@ -1,8 +1,10 @@
 import fs from 'fs';
 import products from '../scrapper-results/products.json' assert { type: 'json' };
+import categories from '../scrapper-results/categories.json' assert { type: 'json' };
 import sharp from 'sharp';
 
-export const OUTPUT_IMAGES_PATH = '../scrapper-results/images/'
+export const OUTPUT_IMAGES_PATH = '../scrapper-results/images/';
+export const OUTPUT_CAT_IMAGES_PATH = '../scrapper-results/categoryImages/';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -25,6 +27,7 @@ async function downloadImage(url: string, filepath: string) {
     }   
 }
 
+//Download product images
 for (let product of products){
     const productDir = `${OUTPUT_IMAGES_PATH}${product.product_specifications['Numer produktu']}`;
     for (let i = 0; i < product.image_urls.length; i++){
@@ -39,4 +42,14 @@ for (let product of products){
         await downloadImage(imageUrl, imageDir);
         await delay(200); // small delay
     }
+}
+
+//Download category images
+for (let [name, imageUrl] of Object.entries(categories)){
+    const imageDir = `${OUTPUT_CAT_IMAGES_PATH}${name}.jpg`;
+    if (!fs.existsSync(OUTPUT_CAT_IMAGES_PATH)){
+        fs.mkdirSync(OUTPUT_CAT_IMAGES_PATH, { recursive: true});
+    }
+    await downloadImage(imageUrl, imageDir);
+    await delay(200);
 }
