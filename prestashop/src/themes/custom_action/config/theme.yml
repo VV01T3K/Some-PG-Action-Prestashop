@@ -109,6 +109,12 @@ global_settings:
         - ps_featuredproducts
         - ps_banner
         - ps_customtext
+      displayNewsletterAsk:
+        - ps_emailsubscription
+      displayCustomerAccountLinks:
+        - ps_customeraccountlinks
+      displayContactInfo:
+        - ps_contactinfo
       displayFooterBefore:
         - blockreassurance
         - ps_emailsubscription
