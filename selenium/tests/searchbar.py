@@ -8,7 +8,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Keyword table - products to search for
 SEARCH_KEYWORDS = [
     "jeans",
     "shirt",
@@ -29,18 +28,14 @@ def search_product(driver, product_name):
     try:
         logger.info(f"🔍 Searching for product: {product_name}")
         
-        # Find search input - using name attribute
         search_input = wait.until(
             EC.presence_of_element_located((By.NAME, "s"))
         )
-        # Clear and type search term
         search_input.clear()
         search_input.send_keys(product_name)
         
-        # Press Enter to search
         search_input.send_keys(Keys.RETURN)
         
-        # Wait for products to appear
         products = wait.until(
             EC.presence_of_all_elements_located((By.CLASS_NAME, "quick-view"))
         )
@@ -64,14 +59,12 @@ def select_random_product(products):
 
 def get_product_info(product_element):
     try:
-        # Try to get parent article
         article = product_element
         try:
             article = product_element.find_element(By.XPATH, "ancestor::article")
         except:
             article = product_element
         
-        # Try different selectors for title
         title = None
         for selector in ["h2.product-title", "a.product-name", "h2 a", ".product-title", "h3", "span.product-name"]:
             try:
@@ -81,14 +74,12 @@ def get_product_info(product_element):
             except:
                 continue
         
-        # If still no title, try getting from link text
         if not title:
             try:
                 title = article.find_element(By.CSS_SELECTOR, "a[href*='product']").text
             except:
                 title = "Unknown Product"
         
-        # Try different selectors for price
         price = None
         for selector in [".product-price", ".price", "[data-price]", "span.price"]:
             try:
@@ -112,7 +103,6 @@ def get_product_info(product_element):
 def get_cart_count(driver):
     try:
         cart_badge = driver.find_element(By.CLASS_NAME, "cart-products-count")
-        # Extract number from text like "(2)"
         text = cart_badge.text.strip("()")
         logger.debug(f"Cart badge text: '{cart_badge.text}', extracted: '{text}'")
         count = int(text) if text else 0
@@ -128,21 +118,17 @@ def add_to_cart(driver, product_element):
     try:
         try:
             driver.execute_script("arguments[0].scrollIntoView(true);", product_element)
-            #sleep(0.25)
             product_element.click()
         except:
             logger.info("ℹ️  Standard click failed, trying JavaScript click...")
             driver.execute_script("arguments[0].click();", product_element)
             logger.info("✅ Clicked with JavaScript")
         
-        # Wait for modal to appear - wait for quantity input to be present
         wait.until(EC.presence_of_element_located((By.NAME, "qty")))
         
-        # Get random quantity (1-5)
         quantity = random.randint(1, 5)
         logger.info(f"📦 Selected quantity: {quantity}")
         
-        # Find and set the quantity input
         try:
             quantity_input = wait.until(
                 EC.presence_of_element_located((By.NAME, "qty"))
@@ -154,19 +140,14 @@ def add_to_cart(driver, product_element):
             logger.warning(f"⚠️  Could not set quantity: {e}, using default 1")
             quantity = 1
         
-        # Find and click the add to cart button
         try:
             button = wait.until(
-                EC.presence_of_element_located((By.CLASS_NAME, "add-to-cart"))
+                EC.element_to_be_clickable((By.CLASS_NAME, "add-to-cart"))
             )
         except:
             logger.error("❌ Could not find add to cart button")
             return False, 0
         
-        # Wait for button to be clickable
-        wait.until(EC.element_to_be_clickable(button))
-        
-        # Scroll to button if needed
         driver.execute_script("arguments[0].scrollIntoView(true);", button)
         
         try:
@@ -187,19 +168,16 @@ def add_to_cart(driver, product_element):
 
 
 def run_test(driver):
-    logger.info("\n" + "="*70)
-    logger.info("TEST 1: Wyszukanie produktu i dodanie do koszyka")
+    logger.info("="*70)
+    logger.info("TEST 2: Wyszukanie produktu i dodanie do koszyka")
     logger.info("="*70)
     
-    # Get initial cart count
     initial_cart_count = get_cart_count(driver)
     logger.info(f"🛒 Initial cart count: {initial_cart_count}")
     
-    # Select random keyword
     search_keyword = random.choice(SEARCH_KEYWORDS)
-    logger.info(f"\n🔑 Selected search keyword: '{search_keyword}'")
+    logger.info(f"🔑 Selected search keyword: '{search_keyword}'")
     
-    # Search for product
     products = search_product(driver, search_keyword)
     
     if not products:
@@ -212,7 +190,6 @@ def run_test(driver):
             "quantity_added": 0
         }
     
-    # Select random product
     selected_product = select_random_product(products)
     if not selected_product:
         logger.error("❌ Could not select product")
@@ -224,10 +201,8 @@ def run_test(driver):
             "quantity_added": 0
         }
     
-    # Get product info
     product_info = get_product_info(selected_product)
     
-    # Add to cart
     success, quantity_added = add_to_cart(driver, selected_product)
     
     if not success:
@@ -241,10 +216,8 @@ def run_test(driver):
             "quantity_added": 0
         }
     
-    # Wait a bit for cart to update - use a small wait for cart count to be accessible
     wait = WebDriverWait(driver, 5)
     
-    # Wait for cart badge to update with new count
     try:
         def cart_count_increased(driver):
             try:
@@ -261,11 +234,9 @@ def run_test(driver):
     except:
         logger.debug("⏱️  Cart count did not increase within timeout")
     
-    # Get updated cart count
     updated_cart_count = get_cart_count(driver)
     logger.info(f"🛒 Updated cart count: {updated_cart_count}")
     
-    # Calculate expected count
     expected_count = initial_cart_count + quantity_added
     
     if updated_cart_count >= expected_count:

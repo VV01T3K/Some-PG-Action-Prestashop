@@ -1,20 +1,11 @@
 import logging
 import random
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from utils import wait_for_page_load
 
 logger = logging.getLogger(__name__)
-
-
-def wait_for_page_load(driver, timeout=10):
-    try:
-        WebDriverWait(driver, timeout).until(
-            lambda d: d.execute_script("return document.readyState") == "complete"
-        )
-    except Exception as e:
-        logger.debug(f"⚠️ Page load wait timed out: {e}")
 
 # Sample Polish addresses for checkout
 ADDRESSES = [
@@ -57,6 +48,23 @@ def click_cart_button(driver):
         return False
 
 
+def is_cart_empty(driver):
+    try:
+        cart_count_span = driver.find_element(By.CLASS_NAME, "cart-products-count")
+        count_text = cart_count_span.text.strip("()")
+        
+        count = int(count_text) if count_text else 0
+        
+        if count == 0:
+            logger.info("🛒 Cart is empty (0 products)")
+            return True
+        
+        return False
+    except Exception as e:
+        logger.debug(f"Could not determine cart status: {e}")
+        return False
+
+
 def click_checkout_button(driver):
     try:
         wait = WebDriverWait(driver, 10)
@@ -73,7 +81,6 @@ def click_checkout_button(driver):
 
 
 def fill_address(driver, address):
-    """Fill in the address field"""
     try:
         wait = WebDriverWait(driver, 10)
         
@@ -90,7 +97,6 @@ def fill_address(driver, address):
 
 
 def fill_postcode(driver, postcode):
-    """Fill in the postal code field"""
     try:
         wait = WebDriverWait(driver, 10)
         
@@ -107,7 +113,6 @@ def fill_postcode(driver, postcode):
 
 
 def fill_city(driver, city):
-    """Fill in the city field"""
     try:
         wait = WebDriverWait(driver, 10)
         
@@ -154,19 +159,17 @@ def click_shipping_confirm_button(driver):
 
 
 def select_shipping_method(driver):
-    """Select a random shipping method and return its details"""
     try:
         wait = WebDriverWait(driver, 10)
         
-        wait_for_page_load(driver)
-        
-        shipping_options = driver.find_elements(By.XPATH, "//input[@type='radio' and @name and contains(@name, 'delivery_option')]")
+        shipping_options = wait.until(
+            EC.presence_of_all_elements_located((By.XPATH, "//input[@type='radio' and @name and contains(@name, 'delivery_option')]"))
+        )
         
         if len(shipping_options) > 0:
             selected_option = random.choice(shipping_options)
             option_id = selected_option.get_attribute("id")
             
-            driver.execute_script("arguments[0].scrollIntoView(true);", selected_option)
             driver.execute_script("arguments[0].click();", selected_option)
             
             logger.info(f"🚚 Shipping: {option_id}")
@@ -180,7 +183,6 @@ def select_shipping_method(driver):
 
 
 def select_payment_method(driver, payment_module="ps_wirepayment"):
-    """Select a payment method and return its details"""
     try:
         wait = WebDriverWait(driver, 10)
         
@@ -209,8 +211,7 @@ def select_payment_method(driver, payment_module="ps_wirepayment"):
                 EC.presence_of_element_located((By.XPATH, f"//input[@name='payment-option' and @data-module-name='{payment_module}']"))
             )
             
-            driver.execute_script("arguments[0].scrollIntoView(true);", payment_radio)
-            wait_for_page_load(driver, timeout=2)
+            #wait_for_page_load(driver, timeout=2)
             driver.execute_script("arguments[0].click();", payment_radio)
             
             logger.info(f"💳 Payment: {payment_module}")
@@ -239,10 +240,8 @@ def click_payment_confirm_button(driver):
     try:
         wait = WebDriverWait(driver, 10)
         
-        # Wait for the page to be ready
         wait_for_page_load(driver, timeout=2)
         
-        # Try to find and check the terms and conditions checkbox first
         try:
             terms_checkbox = driver.find_element(By.XPATH, "//input[@id and contains(@id, 'conditions')]")
             if not terms_checkbox.is_selected():
@@ -252,9 +251,7 @@ def click_payment_confirm_button(driver):
         except Exception as terms_e:
             logger.debug(f"⚠️ Could not find or click terms checkbox: {terms_e}")
         
-        # Look for the main order button (Złóż zamówienie or similar)
         try:
-            # Wait for button with "btn-primary" class and "zamówienie" text (case-insensitive)
             order_button = wait.until(
                 EC.presence_of_element_located((By.XPATH, "//button[contains(@class, 'btn-primary') and contains(translate(text(), 'ZŁÓŻ', 'złóż'), 'zamówienie')]"))
             )
@@ -273,13 +270,11 @@ def click_payment_confirm_button(driver):
         except Exception as order_button_e:
             pass
         
-        # Fallback: Look for any submit button
         try:
             confirm_buttons = driver.find_elements(By.XPATH, "//button[@type='submit']")
             if confirm_buttons:
                 last_button = confirm_buttons[-1]
                 driver.execute_script("arguments[0].scrollIntoView(true);", last_button)
-                wait_for_page_load(driver, timeout=2)
                 driver.execute_script("arguments[0].click();", last_button)
                 return True
         except Exception as fallback_e:
@@ -293,12 +288,13 @@ def click_payment_confirm_button(driver):
 
 
 def run_test(driver):
-    """Main checkout test flow"""
     try:
+        
         if not click_cart_button(driver):
             return {"status": "failed", "reason": "Could not click cart button"}
         
         wait = WebDriverWait(driver, 10)
+        
         wait.until(EC.presence_of_element_located((By.XPATH, "//a[@href='https://shop.pg.wojtecs.com/zamówienie' and @class='btn btn-primary']")))
         
         if not click_checkout_button(driver):

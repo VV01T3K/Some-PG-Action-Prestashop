@@ -3,10 +3,10 @@ import random
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from utils import wait_for_page_load
 
 logger = logging.getLogger(__name__)
 
-# Sample Polish names for registration
 FIRST_NAMES = [
     "Jan", "Piotr", "Andrzej", "Stanisław", "Jerzy",
     "Maria", "Anna", "Barbara", "Krystyna", "Teresa"
@@ -17,11 +17,9 @@ LAST_NAMES = [
     "Wisniewski", "Kaminski", "Zielinski", "Krol", "Szymanski"
 ]
 
-GENDER_MALE = 1  # Pan (Mr.)
 
 def click_login_button(driver):
     try:
-        logger.info("🔑 Clicking login button...")
         wait = WebDriverWait(driver, 10)
         
         # Find and click the login button
@@ -30,7 +28,7 @@ def click_login_button(driver):
         )
         driver.execute_script("arguments[0].click();", login_button)
         
-        logger.info("✅ Login button clicked")
+        logger.info("🔑 Clicked login button")
         return True
     except Exception as e:
         logger.error(f"❌ Error clicking login button: {e}")
@@ -39,16 +37,14 @@ def click_login_button(driver):
 
 def click_register_link(driver):
     try:
-        logger.info("📝 Clicking register link...")
         wait = WebDriverWait(driver, 10)
         
-        # Find and click the register link
         register_link = wait.until(
             EC.element_to_be_clickable((By.XPATH, "//a[@data-link-action='display-register-form']"))
         )
         driver.execute_script("arguments[0].click();", register_link)
         
-        logger.info("✅ Register link clicked")
+        logger.info("📝 Clicked register link")
         return True
     except Exception as e:
         logger.error(f"❌ Error clicking register link: {e}")
@@ -59,17 +55,13 @@ def select_gender(driver, gender_id):
     try:
         wait = WebDriverWait(driver, 10)
         
-        # Wait for the gender radio button to be present
         gender_radio = wait.until(
             EC.presence_of_element_located((By.XPATH, f"//input[@name='id_gender' and @value='{gender_id}']"))
         )
         
-        # Scroll into view and click
         driver.execute_script("arguments[0].scrollIntoView(true);", gender_radio)
-        import time
-        time.sleep(0.5)
+        wait_for_page_load(driver, timeout=1)
         
-        # Try clicking with JavaScript
         driver.execute_script("arguments[0].click();", gender_radio)
         
         gender_label = "Pan" if gender_id == 1 else "Pani"
@@ -92,7 +84,6 @@ def fill_firstname(driver, firstname):
         firstname_field.clear()
         firstname_field.send_keys(firstname)
         
-        logger.info(f"✅ Filled first name: {firstname}")
         return True
     except Exception as e:
         logger.error(f"❌ Error filling first name: {e}")
@@ -109,7 +100,6 @@ def fill_lastname(driver, lastname):
         lastname_field.clear()
         lastname_field.send_keys(lastname)
         
-        logger.info(f"✅ Filled last name: {lastname}")
         return True
     except Exception as e:
         logger.error(f"❌ Error filling last name: {e}")
@@ -126,7 +116,6 @@ def fill_email(driver, email):
         email_field.clear()
         email_field.send_keys(email)
         
-        logger.info(f"✅ Filled email: {email}")
         return True
     except Exception as e:
         logger.error(f"❌ Error filling email: {e}")
@@ -143,7 +132,6 @@ def fill_password(driver, password):
         password_field.clear()
         password_field.send_keys(password)
         
-        logger.info(f"✅ Filled password")
         return True
     except Exception as e:
         logger.error(f"❌ Error filling password: {e}")
@@ -154,14 +142,12 @@ def fill_birthdate(driver, birthdate):
     try:
         wait = WebDriverWait(driver, 10)
         
-        # The date field might be named differently, try common patterns
         birthdate_field = wait.until(
             EC.presence_of_element_located((By.NAME, "birthday"))
         )
         birthdate_field.clear()
         birthdate_field.send_keys(birthdate)
         
-        logger.info(f"✅ Filled birthdate: {birthdate}")
         return True
     except Exception as e:
         logger.error(f"❌ Error filling birthdate: {e}")
@@ -172,7 +158,6 @@ def accept_customer_privacy(driver):
     try:
         wait = WebDriverWait(driver, 10)
         
-        # Find and click customer_privacy checkbox
         try:
             privacy_checkboxes = wait.until(
                 EC.presence_of_all_elements_located((By.NAME, "customer_privacy"))
@@ -180,11 +165,9 @@ def accept_customer_privacy(driver):
             
             for idx, checkbox in enumerate(privacy_checkboxes, 1):
                 driver.execute_script("arguments[0].click();", checkbox)
-                logger.info(f"✅ Accepted customer_privacy checkbox #{idx}")
         except Exception as e:
             logger.debug(f"Could not find customer_privacy checkboxes: {e}")
         
-        # Find and click psgdpr checkbox (GDPR related)
         try:
             psgdpr_checkboxes = wait.until(
                 EC.presence_of_all_elements_located((By.NAME, "psgdpr"))
@@ -192,7 +175,6 @@ def accept_customer_privacy(driver):
             
             for idx, checkbox in enumerate(psgdpr_checkboxes, 1):
                 driver.execute_script("arguments[0].click();", checkbox)
-                logger.info(f"✅ Accepted psgdpr checkbox #{idx}")
         except Exception as e:
             logger.debug(f"Could not find psgdpr checkboxes: {e}")
         
@@ -204,7 +186,6 @@ def accept_customer_privacy(driver):
 
 
 def submit_registration(driver):
-    """Click the save/submit button"""
     try:
         wait = WebDriverWait(driver, 10)
         
@@ -221,7 +202,6 @@ def submit_registration(driver):
 
 
 def click_login_to_verify(driver):
-    """Click login button to verify account by logging in"""
     try:
         logger.info("🔐 Clicking login button to verify account...")
         wait = WebDriverWait(driver, 10)
@@ -239,7 +219,6 @@ def click_login_to_verify(driver):
 
 
 def fill_login_email(driver, email):
-    """Fill in the login email field"""
     try:
         wait = WebDriverWait(driver, 10)
         
@@ -257,7 +236,6 @@ def fill_login_email(driver, email):
 
 
 def fill_login_password(driver, password):
-    """Fill in the login password field"""
     try:
         wait = WebDriverWait(driver, 10)
         
@@ -278,22 +256,18 @@ def submit_login(driver):
     try:
         wait = WebDriverWait(driver, 10)
         
-        # Try different selectors for the login button
         try:
-            # Try 1: Button with data-link-action
             submit_button = wait.until(
                 EC.element_to_be_clickable((By.XPATH, "//button[@data-link-action='sign-in']"))
             )
             logger.info("Found login button via data-link-action")
         except:
             try:
-                # Try 2: Button containing "Zaloguj"
                 submit_button = wait.until(
                     EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Zaloguj')]"))
                 )
                 logger.info("Found login button via text")
             except:
-                # Try 3: Any submit button in the form
                 submit_button = wait.until(
                     EC.element_to_be_clickable((By.XPATH, "//form//button[@type='submit']"))
                 )
@@ -316,23 +290,18 @@ def run_test(driver):
     try:
         logger.info("🚀 Starting account registration test...")
         
-        # Click login button
         if not click_login_button(driver):
             logger.warning("⚠️ Failed to click login button")
             return {"status": "failed", "reason": "Could not click login button"}
         
-        # Wait for page to load after clicking login
         wait.until(EC.presence_of_element_located((By.XPATH, "//a[@data-link-action='display-register-form']")))
         
-        # Click register link
         if not click_register_link(driver):
             logger.warning("⚠️ Failed to click register link")
             return {"status": "failed", "reason": "Could not click register link"}
         
-        # Wait for registration form to load
         wait.until(EC.presence_of_element_located((By.ID, "field-firstname")))
         
-        # Select random gender (1 = Pan/Male, 2 = Pani/Female)
         gender_id = random.choice([1, 2])
         if not select_gender(driver, gender_id):
             logger.warning("⚠️ Failed to select gender")
@@ -371,18 +340,14 @@ def run_test(driver):
         if not fill_birthdate(driver, birthdate):
             return {"status": "failed", "reason": "Could not fill birthdate"}
         
-        # Accept customer privacy policy
         if not accept_customer_privacy(driver):
             return {"status": "failed", "reason": "Could not accept privacy policy"}
         
-        # Submit registration
         if not submit_registration(driver):
             return {"status": "failed", "reason": "Could not submit registration"}
        
         
-        logger.info("✅ Account registration completed successfully!")
         
-        # Display what's in the top right corner
         try:
             top_right_spans = driver.find_elements(By.XPATH, "//span[@class='hidden-sm-down']")
             logger.info(f"📍 Top right corner spans found: {len(top_right_spans)}")

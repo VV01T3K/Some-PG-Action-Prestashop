@@ -22,7 +22,6 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    """Main test orchestrator"""
     prestashop_domain = os.getenv("SHOP_DOMAIN", "shop.pg.wojtecs.com")
     prestashop_url = f"https://{prestashop_domain}"
 
@@ -43,53 +42,52 @@ def main():
         logger.info("✅ Page loaded successfully")
         logger.info(f"📄 Page title: {driver.title}")
 
-        logger.info("\n" + "="*70)
+        logger.info("="*70)
         logger.info("STARTING AUTOMATED TESTS")
         logger.info("="*70)
         
         # TEST 1: Register Account
-        logger.info("\n▶️  TEST 1: Account Registration")
+        logger.info("▶️  TEST 1: Account Registration")
         logger.info("-"*70)
         result_1 = register_account.run_test(driver)
         results["test_1_register"] = result_1
         
         # TEST 2: Search and Add to Cart (run 5 times)
-        logger.info("\n▶️  TEST 2: Search and Add to Cart (5 iterations)")
+        logger.info("▶️  TEST 2: Search and Add to Cart (5 iterations)")
         logger.info("-"*70)
         test_2_results = []
-        for i in range(1, 2):
+        for i in range(1, 6):
             driver.refresh() # Refresh the page before each iteration (to be fixed)
-            logger.info(f"\n--- Iteration {i}/5 ---")
             result = searchbar.run_test(driver)
             test_2_results.append(result)
         results["test_2_search_add"] = test_2_results
-        
-        # TEST 3: Add 10 products from multiple categories (COMMENTED OUT)
-        # logger.info("\n▶️  TEST 3: Add 10 Products from Categories")
-        # logger.info("-"*70)
-        # result_3 = add_to_cart_multi.run_test(driver)
-        # results["test_3_add_multi"] = result_3
-        
-        # TEST 3: Remove from Cart
-        #logger.info("\n▶️  TEST 3: Remove from Cart")
-        #logger.info("-"*70)
-        #result_4 = remove_from_cart.run_test(driver)
-        #results["test_3_remove"] = result_4
-        
-        # TEST 4: Checkout
-        logger.info("\n▶️  TEST 4: Checkout")
+
+        #TEST 3: Remove from Cart
+        logger.info("▶️  TEST 3: Remove from Cart")
         logger.info("-"*70)
-        result_5 = checkout.run_test(driver)
-        results["test_4_checkout"] = result_5
+        result_4 = remove_from_cart.run_test(driver)
+        results["test_3_remove"] = result_4
         
-        # TEST 5: Check Order Status
-        logger.info("\n▶️  TEST 5: Check Order Status")
-        logger.info("-"*70)
-        result_6 = order_status.run_test(driver)
-        results["test_5_order_status"] = result_6
+        cart_is_empty = checkout.is_cart_empty(driver)
+        
+        if not cart_is_empty:
+            logger.info("▶️  TEST 4: Checkout")
+            logger.info("-"*70)
+            result_5 = checkout.run_test(driver)
+            results["test_4_checkout"] = result_5
+            
+            if result_5.get("status") == "success":
+                logger.info("▶️  TEST 5: Check Order Status")
+                logger.info("-"*70)
+                result_6 = order_status.run_test(driver)
+                results["test_5_order_status"] = result_6
+        else:
+            logger.warning("⚠️ Cart is empty - skipping TEST 4 (Checkout) and TEST 5 (Order Status)")
+            results["test_4_checkout"] = {"status": "skipped", "reason": "Cart is empty"}
+            results["test_5_order_status"] = {"status": "skipped", "reason": "Cart is empty"}
 
         # Print summary
-        logger.info("\n" + "="*70)
+        logger.info("="*70)
         logger.info("TEST SUMMARY")
         logger.info("="*70)
         
@@ -135,7 +133,9 @@ def main():
         if "test_4_checkout" in results:
             result = results["test_4_checkout"]
             status = result.get("status", "UNKNOWN")
-            if status == "success":
+            if status == "skipped":
+                logger.info(f"⏭️  test_4_checkout: SKIPPED - {result.get('reason', 'Unknown')}")
+            elif status == "success":
                 address = result.get("address", "N/A")
                 postcode = result.get("postcode", "N/A")
                 city = result.get("city", "N/A")
@@ -152,7 +152,9 @@ def main():
         if "test_5_order_status" in results:
             result = results["test_5_order_status"]
             status = result.get("status", "UNKNOWN")
-            if status == "success":
+            if status == "skipped":
+                logger.info(f"⏭️  test_5_order_status: SKIPPED - {result.get('reason', 'Unknown')}")
+            elif status == "success":
                 order_status_text = result.get("order_status", "N/A")
                 logger.info(f"✅ test_5_order_status: SUCCESS")
                 logger.info(f"   - Order Status: {order_status_text}")

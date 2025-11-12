@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 def get_cart_count(driver):
     try:
         cart_badge = driver.find_element(By.CLASS_NAME, "cart-products-count")
-        # Extract number from text like "(2)"
         text = cart_badge.text.strip("()")
         count = int(text)
         return count
@@ -23,15 +22,12 @@ def open_cart(driver):
         logger.info("🛒 Opening cart...")
         wait = WebDriverWait(driver, 10)
         
-        # Try to click the cart button (with aria-label)
         try:
             cart_button = driver.find_element(By.XPATH, "//a[@aria-label and contains(@aria-label, 'koszyka')]")
-            logger.info("Found cart button via aria-label")
             driver.execute_script("arguments[0].scrollIntoView(true);", cart_button)
             driver.execute_script("arguments[0].click();", cart_button)
             # Wait for cart page to load - check for product-line-grid elements
             wait.until(EC.presence_of_all_elements_located((By.XPATH, "//div[@class='product-line-grid']")))
-            logger.info("✅ Cart opened via cart button click")
             return True
         except Exception as e:
             logger.debug(f"Cart button with aria-label not found: {str(e)[:100]}")
@@ -42,14 +38,11 @@ def open_cart(driver):
 def get_cart_items_with_details(driver, display=True):
     try:
         items = []
-        # Find all cart item containers using the product-line-grid div
         cart_rows = driver.find_elements(By.XPATH, "//div[@class='product-line-grid']")
         
-        logger.debug(f"Found {len(cart_rows)} product-line-grid divs")
         
         for idx, row in enumerate(cart_rows):
             try:
-                # Try to get product name from the link with class 'label'
                 product_name = "Unknown Product"
                 try:
                     product_link = row.find_element(By.XPATH, ".//a[@class='label']")
@@ -57,7 +50,6 @@ def get_cart_items_with_details(driver, display=True):
                 except Exception as e:
                     logger.debug(f"Could not find product name in row {idx+1}: {e}")
                 
-                # Try to get quantity from the input with class 'js-cart-line-product-quantity'
                 quantity = 1
                 try:
                     qty_input = row.find_element(By.XPATH, ".//input[@class='js-cart-line-product-quantity form-control']")
@@ -92,10 +84,8 @@ def remove_product_from_cart(driver, items_before, item_index):
         removed_item = items_before[item_index]
         logger.info(f"🗑️  Removing item #{item_index + 1}: {removed_item['name']} (qty: {removed_item['quantity']})")
         
-        logger.info("\n🔍 Looking for delete button...")
         try:
             product_lines = wait.until(EC.presence_of_all_elements_located((By.XPATH, "//div[@class='product-line-grid']")))
-            logger.info(f"Found {len(product_lines)} product lines")
             
             product_line = product_lines[item_index]
             
@@ -139,7 +129,7 @@ def run_test(driver):
         }
     
     # Get initial items
-    logger.info("\n📦 ITEMS IN CART (BEFORE):")
+    logger.info("📦 ITEMS IN CART (BEFORE):")
     items_before = get_cart_items_with_details(driver)
     
     # Remove 3 products (or less if not enough items) - RANDOMLY
@@ -166,7 +156,6 @@ def run_test(driver):
             items_remaining.pop(random_index)
             # Refresh items list from page (without displaying)
             items_remaining = get_cart_items_with_details(driver, display=False)
-            logger.info(f"✅ Removed: {removed_item['name']} (qty: {removed_item['quantity']})")
         else:
             logger.warning(f"⚠️  Failed to remove product #{i+1}")
             break
@@ -175,7 +164,6 @@ def run_test(driver):
     final_cart = get_cart_count(driver)
     
     # Get final items
-    logger.info("\n� ITEMS IN CART (AFTER):")
     items_after = get_cart_items_with_details(driver)
     
     logger.info("\n" + "="*70)
