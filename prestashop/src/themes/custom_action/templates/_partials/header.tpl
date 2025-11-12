@@ -780,18 +780,18 @@
                 </div>
 </div> *}
               <a class="text-body-normal text-dark-blue-500 pt-3 pb-4 font-medium hover:shadow-[inset_0_-2px_0]"
-                href="/pl-pl/nowosci/">Nowości</a><a
+                href="nowe-produkty">Nowości</a><a
                 class="text-body-normal text-dark-blue-500 pt-3 pb-4 font-medium hover:shadow-[inset_0_-2px_0]"
-                href="/pl-pl/promocja-tygodnia/">Promocja Tygodnia</a>
+                href="{$urls.pages.prices_drop}">Promocje</a>
             </div>
             <div lang="pl-pl" class="flex gap-6"><a
                 class="flex flex-col justify-center group text-body-small font-normal text-dark-blue-500 my-0.5"
                 href="/pl-pl/aplikacja/"><span class="group-hover:shadow-bottom-border">Pobierz aplikację
                   Action</span></a><a
                 class="flex flex-col justify-center group text-body-small font-normal text-dark-blue-500 my-0.5"
-                href="/pl-pl/sklepy/"><span class="group-hover:shadow-bottom-border">Znajdź sklep</span></a><a
+                href="{$urls.pages.stores}"><span class="group-hover:shadow-bottom-border">Znajdź sklep</span></a><a
                 class="flex flex-col justify-center group text-body-small font-normal text-dark-blue-500 my-0.5"
-                href="/pl-pl/biuro-obsugi-klienta/"><span class="group-hover:shadow-bottom-border">Biuro Obsługi
+                href="{$urls.pages.contact}"><span class="group-hover:shadow-bottom-border">Biuro Obsługi
                   Klienta</span></a></div>
           </nav>
         </div>
@@ -799,4 +799,8 @@
       <div class="-mt-px h-px bg-neutral-50"></div>
     </div>
   </header>
+  <script>
+    var urls = {$urls.pages|json_encode nofilter};
+    console.log(urls);
+  </script>
 {/block}
