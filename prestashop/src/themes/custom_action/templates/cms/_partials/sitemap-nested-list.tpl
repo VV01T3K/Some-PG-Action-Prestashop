@@ -23,10 +23,11 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
 {block name='sitemap_item'}
-  <ul{if !empty($is_nested)} class="nested"{/if}>
+  <ul{if !empty($is_nested)} class="nested pl-4" {/if}>
     {foreach $links as $link}
-      <li>
-        <a id="{$link.id}" href="{$link.url}" title="{$link.label}">
+      <li class="mb-2">
+        <a id="{$link.id}" href="{$link.url}" title="{$link.label}"
+          class="text-dark-blue-500 hover:text-orange-500 transition-colors duration-200 block py-1 px-2 rounded hover:bg-neutral-100">
           {$link.label}
         </a>
         {if !empty($link.children)}
@@ -34,5 +35,5 @@
         {/if}
       </li>
     {/foreach}
-  </ul>
+    </ul>
 {/block}
