@@ -108,7 +108,9 @@ global_settings:
         - ps_searchbar
       displayFeaturedProducts:
         - ps_featuredproducts
+      displayDiscountedProducts:
         - ps_specials
+      displayNewProducts:
         - ps_newproducts
       displayHome:
         - ps_imageslider

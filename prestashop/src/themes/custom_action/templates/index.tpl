@@ -5,6 +5,8 @@
   <div class="hidden h-8 lg:block"></div>
   {widget name='ps_categorytree' carousel=true}
   {hook h='displayFeaturedProducts'}
+  {hook h='displayDiscountedProducts'}
+  {hook h='displayNewProducts'}
 
 
 
