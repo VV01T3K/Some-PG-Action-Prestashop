@@ -115,7 +115,7 @@
             <div lang="pl-pl" class="flex gap-6 pt-1">
               {widget name='ps_categorytree' carousel=false}
               <a class="text-body-normal text-dark-blue-500 pt-3 pb-4 font-medium hover:shadow-[inset_0_-2px_0]"
-                href="nowe-produkty">Nowości</a><a
+                href="/nowe-produkty">Nowości</a><a
                 class="text-body-normal text-dark-blue-500 pt-3 pb-4 font-medium hover:shadow-[inset_0_-2px_0]"
                 href="{$urls.pages.prices_drop}">Promocje</a>
             </div>
