@@ -170,6 +170,9 @@
             button.setAttribute('aria-expanded', 'true');
             if (svg) svg.classList.add('rotate-180');
             if (dropdown) {
+              // Remove hidden class if it exists
+              dropdown.classList.remove('hidden');
+
               // Calculate the actual height needed
               dropdown.style.height = 'auto';
               dropdown.style.opacity = '0';
@@ -245,7 +248,6 @@
                 button.setAttribute('aria-expanded', 'false');
                 const svg = button.querySelector('svg');
                 if (svg) svg.classList.remove('rotate-180');
-                dropdown.classList.add('hidden');
                 dropdown.style.height = '0px';
                 dropdown.style.opacity = '0';
                 dropdown.style.pointerEvents = 'none';
