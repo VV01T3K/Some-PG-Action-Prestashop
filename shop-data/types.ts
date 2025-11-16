@@ -24,6 +24,7 @@ export interface ProductApiPayload {
   category_ids_xml: string;
   name: string;
   description: string;
+  description_short: string;
   price: string;
   ean13: string;
 }

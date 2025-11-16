@@ -51,11 +51,48 @@ function createProductApiPayload(product: Product, categoryIds: number[]){
         .join("");
     const ean13 = generateRandomEAN13();
 
+    // --- HTML DESCRIPTION BLOCK ---
+    const htmlDescriptionBlock = `
+<div id="product-description">
+    <div id="product-description-title">
+        <h2>Opis</h2>
+    </div>
+
+    <div id="product-description-list">
+        <ul>
+            ${(product.description_list ?? []).map(item => `<li>${item}</li>`).join("")}
+        </ul>
+    </div>
+
+    <div id="product-description-long">
+        ${product.description_long || ""}
+    </div>
+</div>
+<div
+<h2 id="product-features-title">Cechy produktu</h2>
+<div id="product-features-table">
+    <table>
+        <tbody>
+            ${
+                Object.entries(product.product_specifications ?? {})
+                    .map(
+                        ([key, value]) =>
+                            `<tr><td class="feature-name">${key}</td><td class="feature-value">${value}</td></tr>`
+                    )
+                    .join("")
+            }
+        </tbody>
+    </table>
+</div>
+    `.trim();
+
+
     const productPayload: ProductApiPayload = {
         category_default_id: categoryDefaultId.toString(),
         category_ids_xml: categoriesXml,
         name: product.name,
-        description: product.description_long || "",
+        description: htmlDescriptionBlock,
+        description_short: product.subtitle,
         price: product.price.replace(",", "."),
         ean13
     };

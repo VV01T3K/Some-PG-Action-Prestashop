@@ -17,6 +17,7 @@
         <description>
             <language id="1"><![CDATA[{{ description }}]]></language>
         </description>
+        <description_short><![CDATA[{{ description_short }}]]></description_short>
         <price><![CDATA[{{ price }}]]></price>
         <active>1</active>
         <associations>

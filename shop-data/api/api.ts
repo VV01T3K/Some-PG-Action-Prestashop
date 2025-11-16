@@ -48,10 +48,11 @@ export async function createSubCategory(name: string, parent_id: number) {
     return createCategoryOrSubcategory(name, parent_id.toString());
 }
 export async function createProduct(product: ProductApiPayload): Promise<number>{
-    const { category_default_id, category_ids_xml, name, description, price, ean13 } = product;
+    const { category_default_id, category_ids_xml, name, description, description_short, price, ean13 } = product;
     
     let XML = readFileSync("./xml_templates/product_template2.xml", "utf8");
-    XML = substitutePlaceholders(XML, {category_default_id, name, description, price, ean13, categories_xml: category_ids_xml});
+    XML = substitutePlaceholders(XML, {category_default_id, name, description, description_short, 
+        price, ean13, categories_xml: category_ids_xml});
 
     const res = await fetch(`${API_URL}/products?ws_key=${API_KEY}`, {
         method: "POST",
