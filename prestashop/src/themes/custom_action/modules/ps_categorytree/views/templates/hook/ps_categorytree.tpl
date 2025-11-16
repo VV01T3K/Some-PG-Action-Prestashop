@@ -70,7 +70,7 @@
     <button
       class="text-body-normal text-dark-blue-500 flex flex-row pt-3 pb-4 font-medium group-hover/submenu:shadow-[inset_0_-2px_0]"
       aria-expanded="false" onclick="toggleCategoryMenu(this, event)">
-      {$categories.name}
+{if $categories.name == "Strona główna"}Produkty{else}{$categories.name}{/if}
       <svg aria-hidden="true" data-testid="CaretDownMd" class="transition-transform duration-300"
         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path fill="#001489"

@@ -45,7 +45,7 @@
                 <div class="grid grid-flow-col grid-rows-[repeat(var(--rows),minmax(0,auto))] gap-(--itemSpacing)">
                   <div class="w-(--itemWidth)">
                     <a class="group flex h-full w-full flex-col items-start gap-2 overflow-hidden bg-orange-300 xs:p-4 p-3 border-neutral-150 border"
-                      href="/pl-pl/gazetka-action/" data-testid="promotion-card"
+href="{$urls.pages.prices_drop}" data-testid="promotion-card"
                       aria-labelledby="_R_1l4jinpfivjap5snpfivb_"><span
                         class="relative aspect-square max-h-[190px] shrink-1 transition-all duration-300 group-hover:scale-105 md:max-h-[230px] mx-auto mt-0 aspect-square w-full object-contain"><img
                           data-testid="promotion-card-image" alt="" loading="lazy" decoding="async" data-nimg="fill"
@@ -58,9 +58,9 @@
                         class="text-dark-blue-500 xs:text-[16px] xs:leading-5 grow text-sm leading-[18px] font-bold break-words">Sprawdź
                         oferty tygodnia</span><span
                         class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral mt-2 hidden shrink-0 md:block lg:mt-4"><span
-                          class="truncate px-1">Czytaj więcej</span></span><button type="button"
+                          class="truncate px-1">Zobacz więcej</span></span><button type="button"
                         class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-2.5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral block md:hidden"
-                        aria-label="Czytaj więcej"><span class="shrink-0"
+aria-label="Zobacz więcej"><span class="shrink-0"
                           style="display:block;width:24px;height:24px"><svg aria-hidden="true"
                             data-testid="ArrowRightMd" class="shrink-0" xmlns="http://www.w3.org/2000/svg" width="24"
                             height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -69,7 +69,7 @@
                             </path>
                           </svg></span></button></a>
                   </div>
-                  {include file="catalog/_partials/productlist.tpl" products=$products cssClass="w-(--itemWidth)"}
+                  {include file="catalog/_partials/productlist.tpl" products=$products}
                 </div>
                 <div class="w-4 shrink-0 lg:w-0 pointer-fine:w-0"></div>
               </div>
@@ -87,8 +87,7 @@
         </div>
         <div class="flex justify-center"><a
             class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-orange-500 text-neutral-0 hover:bg-orange-700 active:bg-orange-900 focus:bg-orange-700 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"
-            href="{$allProductsLink}" data-testid="carousel-cta-link"><span class="truncate px-1">Zobacz
-              więcej {l s='All products' d='Shop.Theme.Catalog'}</span></a></div>
+            href="{$allProductsLink}" data-testid="carousel-cta-link"><span class="truncate px-1">{l s='All products' d='Shop.Theme.Catalog'}</span></a></div>
       </div>
     </div>
 </section>
