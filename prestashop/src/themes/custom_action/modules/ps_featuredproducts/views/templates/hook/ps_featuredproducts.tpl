@@ -43,32 +43,6 @@
                 style="transform: translateX(calc((100cqw + ((100% - (100cqw * var(--numberOfPages)))) / (var(--numberOfPages) - 1)) * var(--currentPage) * -1));">
                 <div class="w-4 shrink-0 lg:w-0 pointer-fine:w-0"></div>
                 <div class="grid grid-flow-col grid-rows-[repeat(var(--rows),minmax(0,auto))] gap-(--itemSpacing)">
-                  <div class="w-(--itemWidth)">
-                    <a class="group flex h-full w-full flex-col items-start gap-2 overflow-hidden bg-orange-300 xs:p-4 p-3 border-neutral-150 border"
-href="{$urls.pages.prices_drop}" data-testid="promotion-card"
-                      aria-labelledby="_R_1l4jinpfivjap5snpfivb_"><span
-                        class="relative aspect-square max-h-[190px] shrink-1 transition-all duration-300 group-hover:scale-105 md:max-h-[230px] mx-auto mt-0 aspect-square w-full object-contain"><img
-                          data-testid="promotion-card-image" alt="" loading="lazy" decoding="async" data-nimg="fill"
-                          class="object-contain PromotionCard_floatingImage__5_Vnr h-full w-full"
-                          style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                          sizes="(min-width: 1280px) calc(1280px / 5), (min-width: 1024px) calc(100vw / 4), (min-width: 768px) calc(100vw / 3), (min-width: 640px) calc(100vw / 3), calc(100vw / 2)"
-                          srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Folder_Icon_PL_tpa5jd.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Folder_Icon_PL_tpa5jd.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Folder_Icon_PL_tpa5jd.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Folder_Icon_PL_tpa5jd.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Folder_Icon_PL_tpa5jd.webp 1920w"
-                          src="https://asset.action.com/image/upload/t_digital_square/w_1920/Folder_Icon_PL_tpa5jd.webp"></span><span
-                        id="_R_1l4jinpfivjap5snpfivb_"
-                        class="text-dark-blue-500 xs:text-[16px] xs:leading-5 grow text-sm leading-[18px] font-bold break-words">Sprawdź
-                        oferty tygodnia</span><span
-                        class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral mt-2 hidden shrink-0 md:block lg:mt-4"><span
-                          class="truncate px-1">Zobacz więcej</span></span><button type="button"
-                        class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-2.5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral block md:hidden"
-aria-label="Zobacz więcej"><span class="shrink-0"
-                          style="display:block;width:24px;height:24px"><svg aria-hidden="true"
-                            data-testid="ArrowRightMd" class="shrink-0" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                              d="M13 19a1 1 0 0 1-.707-1.707L16.586 13H5a1 1 0 0 1 0-2h11.586l-4.293-4.293a1 1 0 1 1 1.414-1.414l6 6a1 1 0 0 1 .293.704v.006a1 1 0 0 1-.293.704l-6 6A1 1 0 0 1 13 19">
-                            </path>
-                          </svg></span></button></a>
-                  </div>
                   {include file="catalog/_partials/productlist.tpl" products=$products}
                 </div>
                 <div class="w-4 shrink-0 lg:w-0 pointer-fine:w-0"></div>
