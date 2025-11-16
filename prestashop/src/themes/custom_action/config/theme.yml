@@ -79,6 +79,7 @@ global_settings:
     to_enable:
       - ps_linklist
       - ps_specials
+      - ps_newproducts
   hooks:
     modules_to_hook:
       displayAfterBodyOpeningTag:
@@ -108,10 +109,12 @@ global_settings:
       displayFeaturedProducts:
         - ps_featuredproducts
         - ps_specials
+        - ps_newproducts
       displayHome:
         - ps_imageslider
         - ps_featuredproducts
         - ps_specials
+        - ps_newproducts
         - ps_banner
         - ps_customtext
       displayNewsletterAsk:
