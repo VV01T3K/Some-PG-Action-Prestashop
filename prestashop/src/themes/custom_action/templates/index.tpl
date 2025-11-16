@@ -4,6 +4,7 @@
 
   <div class="hidden h-8 lg:block"></div>
   {widget name='ps_categorytree' carousel=true}
+  {hook h='displayFeaturedProducts'}
 
   <section class="bg-neutral-50 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="Promocja Tygodnia"
     data-testid="cms-weekdeals-product-carousel">
