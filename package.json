@@ -22,6 +22,7 @@
     "db:restore": "bun db:up && ./.scripts/db.sh restore",
     "db:restore-s": "bun db:up && ./.scripts/db.sh --silent restore",
     "db:clean": "./.scripts/db.sh clean",
+    "presta:hack:theme": "docker exec prestashop php bin/console prestashop:theme:enable custom_action && sleep 2 && docker exec prestashop bash -c \"rm -rf var/cache/*\"",
     "scrap:get": "cd scrapper && bun git:download",
     "scrap:seed": "cd scrapper && bun run seed",
     "scrap:sync": "bun scrap:get && bun scrap:seed"

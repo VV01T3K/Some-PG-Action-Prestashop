@@ -66,46 +66,200 @@
     </section>
   {/if}
 {else}
-  {function name="categories" nodes=[] depth=0}
-    {strip}
-      {if $nodes|count}
-        <ul class="category-sub-menu">
-          {foreach from=$nodes item=node}
-            <li data-depth="{$depth}">
-              {if $depth===0}
-                <a href="{$node.link}">{$node.name}</a>
-                {if $node.children}
-                  <div class="navbar-toggler collapse-icons" data-toggle="collapse" data-target="#exCollapsingNavbar{$node.id}">
-                    <i class="material-icons add">&#xE145;</i>
-                    <i class="material-icons remove">&#xE15B;</i>
-                  </div>
-                  <div class="collapse" id="exCollapsingNavbar{$node.id}">
-                    {categories nodes=$node.children depth=$depth+1}
-                  </div>
-                {/if}
-              {else}
-                <a class="category-sub-link" href="{$node.link}">{$node.name}</a>
-                {if $node.children}
-                  <span class="arrows" data-toggle="collapse" data-target="#exCollapsingNavbar{$node.id}">
-                    <i class="material-icons arrow-right">&#xE315;</i>
-                    <i class="material-icons arrow-down">&#xE313;</i>
-                  </span>
-                  <div class="collapse" id="exCollapsingNavbar{$node.id}">
-                    {categories nodes=$node.children depth=$depth+1}
-                  </div>
-                {/if}
-              {/if}
-            </li>
-          {/foreach}
-        </ul>
-      {/if}
-    {/strip}
-  {/function}
+  <div class="group/submenu relative">
+    <button
+      class="text-body-normal text-dark-blue-500 flex flex-row pt-3 pb-4 font-medium group-hover/submenu:shadow-[inset_0_-2px_0]"
+      aria-expanded="false" onclick="toggleCategoryMenu(this, event)">
+      {$categories.name}
+      <svg aria-hidden="true" data-testid="CaretDownMd" class="transition-transform duration-300"
+        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path fill="#001489"
+          d="M12 15a1 1 0 0 1-.707-.293l-4-4a1 1 0 1 1 1.414-1.414L12 12.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4A1 1 0 0 1 12 15">
+        </path>
+      </svg>
+    </button>
 
-  <div class="block-categories">
-    <ul class="category-top-menu">
-      <li><a class="text-uppercase h6" href="{$categories.link nofilter}">{$categories.name}</a></li>
-      <li>{categories nodes=$categories.children}</li>
-    </ul>
+    <div class="absolute top-full left-0 z-[80] flex overflow-hidden transition-all duration-300 ease-in-out w-[640px]"
+      style="opacity: 0; pointer-events: none;" data-menu-dropdown>
+      {* Background overlays *}
+      <div
+        class="bg-neutral-0 pointer-events-none absolute inset-y-0 left-0 h-full w-[320px] transition-all duration-300 ease-in-out rounded-bl-md opacity-100 translate-y-0">
+      </div>
+      <div
+        class="pointer-events-none absolute inset-y-0 left-[320px] w-[320px] rounded-br-md bg-neutral-50 transition-all duration-300 ease-in-out opacity-100 translate-x-0 translate-y-0">
+      </div>
+
+      {* Left column - Top level categories *}
+      <div
+        class="absolute top-0 left-0 w-[320px] flex flex-col pt-2 pb-4 transition-all duration-300 ease-in-out opacity-100 translate-y-0">
+        {foreach from=$categories.children item=category name=categoryLoop}
+          <div>
+            <button
+              class="text-body-small text-dark-blue-500 flex w-full items-center gap-3 px-6 py-1 text-left hover:bg-neutral-50 {if $smarty.foreach.categoryLoop.first}bg-neutral-50{/if}"
+              aria-expanded="{if $smarty.foreach.categoryLoop.first}true{else}false{/if}" data-category-id="{$category.id}"
+              onclick="showSubcategories(this, {$category.id}, event)">
+              {if $category.image}
+                <img data-testid="menu-category-image" alt="{$category.name}" loading="lazy" width="40" height="40"
+                  decoding="async" class="rounded-full" src="{$category.image}">
+              {else}
+                <div class="w-10 h-10 rounded-full bg-neutral-200"></div>
+              {/if}
+              <span>{$category.name}</span>
+            </button>
+
+            {* Right column - Subcategories for this category *}
+            <div
+              class="absolute inset-y-0 left-[320px] w-[320px] {if !$smarty.foreach.categoryLoop.first}pointer-events-none{/if}"
+              data-subcategory-panel="{$category.id}">
+              <div
+                class="w-full flex flex-col pt-2 pb-4 transition-all duration-300 ease-in-out {if $smarty.foreach.categoryLoop.first}opacity-100 translate-x-0{else}opacity-0 -translate-x-2 hidden{/if}">
+                <a class="group text-body-small text-dark-blue-500 px-6 py-3 text-left" href="{$category.link}">
+                  <span class="group-hover:shadow-bottom-border py-1">Wszystko z kategorii {$category.name|lower}</span>
+                </a>
+                {if $category.children}
+                  {foreach from=$category.children item=subcategory}
+                    <a class="group text-body-small text-dark-blue-500 px-6 py-3 text-left" href="{$subcategory.link}">
+                      <span class="group-hover:shadow-bottom-border py-1">{$subcategory.name}</span>
+                    </a>
+                  {/foreach}
+                {/if}
+              </div>
+            </div>
+          </div>
+        {/foreach}
+
+        <div class="sr-only focus-within:not-sr-only">
+          <button type="button"
+            class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 text-dark-blue-500 active:bg-dark-blue-500 active:text-neutral-0 hover:bg-dark-blue-50 focus:bg-dark-blue-50 focus:text-dark-blue-500 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:text-neutral-700 w-full"
+            onclick="closeCategoryMenu()">
+            <span class="truncate px-1">Zamknij</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <script>
+    {literal}
+      (function() {
+        // Prevent multiple definitions
+        if (window.categoryMenuInitialized) return;
+        window.categoryMenuInitialized = true;
+
+        window.toggleCategoryMenu = function(button, event) {
+          // Stop event propagation to prevent immediate closing
+          if (event) {
+            event.stopPropagation();
+          }
+
+          const dropdown = button.nextElementSibling;
+          const isExpanded = button.getAttribute('aria-expanded') === 'true';
+          const svg = button.querySelector('svg');
+
+          if (isExpanded) {
+            // Close menu
+            button.setAttribute('aria-expanded', 'false');
+            if (svg) svg.classList.remove('rotate-180');
+            if (dropdown) {
+              dropdown.style.height = '0px';
+              dropdown.style.opacity = '0';
+              dropdown.style.pointerEvents = 'none';
+            }
+          } else {
+            // Open menu
+            button.setAttribute('aria-expanded', 'true');
+            if (svg) svg.classList.add('rotate-180');
+            if (dropdown) {
+              // Calculate the actual height needed
+              dropdown.style.height = 'auto';
+              dropdown.style.opacity = '0';
+              dropdown.style.pointerEvents = 'none';
+              const height = dropdown.scrollHeight;
+              dropdown.style.height = '0px';
+
+              // Force reflow
+              dropdown.offsetHeight;
+
+              // Animate to calculated height
+              dropdown.style.height = height + 'px';
+              dropdown.style.opacity = '1';
+              dropdown.style.pointerEvents = 'auto';
+            }
+          }
+        };
+
+        window.showSubcategories = function(button, categoryId, event) {
+          if (event) {
+            event.stopPropagation(); // Prevent menu from closing
+          }
+
+          // Remove active state from all category buttons
+          const allButtons = button.parentElement.parentElement.querySelectorAll('button[data-category-id]');
+          allButtons.forEach(btn => {
+            btn.classList.remove('bg-neutral-50');
+            btn.setAttribute('aria-expanded', 'false');
+          });
+
+          // Add active state to clicked button
+          button.classList.add('bg-neutral-50');
+          button.setAttribute('aria-expanded', 'true');
+
+          // Hide all subcategory panels
+          const allPanels = document.querySelectorAll('[data-subcategory-panel]');
+          allPanels.forEach(panel => {
+            panel.classList.add('pointer-events-none');
+            const content = panel.querySelector('div');
+            if (content) {
+              content.classList.add('opacity-0', '-translate-x-2', 'hidden');
+              content.classList.remove('opacity-100', 'translate-x-0');
+            }
+          });
+
+          // Show selected subcategory panel
+          const selectedPanel = document.querySelector('[data-subcategory-panel="' + categoryId + '"]');
+          if (selectedPanel) {
+            selectedPanel.classList.remove('pointer-events-none');
+            const content = selectedPanel.querySelector('div');
+            if (content) {
+              content.classList.remove('opacity-0', '-translate-x-2', 'hidden');
+              content.classList.add('opacity-100', 'translate-x-0');
+            }
+          }
+        };
+
+        window.closeCategoryMenu = function() {
+          const button = document.querySelector('[data-menu-dropdown]').previousElementSibling;
+          if (button) {
+            toggleCategoryMenu(button);
+          }
+        };
+
+        // Close menu when clicking outside - use capture phase
+        document.addEventListener('click', function(event) {
+          const menu = event.target.closest('.group\\/submenu');
+          if (!menu) {
+            const allMenus = document.querySelectorAll('[data-menu-dropdown]');
+            allMenus.forEach(dropdown => {
+              const button = dropdown.previousElementSibling;
+              if (button && button.getAttribute('aria-expanded') === 'true') {
+                button.setAttribute('aria-expanded', 'false');
+                const svg = button.querySelector('svg');
+                if (svg) svg.classList.remove('rotate-180');
+                dropdown.classList.add('hidden');
+                dropdown.style.height = '0px';
+                dropdown.style.opacity = '0';
+                dropdown.style.pointerEvents = 'none';
+              }
+            });
+          }
+        }, false);
+      })();
+    {/literal}
+  </script>
+
+  <style>
+    .shadow-bottom-border {
+      box-shadow: inset 0 -1px 0 currentColor;
+    }
+  </style>
 {/if}
