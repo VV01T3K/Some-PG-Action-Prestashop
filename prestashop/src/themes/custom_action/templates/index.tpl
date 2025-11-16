@@ -5,8 +5,6 @@
   <div class="hidden h-8 lg:block"></div>
   {widget name='ps_categorytree' carousel=true}
   {hook h='displayFeaturedProducts'}
-  {hook h='displayDiscountedProducts'}
-  {hook h='displayNewProducts'}
 
 
   <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8" data-testid="cms-page-teaser-carousel">
@@ -138,6 +136,7 @@
     </div>
   </section>
 
+{hook h='displayDiscountedProducts'}
 
   <section class="bg-neutral-50 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="Gazetka prezentowa z mnóstwem prezentów!"
     data-testid="cms-split-teaser">
@@ -173,6 +172,8 @@
       </div>
     </div>
   </section>
+
+{hook h='displayNewProducts'}
 
   <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="POWITAJ 100+ PROMOCJI!"
     data-testid="cms-split-teaser">
