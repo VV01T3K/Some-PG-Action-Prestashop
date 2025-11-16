@@ -80,6 +80,7 @@ global_settings:
       - ps_linklist
       - ps_specials
       - ps_newproducts
+      - ps_viewedproduct
   hooks:
     modules_to_hook:
       displayAfterBodyOpeningTag:
@@ -112,6 +113,8 @@ global_settings:
         - ps_specials
       displayNewProducts:
         - ps_newproducts
+      displayViewedProducts:
+        - ps_viewedproduct
       displayHome:
         - ps_imageslider
         - ps_featuredproducts
