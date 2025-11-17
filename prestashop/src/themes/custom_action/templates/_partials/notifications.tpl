@@ -50,7 +50,7 @@
 
       {if $notifications.warning}
         {block name='notifications_warning'}
-          <article class="alert alert-warning" role="alert" data-alert="warning">
+<article class="alert alert-warning mt-2 text-neutral-700 italic" role="alert" data-alert="warning">
             <ul>
               {foreach $notifications.warning as $notif}
                 <li>{$notif nofilter}</li>
