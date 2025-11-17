@@ -36,7 +36,9 @@
     <span class="product-name">
         <a href="{$product.url}" target="_blank" rel="noopener noreferrer nofollow">{$product.name}</a>
     </span>
-    <span class="product-quantity">x{$product.quantity}</span>
+    <div class="product-quantity">
+      {hook h='displayCartQuantityStepper' product=$product}
+    </div>
     <span class="product-price float-xs-right">{$product.price}</span>
     {hook h='displayProductPriceBlock' product=$product type="unit_price"}
     {foreach from=$product.attributes key="attribute" item="value"}

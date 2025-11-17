@@ -59,6 +59,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             return;
         }
 
+        // Register CSS for quantity stepper
+        $this->context->controller->registerStylesheet('modules-shoppingcart-css', 'modules/' . $this->name . '/views/css/quantity-stepper.css', ['media' => 'all', 'priority' => 150]);
+
         if (Configuration::get('PS_BLOCK_CART_AJAX')) {
             $this->context->controller->registerJavascript('modules-shoppingcart', 'modules/' . $this->name . '/ps_shoppingcart.js', ['position' => 'bottom', 'priority' => 150]);
         }
@@ -95,6 +98,40 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax', [], null, null, null, true),
             'cart_url' => $this->getCartSummaryURL(),
         ];
+    }
+
+    /**
+     * Hook to display cart quantity stepper
+     *
+     * @param array $params
+     * @return string
+     */
+    public function hookDisplayCartQuantityStepper($params)
+    {
+        if (!isset($params['product']) || !is_array($params['product'])) {
+            return '';
+        }
+
+        $product = $params['product'];
+        
+        if (empty($product['update_quantity_url'])) {
+            return '';
+        }
+
+        $stepper_data = [
+            'product_id' => $product['id_product'] ?? 0,
+            'product_attribute_id' => $product['id_product_attribute'] ?? 0,
+            'quantity' => $product['quantity'] ?? 1,
+            'update_url' => $product['update_quantity_url'] ?? '',
+            'up_url' => $product['up_quantity_url'] ?? '',
+            'down_url' => $product['down_quantity_url'] ?? '',
+            'is_gift' => $product['is_gift'] ?? false,
+            'delete_url' => $product['remove_from_cart_url'] ?? '',
+        ];
+
+        $this->smarty->assign('stepper_data', $stepper_data);
+        
+        return $this->fetch('module:ps_shoppingcart/views/templates/hook/cart-quantity-stepper.tpl');
     }
 
     /**
@@ -197,6 +234,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             parent::install()
                 && $this->registerHook('displayHeader')
                 && $this->registerHook('displayNav2')
+                && $this->registerHook('displayCartQuantityStepper')
                 && Configuration::updateValue('PS_BLOCK_CART_AJAX', 1);
     }
 
