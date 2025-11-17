@@ -24,12 +24,15 @@
  *}
 {extends file='page.tpl'}
 
+
 {block name='notifications'}{/block}
 
 {block name='page_content_container'}
-  <section id="content" class="page-content">
+  
+<section id="content" class="page-content bg-neutral-0 px-4 pt-4 pb-8 lg:p-8">
     {block name='page_content_top'}
       {block name='customer_notifications'}
+    <h4 class="heading-lg text-body-large">Paragony za zakupy kwalifikujące się do zwrotu</h4>
         {include file='_partials/notifications.tpl'}
       {/block}
     {/block}

@@ -125,8 +125,8 @@
                 <li>
                   {if !$configuration.is_catalog}
                     <a class="block w-full relative rounded-none flex justify-between items-center bg-neutral-0 p-4 border-b-2 border-b-neutral-50 text-dark-blue-500 after:content-[''] after:absolute after:block after:opacity-0 hover:after:opacity-100 after:transition-opacity after:ease-in-out after:top-0 after:left-0 after:-bottom-0.5 after:bg-dark-blue-500 after:w-1 "
-                      href="{$urls.pages.order_slip}" id="order-slips-link" aria-label="Moje cyfrowe paragony"
-                      data-testid="my-action-navigation-item"><span>Moje cyfrowe paragony</span><svg aria-hidden="true"
+                      href="{$urls.pages.order_slip}" id="order-slips-link" aria-label="{l s='Credit slips' d='Shop.Theme.Customeraccount'}"
+                      data-testid="my-action-navigation-item"><span>{l s='Credit slips' d='Shop.Theme.Customeraccount'}</span><svg aria-hidden="true"
                         data-testid="ChevronRight" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
                         viewBox="0 0 24 24">
                         <path fill="#001489"
