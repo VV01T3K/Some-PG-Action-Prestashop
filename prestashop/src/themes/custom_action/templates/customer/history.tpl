@@ -1,15 +1,18 @@
 {extends file='customer/page.tpl'}
 
 {block name='page_title'}
-  <h1 class="heading-xl text-dark-blue-500 mb-6">{l s='Order history' d='Shop.Theme.Customeraccount'}</h1>
+  <div class="bg-neutral-0 px-4 lg:px-8 pt-4">
+    <h1 class="heading-xl text-dark-blue-500 mb-6">{l s='Order history' d='Shop.Theme.Customeraccount'}</h1>
+  </div>
 {/block}
 
 {block name='page_content'}
-  <div class="bg-neutral-50 p-4 md:p-6 rounded-lg mb-6">
-    <p class="text-body-normal text-neutral-700">
-      {l s='Here are the orders you\'ve placed since your account was created.' d='Shop.Theme.Customeraccount'}
-    </p>
-  </div>
+  <div class="bg-neutral-0 px-4 pb-8 lg:px-8">
+    <div class="bg-neutral-50 p-4 md:p-6 rounded-lg mb-6">
+      <p class="text-body-normal text-neutral-700">
+        {l s='Here are the orders you\'ve placed since your account was created.' d='Shop.Theme.Customeraccount'}
+      </p>
+    </div>
 
   {if $orders}
     {* Desktop Table View *}
@@ -207,4 +210,5 @@
       </p>
     </div>
   {/if}
+  </div>
 {/block}
