@@ -2,7 +2,7 @@ import { seedCategories } from './api/category_manager';
 import { cleanDatabase } from './api/clean_database';
 import type { Product, ProductApiPayload } from "./types";
 import products from './scrapper-results/products.json' assert { type: 'json' };
-import { createProduct, updateStockAvailable, uploadProductImage } from './api/api';
+import { createProduct, updateProductUnitPrice, updateStockAvailable, uploadProductImage } from './api/api';
 import { readdirSync } from 'fs';
 import { PRESTASHOP_DEFAULT_CAT_ID, PRESTASHOP_DEFAULT_CAT_ID_NUM } from './constants';
 
@@ -27,7 +27,7 @@ async function seedProducts(categoryNameIdMap: Map<string, number>) {
         //create payload -> create product
         const productPayload = createProductApiPayload(product as unknown as Product, categoryIds);
         const productImagesDirId = product.product_specifications['Numer produktu'];
-        const QUANTITY_TO_SET = Math.floor(Math.random() * 11); //TODO: change it to random or sth
+        const QUANTITY_TO_SET = Math.floor(Math.random() * 11);
 
         const productId = await createProduct(productPayload);
         console.log(`Created product with id:${productId}`);
@@ -35,9 +35,17 @@ async function seedProducts(categoryNameIdMap: Map<string, number>) {
         //upload all images for the product
         uploadAllProductImages(productId, productImagesDirId);
         
-        updateStockAvailable(productId, QUANTITY_TO_SET);
-        // return 0; //delete this line to seed all products
+        const wasSuccessfull = await updateStockAvailable(productId, QUANTITY_TO_SET);
+        if(!wasSuccessfull) continue;
+        setProductUnitPrice(productId, product);
+        
     }
+}
+
+function setProductUnitPrice(productId: number, product: any){
+    const {unity, unit_price} = retrieveUnityUnitPrice(product.price_description);
+    const unit_price_ratio = calculateUnitPriceRatio(product.price, unit_price);
+    updateProductUnitPrice(productId, unity, unit_price_ratio);
 }
 
 //TODO: add rest of the fields
@@ -86,7 +94,6 @@ function createProductApiPayload(product: Product, categoryIds: number[]){
 </div>
     `.trim();
 
-
     const productPayload: ProductApiPayload = {
         category_default_id: categoryDefaultId.toString(),
         category_ids_xml: categoriesXml,
@@ -98,20 +105,54 @@ function createProductApiPayload(product: Product, categoryIds: number[]){
     };
     return productPayload;
 }
+async function uploadAllProductImages(productId: number, productImagesDirId: string) {
+    const imageDir = `${IMAGES_PATH}${productImagesDirId}/`;
+    const imageFileNames = readdirSync(imageDir);
+    const imagePaths = imageFileNames.map(name => `${imageDir}${name}`);
+    const limitedImagePaths = imagePaths; //.slice(0,2)
+
+    const uploadPromises = limitedImagePaths.map(imagePath => uploadProductImage(productId, imagePath));
+    await Promise.all(uploadPromises);
+}
+
+seedShop();
+
+
+
+
+// ---- HELPERS ----
+function retrieveUnityUnitPrice(price_description: string){
+    const priceDescription = price_description?.trim() || "";
+
+    let unity = "";
+    let unit_price = "";
+    if (priceDescription) {
+        const [ pricePart, unityPart ] = priceDescription.split('/');
+        unit_price = (pricePart ?? "")
+            .replace("zł", "")
+            .replace(/\s/g, "")
+            .replace(",", ".")
+            .trim();
+        unity = (unityPart ?? "").trim();
+    }
+    return { unit_price, unity };
+}
+function calculateUnitPriceRatio(price: string, unit_price: string){
+    const basePriceNum = parseFloat(price.replace(/\s/g, '').replace(',', '.'));
+    const unitPriceNum = parseFloat(unit_price.replace(/\s/g, '').replace(',', '.'));
+
+    if (isNaN(basePriceNum) || basePriceNum < 0 || isNaN(unitPriceNum) || unitPriceNum < 0) {
+        console.log(`Invalid or non-positive base or unit price: ${price}, ${unit_price}`);
+        throw new Error(`Invalid or non-positive base or unit price: ${price}, ${unit_price}`);
+    }
+
+    const ratio = basePriceNum / unitPriceNum;
+    return ratio.toFixed(6);
+
+}
 function generateRandomEAN13(): string {
     const digits = Array.from({ length: 12 }, () => Math.floor(Math.random() * 10));
     const sum = digits.reduce((acc, val, i) => acc + val * (i % 2 === 0 ? 1 : 3), 0);
     const checkDigit = (10 - (sum % 10)) % 10;
     return digits.join("") + checkDigit;
 }
-export async function uploadAllProductImages(productId: number, productImagesDirId: string) {
-    const imageDir = `${IMAGES_PATH}${productImagesDirId}/`;
-    const imageFileNames = readdirSync(imageDir);
-    const imagePaths = imageFileNames.map(name => `${imageDir}${name}`);
-    
-    const uploadPromises = imagePaths.map(imagePath => uploadProductImage(productId, imagePath));
-    await Promise.all(uploadPromises);
-}
-
-seedShop();
-

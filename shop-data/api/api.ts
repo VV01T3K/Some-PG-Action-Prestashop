@@ -62,7 +62,9 @@ export async function createProduct(product: ProductApiPayload): Promise<number>
         body: XML,
     });
     if (!res.ok) {
-        //500 code is probably also fine and the product was uploaded succesfully :>
+        console.log("Something could have gone wrong while creating a new product");
+        const xmlres = await res.text();
+        console.log(xmlres);
     }
     //we have to call it bcs POST request won't give as the createdId
     return getProductIdByEan(ean13);
@@ -232,11 +234,16 @@ export async function updateStockAvailable(productId: number, stockNum: number){
         const $ = cheerio.load(xmlText);
         const stock_availableId = $("stock_available").attr("id");
         if(!stock_availableId) {
+            if(attempt == MAX_RETRIES){
+                console.error("DELETING INVALID PRODUCT");
+                await deleteProductById(productId);
+                return false;
+            }
             console.warn(`⚠️ Stock ID not found for ${productId}. Retrying in 1s... (Attempt ${attempt}/${MAX_RETRIES})`);
             await new Promise(resolve => setTimeout(resolve, 1000));
             continue;
         }
-    
+        
         let modifiedStockXml = readFileSync("./xml_templates/stock_template.xml", "utf8");
         modifiedStockXml = substitutePlaceholders(modifiedStockXml, { stock_id: stock_availableId, product_id: productId.toString(), stock: stockNum.toString() });
     
@@ -249,13 +256,48 @@ export async function updateStockAvailable(productId: number, stockNum: number){
         });
         if (updateRes.ok) {
             console.log(`Successfully updated stock for product ID: ${productId} to quantity: ${stockNum}`);
-            return;
+            return true;
         } else {
             const errorText = await updateRes.text();
             console.error(`Failed to update stock for product ID: ${productId}. Status: ${updateRes.status}. Retrying in 1s... (Attempt ${attempt}/${MAX_RETRIES})`);
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
-    }    
+    }    return false;
+}
+
+export async function updateProductUnitPrice( productId: number, unity: string, unitPriceRatio: string) {
+    // 1. Pobierz istniejący produkt przez GET
+      const getUrl = `${API_URL}/products/${productId}?ws_key=${API_KEY}`;
+      const getRes = await fetch(getUrl, { method: "GET" });
+      const xmlText = await getRes.text();
+
+      const updatedXml = xmlText
+      // Zmienia unity i unit_price_ratio i usuwa pola których nie można modyfikować
+      .replace(/<unity><!\[CDATA\[.*?\]\]><\/unity>/s, `<unity><![CDATA[${unity}]]></unity>`)
+      .replace(/<unit_price_ratio><!\[CDATA\[.*?\]\]><\/unit_price_ratio>/s, `<unit_price_ratio><![CDATA[${unitPriceRatio}]]></unit_price_ratio>`)
+      
+      .replace(/<\s*manufacturer_name[^>]*>.*?<\/manufacturer_name>/s, "")
+      .replace(/<\s*position_in_category[^>]*>.*?<\/position_in_category>/s, "")
+      .replace(/<\s*quantity[^>]*>.*?<\/quantity>/s, "")
+      
+      .replace(/<\s*id_default_image[^>]*>.*?<\/id_default_image>/s, "")
+      .replace(/<\s*id_default_combination[^>]*>.*?<\/id_default_combination>/s, "");
+
+      const putUrl = `${API_URL}/products/${productId}?ws_key=${API_KEY}`;
+      const putRes = await fetch(putUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/xml"
+        },
+        body: updatedXml
+      });
+    
+      if (!putRes.ok) {
+        const x = await putRes.text();
+        console.log(x);
+      }
+    
+      console.log(`Product: ${productId} unit price updated successfully!`);
 }
 
 /* ==== HELPERS ==== */
