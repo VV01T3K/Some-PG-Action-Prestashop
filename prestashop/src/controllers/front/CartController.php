@@ -108,9 +108,18 @@ class CartControllerCore extends FrontController
         $presenter = new CartPresenter();
         $presented_cart = $presenter->present($this->context->cart, $shouldSeparateGifts = true);
 
+        // Get featured products from ps_featuredproducts module
+        $featuredProducts = [];
+        $featuredProductsModule = Module::getInstanceByName('ps_featuredproducts');
+        if ($featuredProductsModule && $featuredProductsModule->active) {
+            $variables = $featuredProductsModule->getWidgetVariables('displayHome');
+            $featuredProducts = $variables['products'] ?? [];
+        }
+
         $this->context->smarty->assign([
             'cart' => $presented_cart,
             'static_token' => Tools::getToken(false),
+            'featured_products' => $featuredProducts,
         ]);
 
         if (count($presented_cart['products']) > 0) {

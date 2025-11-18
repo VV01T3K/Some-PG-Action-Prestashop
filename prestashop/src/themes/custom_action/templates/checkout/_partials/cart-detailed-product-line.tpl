@@ -68,12 +68,12 @@
 
       {* PRICE *}
       <div style="font-weight: 700; color: #001489; font-size: 1rem;">
-        {$product.total}
-        {if $product.unit_price_full}
+        {if $product.price}
           <span data-testid="product-row-price-description" style="font-size: 0.75rem; color: #718096; font-weight: normal; display: block; margin-top: 0.25rem;">
-            {$product.unit_price_full}
+            {$product.price}/szt.
           </span>
         {/if}
+        {$product.price} 
       </div>
     </div>
   </div>

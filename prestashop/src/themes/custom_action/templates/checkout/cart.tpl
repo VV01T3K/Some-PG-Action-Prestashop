@@ -214,7 +214,7 @@
           <section style="width: 100%; max-width: 48rem;">
 
             <!-- cart products detailed -->
-            <div style="padding: 0; margin-bottom: 6rem;">
+            <div style="padding: 0">
               <div style="margin-bottom: 1.5rem;">
                 <h1 class="heading-2xl" style="color: #001489; margin-bottom: 0.5rem; padding: 0; font-size: 2rem; font-weight: 700;">{l s='Shopping Cart' d='Shop.Theme.Checkout'}</h1>
                 <p class="text-body-normal" style="padding: 0; color: #1a202c; font-size: 0.95rem;">
@@ -245,42 +245,15 @@
     <section style="background-color: #ffffff; padding: 2rem 0;">
       <div style="display: flex; width: 100%; flex-direction: column; padding-left: 1rem; padding-right: 1rem;">
         <div style="margin-left: auto; margin-right: auto; width: 100%; max-width: 48rem;">
+            <h2 style="font-size: 1rem; font-weight: 600; color:#001489; margin-bottom: 1rem; width: 100%; max-width: 48rem;">{l s='Polecane produkty' d='Shop.Theme.Checkout'}</h2>
           <div style="display: flex; flex-col: column; align-items: center;">
             
-            {* HEADER *}
-            <div style="width: 100%; max-width: 48rem; margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1rem; font-weight: 600; color: #1a202c; margin-bottom: 1rem;">{l s='Polecane produkty' d='Shop.Theme.Checkout'}</h2>
-            </div>
 
-            {* PRODUCT LIST — Horizontal rows like cart *}
+            {* PRODUCT LIST — Featured products custom layout *}
             <div style="width: 100%; max-width: 48rem;">
-              {hook h='displayRecommendedProducts'}
-              
-              {* Fallback content if no products loaded via hook *}
-              <div style="display: flex; flex-direction: column; gap: 1rem;">
-                {* Product Row Example 1 *}
-                <div data-testid="product-row" data-content-king="product-row" style="display: flex; justify-content: space-between; gap: 0.5rem; padding: 1rem; background-color: #f7fafc; border-radius: 4px; align-items: flex-start;">
-                  <div style="flex-shrink: 0;">
-                    <div style="position: relative; height: 64px; width: 64px; background-color: #ffffff; border-radius: 4px;"></div>
-                  </div>
-
-                  <div style="display: flex; width: 100%; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
-                    <div style="flex: 1; min-width: 0;">
-                      <p style="font-size: 0.95rem; font-weight: 600; color: #001489; margin: 0 0 0.5rem 0; line-height: 1.3;"></p>
-                      <p style="font-size: 0.85rem; font-weight: normal; color: #718096; margin: 0 0 0.75rem 0; line-height: 1.3;"></p>
-                      <div style="font-weight: 700; color: #001489; font-size: 1rem;"></div>
-                    </div>
-
-                    <div style="display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0;">
-                      <button style="display: flex; height: 2.25rem; width: 2.25rem; align-items: center; justify-content: center; border-radius: 9999px; border: none; background-color: transparent; cursor: pointer; transition: all var(--transition-duration) var(--transition-timing); color: #001489; flex-shrink: 0;">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                          <path fill="currentColor" d="M12 19a1 1 0 0 1-1-1v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 1 1 2 0v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 0 1-1 1"></path>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {block name='featured_products_list'}
+                {include file='checkout/_partials/featured-products-cart.tpl' products=$featured_products}
+              {/block}
             </div>
 
           </div>
