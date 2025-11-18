@@ -127,7 +127,7 @@ class ProductCore extends ObjectModel
     public $unity = null;
 
     /** @var float price for product's unity */
-    public $unit_price = 0;
+    public $unit_price;
 
     /** @var float price for product's unity ratio */
     public $unit_price_ratio = 0;
@@ -712,12 +712,12 @@ class ProductCore extends ObjectModel
     {
         parent::__construct($id_product, $id_lang, $id_shop);
 
-        $unitPriceRatio = new DecimalNumber((string) ($this->unit_price_ratio ?? 0));
-        $price = new DecimalNumber((string) ($this->price ?? 0));
+        // $unitPriceRatio = new DecimalNumber((string) ($this->unit_price_ratio ?? 0));
+        // $price = new DecimalNumber((string) ($this->price ?? 0));
 
-        if ($unitPriceRatio->isGreaterThanZero()) {
-            $this->unit_price = (float) (string) $price->dividedBy($unitPriceRatio);
-        }
+        // if ($unitPriceRatio->isGreaterThanZero()) {
+        //     $this->unit_price = (float) (string) $price->dividedBy($unitPriceRatio);
+        // }
 
         if ($full && $this->id) {
             if (!$context) {
@@ -7175,7 +7175,8 @@ class ProductCore extends ObjectModel
     {
         $result = $this->getCover($this->id);
 
-        return $result['id_image'];
+        // return $result['id_image'];
+        return (false !== $result && array_key_exists('id_image', $result)) ? $result['id_image'] : null;
     }
 
     /**
