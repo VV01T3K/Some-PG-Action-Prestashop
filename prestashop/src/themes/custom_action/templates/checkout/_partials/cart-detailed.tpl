@@ -26,7 +26,7 @@
   <div class="cart-overview js-cart" data-refresh-url="{url entity='cart' params=['ajax' => true, 'action' => 'refresh']}">
     {if $cart.products}
     <ul class="cart-items">
-      {foreach from=$cart.products item=product}
+      {foreach from=$cart.products|array_reverse item=product}
         <li class="cart-item">
           {block name='cart_detailed_product_line'}
             {include file='checkout/_partials/cart-detailed-product-line.tpl' product=$product}
