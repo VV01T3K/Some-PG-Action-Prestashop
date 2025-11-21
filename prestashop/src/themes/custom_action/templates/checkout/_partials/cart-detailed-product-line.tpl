@@ -22,6 +22,35 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
+<script>
+/**
+ * Clean up delete parameters from URL after product removal
+ * This prevents delete parameters from interfering with subsequent operations
+ */
+function cleanDeleteParamsFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('delete')) {
+    // Create a clean URL without delete parameters
+    const newUrl = window.location.pathname;
+    window.history.replaceState({ path: newUrl }, '', newUrl);
+  }
+}
+
+// Clean immediately on page load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', cleanDeleteParamsFromUrl);
+} else {
+  cleanDeleteParamsFromUrl();
+}
+
+// Also listen for updateCart events which happen after delete completes
+if (window.prestashop && typeof window.prestashop.on === 'function') {
+  window.prestashop.on('updateCart', function(event) {
+    // Clean the URL immediately after cart update
+    cleanDeleteParamsFromUrl();
+  });
+}
+</script>
 <div data-testid="product-row" data-content-king="product-row" style="display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; align-items: flex-start; flex-wrap: wrap; position: relative; width: 100%;">
   
   {* CHECKBOX / FAVORITE BUTTON *}

@@ -54,6 +54,32 @@ function updateDecrementButtonAppearance() {
   });
 }
 
+// Quantity Stepper - Update decrement button appearance for a single stepper
+function updateDecrementButtonAppearanceForStepper(stepper) {
+  if (!stepper) return;
+  
+  const quantityDiv = stepper.querySelector('.js-cart-line-product-quantity');
+  const decrementBtn = stepper.querySelector('[data-testid="quantity-stepper-decrement"]');
+  const svg = decrementBtn?.querySelector('svg');
+  
+  if (!quantityDiv || !decrementBtn || !svg) return;
+  
+  const quantityText = quantityDiv.textContent.trim().replace(/\s+/g, '');
+  const currentQuantity = parseInt(quantityText, 10);
+  
+  if (isNaN(currentQuantity)) return;
+  
+  if (currentQuantity <= 1) {
+    // Show delete/trash icon
+    svg.innerHTML = '<path fill="#505862" d="M14.8 22H9.2c-1.24 0-1.922 0-2.565-.33a3.04 3.04 0 0 1-1.305-1.302C5 19.72 5 19.038 5 17.8V7H4a1 1 0 1 1 0-2h3.013c.02-.458.072-.806.21-1.146A3.06 3.06 0 0 1 8.838 2.23C9.404 2 9.97 2 11 2h2c1.03 0 1.596 0 2.146.223a3.05 3.05 0 0 1 1.623 1.613c.143.352.198.704.218 1.164H20a1 1 0 1 1 0 2h-1v10.8c0 1.239 0 1.92-.33 2.565a3.04 3.04 0 0 1-1.303 1.304C16.722 22 16.04 22 14.8 22M7 7v10.8c0 .866 0 1.44.11 1.655.093.182.253.341.437.436C7.76 20 8.333 20 9.2 20h5.6c.867 0 1.44 0 1.655-.11.182-.094.342-.253.436-.437.109-.214.109-.787.109-1.653V7zm2.014-2h5.971a1.4 1.4 0 0 0-.062-.394 1.02 1.02 0 0 0-.547-.537C14.206 4 13.726 4 13 4h-2c-.726 0-1.205 0-1.394.077a1.03 1.03 0 0 0-.537.547c-.029.072-.046.2-.055.376M14 18a1 1 0 0 1-1-1v-7a1 1 0 1 1 2 0v7a1 1 0 0 1-1 1m-4 0a1 1 0 0 1-1-1v-7a1 1 0 1 1 2 0v7a1 1 0 0 1-1 1"></path>';
+    decrementBtn.setAttribute('aria-label', 'Delete product');
+  } else {
+    // Show minus icon
+    svg.innerHTML = '<path fill="#505862" d="M18 13H6a1 1 0 1 1 0-2h12a1 1 0 1 1 0 2"></path>';
+    decrementBtn.setAttribute('aria-label', 'Decrease quantity');
+  }
+}
+
 // Delete button handler
 document.addEventListener('click', (e) => {
   const deleteBtn = e.target.closest('[data-testid="cart-item-remove-btn"]');
@@ -289,10 +315,13 @@ $(document).ready(function () {
       }
       $.post(refreshURL, requestData).then(function (resp) {
         var html = $('<div />').append($.parseHTML(resp.preview));
-        $('.blockcart').replaceWith($(resp.preview).find('.blockcart'));
-        if (resp.modal) {
-          showModal(resp.modal);
-        }
+        var newBlockcart = $(resp.preview).find('.blockcart');
+        $('.blockcart').replaceWith(newBlockcart);
+        
+        // Update all buttons after cart refresh
+        setTimeout(function() {
+          updateDecrementButtonAppearance();
+        }, 100);
       }).fail(function (resp) {
         prestashop.emit('handleError', { eventType: 'updateShoppingCart', resp: resp });
       });

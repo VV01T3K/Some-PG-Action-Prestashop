@@ -255,6 +255,10 @@ class CartControllerCore extends FrontController
                 $this->processChangeProductInCart();
             } elseif (Tools::getIsset('delete')) {
                 $this->processDeleteProductInCart();
+                // Redirect to clean URL after product deletion to prevent re-deleting on refresh
+                if (!Tools::getValue('ajax')) {
+                    Tools::redirect($this->context->link->getPageLink('cart', true, $this->context->language->id, ['action' => 'show']));
+                }
             } elseif (CartRule::isFeatureActive()) {
                 if (Tools::getIsset('addDiscount')) {
                     if (!($code = trim(Tools::getValue('discount_name')))) {

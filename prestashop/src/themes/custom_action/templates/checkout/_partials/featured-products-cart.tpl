@@ -28,6 +28,8 @@ window.addToCartFeatured = function(event) {
 	const minimalQty = parseInt(button.getAttribute('data-minimal-quantity')) || 1;
 	const qty = 1;
 	
+
+	
 	// Validate minimum quantity
 	if (qty < minimalQty) {
 		showErrorMessage(productRow, 'Minimum quantity is ' + minimalQty);
@@ -35,21 +37,32 @@ window.addToCartFeatured = function(event) {
 		return;
 	}
 	
-	// Build FormData with hardcoded parameters (same as product page button)
-	const formData = new FormData();
-	formData.append('id_product', productId);
-	formData.append('qty', qty);
-	formData.append('add', '1');
-	formData.append('action', 'update');
+	// Build query string following the jQuery $.post pattern from product page button
+	// CRITICAL: The 'action=update' parameter tells PrestaShop's FrontController to dispatch
+	// to displayAjaxUpdate() method, which returns JSON response. Without this, the full
+	// cart page HTML is rendered instead of JSON, causing "Unexpected end of JSON input" error.
+	// This must be in the URL query string, not FormData body.
+	const params = new URLSearchParams();
+	params.append('id_product', productId);
+	params.append('qty', qty);
+	params.append('add', '1');
+	params.append('action', 'update');  // CRITICAL: Triggers displayAjaxUpdate() method
+	params.append('token', '{$static_token}');
+	params.append('ajax', '1');
 	
-	// POST to cart with AJAX
-	fetch(cartUrl + '?ajax=1', {
-		method: 'POST',
-		body: new URLSearchParams(formData)
+	const queryString = params.toString();
+	const finalUrl = cartUrl.includes('?') 
+		? cartUrl + '&' + queryString 
+		: cartUrl + '?' + queryString;
+	
+	
+	// POST to cart with query string in URL (matches jQuery $.post behavior)
+	fetch(finalUrl, {
+		method: 'POST'
 	})
 	.then(response => {
 		if (!response.ok) {
-			throw new Error('Network response was not ok');
+			throw new Error('Network response was not ok: ' + response.status);
 		}
 		return response.json();
 	})
@@ -60,7 +73,7 @@ window.addToCartFeatured = function(event) {
 			button.disabled = false;
 			return;
 		}
-		
+
 		// Clear any previous error messages
 		if (productRow) {
 			const errorDiv = productRow.querySelector('.product-add-error');
@@ -81,14 +94,13 @@ window.addToCartFeatured = function(event) {
 				resp: data
 			});
 		}
-		
 		// Re-enable button
 		setTimeout(() => {
 			button.disabled = false;
 		}, 1000);
 	})
 	.catch(error => {
-		showErrorMessage(productRow, 'Failed to add product to cart');
+		showErrorMessage(productRow, 'Failed to add product to cart: ' + error.message);
 		button.disabled = false;
 		
 		// Emit error event
