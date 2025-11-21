@@ -24,28 +24,34 @@
  *}
 {extends file=$layout}
 
-{block name='header'}
-  {include file='checkout/_partials/header.tpl'}
-{/block}
 
 {block name='content'}
-  <section id="content">
-    <div class="row">
-      <div class="cart-grid-body col-xs-12 col-lg-8">
-        {block name='checkout_process'}
-          {render file='checkout/checkout-process.tpl' ui=$checkout_process}
-        {/block}
-      </div>
-      <div class="cart-grid-right col-xs-12 col-lg-4">
-        {block name='cart_summary'}
-          {include file='checkout/_partials/cart-summary.tpl' cart=$cart}
-        {/block}
-        {hook h='displayReassurance'}
+  <section id="main" style="background-color: #ffffff; padding: 2rem 0;">
+    <!-- Centered container matching Action.com structure -->
+    <div style="display: flex; width: 100%; flex-direction: column; padding-left: 1rem; padding-right: 1rem;">
+      <div style="margin-left: auto; margin-right: auto; width: 100%; max-width: 48rem;">
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          
+          <!-- Checkout Process -->
+          <section style="width: 100%;">
+            {block name='checkout_process'}
+              {render file='checkout/checkout-process.tpl' ui=$checkout_process}
+            {/block}
+          </section>
+
+          <!-- Cart Summary -->
+          <section style="background-color: #f9f9f9; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
+            <h3 style="color: #001489; font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Podsumowanie zamówienia</h3>
+            {block name='cart_summary'}
+              {include file='checkout/_partials/cart-summary.tpl' cart=$cart}
+            {/block}
+          </section>
+
+          <!-- Reassurance Block -->
+          {hook h='displayReassurance'}
+
+        </div>
       </div>
     </div>
   </section>
-{/block}
-
-{block name='footer'}
-  {include file='checkout/_partials/footer.tpl'}
 {/block}
