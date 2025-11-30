@@ -28,3 +28,10 @@ export interface ProductApiPayload {
   price: string;
   ean13: string;
 }
+export interface FeatureAssociation {
+    featureId: number;
+    featureValueId: number;
+}
+
+export type StringIdMap = Map<string, number>;
+export type FeatureValueIdMap = Map<string, Map<string, number>>;

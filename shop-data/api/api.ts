@@ -70,6 +70,54 @@ export async function createProduct(product: ProductApiPayload): Promise<number>
     return getProductIdByEan(ean13);
 }
 
+export async function createFeature(feature_name: string): Promise<number>{
+    let featureXml = readFileSync("./xml_templates/create_product_feature_template.xml", "utf8");
+    featureXml = substitutePlaceholders(featureXml, { feature_name });
+    const resFeature = await fetch(`${API_URL}/product_features?ws_key=${API_KEY}`, {
+        method: "POST",
+        headers: { "Content-Type": "text/xml" },
+        body: featureXml,
+    });
+
+    if (resFeature.ok) {
+        const xmlText = await resFeature.text();
+        const $ = cheerio.load(xmlText, { xmlMode: true });
+        const idText = $("product_feature > id").text();
+        const featureId = parseInt(idText.trim(), 10);
+        console.log(`✅ Utworzono feature "${feature_name}" z ID: ${idText}`);
+        return featureId;
+    } else {
+        console.error(`❌ Błąd POST /product_features (Status: ${resFeature.status}).`);
+        console.log(await resFeature.text());
+        return -1;
+    }
+}
+
+export async function createFeatureValue(featureId: number, value: string): Promise<number>{
+    let valueXml = readFileSync("./xml_templates/create_product_feature_value_template.xml", "utf8");
+    valueXml = substitutePlaceholders(valueXml, {
+        feature_id: featureId.toString(),
+        value,
+    });
+    const resValue = await fetch(`${API_URL}/product_feature_values?ws_key=${API_KEY}`, {
+        method: "POST",
+        headers: { "Content-Type": "text/xml" },
+        body: valueXml,
+    });
+
+    if (resValue.ok) {
+        const xmlText = await resValue.text();
+        const $ = cheerio.load(xmlText, { xmlMode: true });
+        const idText = $("product_feature_value > id").text();
+        const valueId = parseInt(idText.trim(), 10);
+        console.log(`✅ Utworzono feature_value "${value}" z ID: ${idText}`);
+        return valueId;
+    } else {
+        console.error(`❌ Błąd POST /product_feature_values (Status: ${resValue.status}).`);
+        console.log(await resValue.text());
+        return -1;
+    }
+}
 
 export async function uploadProductImage(productId: number, imagePath: string) {
     const MAX_RETRIES = 2;
