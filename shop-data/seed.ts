@@ -1,20 +1,28 @@
 import { seedCategories } from './api/category_manager';
 import { cleanDatabase } from './api/clean_database';
-import type { Product, ProductApiPayload } from "./types";
+import type { FeatureAssociation, StringIdMap, FeatureValueIdMap, Product, ProductApiPayload } from "./types";
 import products from './scrapper-results/products.json' assert { type: 'json' };
 import { createProduct, updateProductUnitPrice, updateStockAvailable, uploadProductImage } from './api/api';
+import { seedFeatureValues } from './api/features_manager';
 import { readdirSync } from 'fs';
 import { PRESTASHOP_DEFAULT_CAT_ID, PRESTASHOP_DEFAULT_CAT_ID_NUM } from './constants';
 
 const IMAGES_PATH = "./scrapper-results/images/";
 
 export async function seedShop() {
-    await cleanDatabase();
-    const categoryNameIdMap = await seedCategories();
-    await seedProducts(categoryNameIdMap);
+    await cleanDatabase(); // could be faster, but not really needed?
+    const categoryNameIdMap = await seedCategories(); // can be maybe a little bit faster
+    const { featureIds, valueIds } = await seedFeatureValues(); 
+    await seedProducts(categoryNameIdMap, featureIds, valueIds);
     
 }
-async function seedProducts(categoryNameIdMap: Map<string, number>) {
+
+
+async function seedProducts(
+    categoryNameIdMap: StringIdMap, 
+    featuresIdMap: StringIdMap, 
+    valuesIdMap: FeatureValueIdMap) {
+    const allPromises = [];
     for(const product of products) {
         const categoryNames = Object.keys(product.category_list);
         if (categoryNames.length === 0) continue;
@@ -23,23 +31,22 @@ async function seedProducts(categoryNameIdMap: Map<string, number>) {
         const categoryIds = categoryNames
             .map(name => categoryNameIdMap.get(name))
             .filter((id): id is number => id !== undefined);
-        
+        // associations featureId:featureValueId, ...
+        const associations = createFeatureValueIdAssociations(product.product_specifications, featuresIdMap, valuesIdMap);
+
         //create payload -> create product
-        const productPayload = createProductApiPayload(product as unknown as Product, categoryIds);
+        const productPayload = createProductApiPayload(product as unknown as Product, categoryIds, associations);
         const productImagesDirId = product.product_specifications['Numer produktu'];
         const QUANTITY_TO_SET = Math.floor(Math.random() * 11);
 
         const productId = await createProduct(productPayload);
         console.log(`Created product with id:${productId}`);
                 
-        //upload all images for the product
-        uploadAllProductImages(productId, productImagesDirId);
-        
-        const wasSuccessfull = await updateStockAvailable(productId, QUANTITY_TO_SET);
-        if(!wasSuccessfull) continue;
-        setProductUnitPrice(productId, product);
-        
+        allPromises.push(uploadAllProductImages(productId, productImagesDirId));
+        allPromises.push(updateStockAvailable(productId, QUANTITY_TO_SET));
+        allPromises.push(setProductUnitPrice(productId, product));
     }
+    await Promise.all(allPromises);
 }
 
 function setProductUnitPrice(productId: number, product: any){
@@ -49,7 +56,7 @@ function setProductUnitPrice(productId: number, product: any){
 }
 
 //TODO: add rest of the fields
-function createProductApiPayload(product: Product, categoryIds: number[]){
+function createProductApiPayload(product: Product, categoryIds: number[], associations: FeatureAssociation[]){
     const categoryDefaultId = categoryIds[0] ?? PRESTASHOP_DEFAULT_CAT_ID;
     //???we need to add also default category(id=2)
     const finalCategoryIds: number[] = [...categoryIds, PRESTASHOP_DEFAULT_CAT_ID_NUM];
@@ -57,6 +64,14 @@ function createProductApiPayload(product: Product, categoryIds: number[]){
     const categoriesXml = finalCategoryIds
         .map(id => `<category><id><![CDATA[${id}]]></id></category>`)
         .join("");
+    const featuresXml = associations.map(assoc =>
+        `<product_feature>
+            <id><![CDATA[${assoc.featureId}]]></id>
+            <id_feature_value><![CDATA[${assoc.featureValueId}]]></id_feature_value>
+         </product_feature>
+        `)
+        .join("");
+
     const ean13 = generateRandomEAN13();
 
     // --- HTML DESCRIPTION BLOCK ---
@@ -97,6 +112,7 @@ function createProductApiPayload(product: Product, categoryIds: number[]){
     const productPayload: ProductApiPayload = {
         category_default_id: categoryDefaultId.toString(),
         category_ids_xml: categoriesXml,
+        feature_associations_xml: featuresXml,
         name: product.name,
         description: htmlDescriptionBlock,
         description_short: product.subtitle,
@@ -155,4 +171,30 @@ function generateRandomEAN13(): string {
     const sum = digits.reduce((acc, val, i) => acc + val * (i % 2 === 0 ? 1 : 3), 0);
     const checkDigit = (10 - (sum % 10)) % 10;
     return digits.join("") + checkDigit;
+}
+function createFeatureValueIdAssociations(specifications: Record<string, string>, 
+    featuresIdMap: StringIdMap, 
+    valuesIdMap: FeatureValueIdMap) {
+    const associations: FeatureAssociation[] = [];
+    for (const [featureName, featureValue] of Object.entries(specifications)) {
+        const valueName = featureValue.trim();
+        const featureId = featuresIdMap.get(featureName);
+        const featureValueMap = valuesIdMap.get(featureName);
+        
+        // Sprawdzenie, czy klucze cechy i mapy wartości istnieją
+        if (featureId === undefined || featureValueMap === undefined) {
+            console.warn(`⚠️ Pomięto cechę "${featureName}": Brak ID w mapach.`);
+            continue;
+        }            
+        const featureValueId = featureValueMap.get(valueName);
+        if (featureValueId !== undefined) {
+            associations.push({ 
+                featureId: featureId, 
+                featureValueId: featureValueId 
+            });
+        } else {
+            console.warn(`⚠️ Pomięto wartość "${valueName}": Brak Value ID w mapie.`);
+        }
+    }
+    return associations;
 }

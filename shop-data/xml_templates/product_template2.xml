@@ -24,6 +24,9 @@
             <categories>
                 {{ categories_xml }}
             </categories>
+            <product_features>
+                {{ feature_associations_xml }}
+            </product_features>
         </associations>
     </product>
 </prestashop>

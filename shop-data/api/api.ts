@@ -48,12 +48,11 @@ export async function createSubCategory(name: string, parent_id: number) {
     return createCategoryOrSubcategory(name, parent_id.toString());
 }
 export async function createProduct(product: ProductApiPayload): Promise<number>{
-    const { category_default_id, category_ids_xml, name, description, description_short, price, ean13 } = product;
+    const { category_default_id, category_ids_xml, feature_associations_xml, name, description, description_short, price, ean13 } = product;
     
     let XML = readFileSync("./xml_templates/product_template2.xml", "utf8");
     XML = substitutePlaceholders(XML, {category_default_id, name, description, description_short, 
-        price, ean13, categories_xml: category_ids_xml});
-
+        price, ean13, categories_xml: category_ids_xml, feature_associations_xml});
     const res = await fetch(`${API_URL}/products?ws_key=${API_KEY}`, {
         method: "POST",
         headers: {
@@ -66,8 +65,13 @@ export async function createProduct(product: ProductApiPayload): Promise<number>
         const xmlres = await res.text();
         console.log(xmlres);
     }
-    //we have to call it bcs POST request won't give as the createdId
-    return getProductIdByEan(ean13);
+    const xmlText = await res.text();
+    const $ = cheerio.load(xmlText, { xmlMode: true });
+    const idText = $("product > id").text();
+    const featureId = parseInt(idText.trim(), 10);
+    return featureId;
+    // bring it back if there are any problems
+    // return getProductIdByEan(ean13);
 }
 
 export async function createFeature(feature_name: string): Promise<number>{
@@ -283,9 +287,8 @@ export async function updateStockAvailable(productId: number, stockNum: number){
         const stock_availableId = $("stock_available").attr("id");
         if(!stock_availableId) {
             if(attempt == MAX_RETRIES){
-                console.error("DELETING INVALID PRODUCT");
-                await deleteProductById(productId);
-                return false;
+                console.error("Could not update product's stock available");
+                return;
             }
             console.warn(`⚠️ Stock ID not found for ${productId}. Retrying in 1s... (Attempt ${attempt}/${MAX_RETRIES})`);
             await new Promise(resolve => setTimeout(resolve, 1000));
@@ -295,22 +298,23 @@ export async function updateStockAvailable(productId: number, stockNum: number){
         let modifiedStockXml = readFileSync("./xml_templates/stock_template.xml", "utf8");
         modifiedStockXml = substitutePlaceholders(modifiedStockXml, { stock_id: stock_availableId, product_id: productId.toString(), stock: stockNum.toString() });
     
-        const updateRes = await fetch(`${API_URL}/stock_availables/${stock_availableId}?ws_key=${API_KEY}`, {
+        const putRes = await fetch(`${API_URL}/stock_availables/${stock_availableId}?ws_key=${API_KEY}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/xml',
             },
             body: modifiedStockXml
         });
-        if (updateRes.ok) {
-            console.log(`Successfully updated stock for product ID: ${productId} to quantity: ${stockNum}`);
-            return true;
-        } else {
-            const errorText = await updateRes.text();
-            console.error(`Failed to update stock for product ID: ${productId}. Status: ${updateRes.status}. Retrying in 1s... (Attempt ${attempt}/${MAX_RETRIES})`);
+        if (!putRes.ok) {
+            const x = await putRes.text();
+            console.error(x);
+            console.error(`Failed to update stock for product ID: ${productId}. Status: ${putRes.status}. Retrying in 1s... (Attempt ${attempt}/${MAX_RETRIES})`);
             await new Promise(resolve => setTimeout(resolve, 1000));
+        } else {
+            console.log(`Successfully updated stock for product ID: ${productId} to quantity: ${stockNum}`);
+            return;
         }
-    }    return false;
+    }
 }
 
 export async function updateProductUnitPrice( productId: number, unity: string, unitPriceRatio: string) {

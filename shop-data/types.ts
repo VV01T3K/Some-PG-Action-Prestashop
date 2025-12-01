@@ -22,6 +22,7 @@ export interface Product {
 export interface ProductApiPayload {
   category_default_id: string;
   category_ids_xml: string;
+  feature_associations_xml: string;
   name: string;
   description: string;
   description_short: string;

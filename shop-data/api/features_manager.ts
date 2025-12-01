@@ -17,9 +17,12 @@ function extractUniqueFeaturesValues(data: Product[], features_field_name: keyof
     return uniqueFeatureValues;
 }
 
+// creates all features-values through API and creates Maps with createdIds
 async function initializeFeaturesValuesMaps(uniqueFeatureValues: Map<string, Set<string>>) {
     const featureIds: StringIdMap = new Map();
     const valueIds: FeatureValueIdMap = new Map();
+
+    const allPromises = [];
 
     for (const [featureName, valueSet] of uniqueFeatureValues.entries()) {
         
@@ -28,13 +31,18 @@ async function initializeFeaturesValuesMaps(uniqueFeatureValues: Map<string, Set
         valueIds.set(featureName, new Map());
 
         const currentValueMap = valueIds.get(featureName)!; //takes the reference
-
+        const valuePromises = [];
         for (const valueName of valueSet) {
-            const featureValueId = await createFeatureValue(featureId, valueName); 
-            currentValueMap.set(valueName, featureValueId);
+            const promise = createFeatureValue(featureId, valueName).then(
+                featureValueId => {
+                    currentValueMap.set(valueName, featureValueId);
+            });
+            valuePromises.push(promise);            
         }
+        // await Promise.all(valuePromises); // maybe await also can be removed?
+        allPromises.push(Promise.all(valuePromises));
     }
-    
+    await Promise.all(allPromises);
     return { featureIds, valueIds };
 }
 
