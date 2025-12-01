@@ -10,6 +10,7 @@
     "typescript": "^5"
   },
   "scripts": {
+    "deps": "bun install"
   },
   "dependencies": {
     "cheerio": "^1.1.2",
