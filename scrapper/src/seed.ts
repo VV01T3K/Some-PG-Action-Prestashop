@@ -1,13 +1,15 @@
 import { seedCategories } from './api/category_manager';
 import { cleanDatabase } from './api/clean_database';
 import type { FeatureAssociation, StringIdMap, FeatureValueIdMap, Product, ProductApiPayload } from "./types";
-import products from './scrapper-results/products.json' assert { type: 'json' };
 import { createProduct, updateProductUnitPrice, updateStockAvailable, uploadProductImage } from './api/api';
 import { seedFeatureValues } from './api/features_manager';
-import { readdirSync } from 'fs';
-import { PRESTASHOP_DEFAULT_CAT_ID, PRESTASHOP_DEFAULT_CAT_ID_NUM } from './constants';
+import { readdir } from 'node:fs/promises';
 
-const IMAGES_PATH = "./scrapper-results/images/";
+const products = await Bun.file('../scrapper-results/products.json').json();
+
+const PRESTASHOP_DEFAULT_CAT_ID = "2";
+const PRESTASHOP_DEFAULT_CAT_ID_NUM = 2;
+const IMAGES_PATH = "../scrapper-results/images/";
 
 export async function seedShop() {
     await cleanDatabase(); // could be faster, but not really needed?
@@ -81,31 +83,9 @@ function createProductApiPayload(product: Product, categoryIds: number[], associ
         <h2>Opis</h2>
     </div>
 
-    <div id="product-description-list">
-        <ul>
-            ${(product.description_list ?? []).map(item => `<li>${item}</li>`).join("")}
-        </ul>
-    </div>
-
     <div id="product-description-long">
         ${product.description_long || ""}
     </div>
-</div>
-<div
-<h2 id="product-features-title">Cechy produktu</h2>
-<div id="product-features-table">
-    <table>
-        <tbody>
-            ${
-                Object.entries(product.product_specifications ?? {})
-                    .map(
-                        ([key, value]) =>
-                            `<tr><td class="feature-name">${key}</td><td class="feature-value">${value}</td></tr>`
-                    )
-                    .join("")
-            }
-        </tbody>
-    </table>
 </div>
     `.trim();
 
@@ -123,7 +103,7 @@ function createProductApiPayload(product: Product, categoryIds: number[], associ
 }
 async function uploadAllProductImages(productId: number, productImagesDirId: string) {
     const imageDir = `${IMAGES_PATH}${productImagesDirId}/`;
-    const imageFileNames = readdirSync(imageDir);
+    const imageFileNames = await readdir(imageDir);
     const imagePaths = imageFileNames.map(name => `${imageDir}${name}`);
     const limitedImagePaths = imagePaths; //.slice(0,2)
 

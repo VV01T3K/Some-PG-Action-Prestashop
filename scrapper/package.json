@@ -1,0 +1,26 @@
+{
+  "name": "action_scrapper",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "scripts": {
+    "setup": "cp .env.example .env",
+    "deps": "bun install && bun run setup",
+    "seed": "bun run ./src/seed.ts",
+    "clean-db": "bun run ./src/api/clean_database.ts",
+    "git:download": "cd .. && rm -rf \"./scrapper-results\" && git restore --source origin/images -- scrapper-results/",
+    "git:upload": "./scripts/img-upload.sh",
+    "scrape:products": "mkdir -p ../scrapper-results && bun run ./src/products_scrapper.ts",
+    "scrape:images": "bun run ./src/download_images.ts",
+    "scrape:all": "bun scrape:products && bun scrape:images"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2",
+    "sharp": "^0.34.4"
+  }
+}

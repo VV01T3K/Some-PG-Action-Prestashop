@@ -1,10 +1,12 @@
 import * as cheerio from 'cheerio';
-import type { Product } from '../types';
-import { writeFileSync } from "fs";
+import type { Product } from './types.ts';
 
 const OUTPUT_PATH = "../scrapper-results/products.json";
 const OUTPUT_CAT_PATH = "../scrapper-results/categories.json";
 const baseUrl = "https://www.action.com";
+
+// Logging helper
+const log = (message: string) => console.log(`[${new Date().toISOString()}] ${message}`);
 
 // list of categories
 const categories = [
@@ -32,26 +34,32 @@ const headers = {
 
 // Function to scrape a single category page and return product links
 async function scrapeCategoryPage(categoryPath: string, pageNumber: number): Promise<string[]> {
+  log(`Fetching category page: ${categoryPath} page ${pageNumber}`);
   const response = await fetch(`${baseUrl}${categoryPath}?page=${pageNumber}`, {
     headers,
     body: null,
     method: "GET"
   });
+  log(`Got response for ${categoryPath} page ${pageNumber}: ${response.status}`);
 
   const text = await response.text();
   const $ = cheerio.load(text);
 
-  return $('[data-testid="product-card-link"]')
+  const links = $('[data-testid="product-card-link"]')
     .map((_, el) => baseUrl + $(el).attr('href'))
     .get();
+  log(`Found ${links.length} products on ${categoryPath} page ${pageNumber}`);
+  return links;
 }
 
 const productFromScrapper = async (url: string): Promise<Product> => {
+  log(`Fetching product: ${url}`);
   const response = await fetch(url, {
     headers,
     body: null,
     method: "GET"
   });
+  log(`Got product response: ${response.status} for ${url}`);
   const text = await response.text();
   const $ = cheerio.load(text);
 
@@ -122,33 +130,56 @@ async function scrapeLinksToProducts() {
   const allProductLinks: string[] = [];
 
   for (const { path, pages } of categories) {
-    const pagePromises = Array.from({ length: pages }, (_, i) =>
-      scrapeCategoryPage(path, i + 1)
-    );
-
-    const results = await Promise.all(pagePromises);
-    const category_links = results.flat();
-    allProductLinks.push(...category_links);
+    log(`Starting to scrape category: ${path} (${pages} pages)`);
+    
+    // Process pages in batches of 5 to avoid overwhelming the server
+    const batchSize = 5;
+    for (let i = 0; i < pages; i += batchSize) {
+      const batch = Array.from({ length: Math.min(batchSize, pages - i) }, (_, j) =>
+        scrapeCategoryPage(path, i + j + 1)
+      );
+      log(`Processing batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(pages / batchSize)} for ${path}`);
+      const results = await Promise.all(batch);
+      allProductLinks.push(...results.flat());
+    }
+    log(`Finished category ${path}, total links so far: ${allProductLinks.length}`);
   }
   return allProductLinks;
 }
 
 async function scrapeProducts() {
+  log("Starting product scraping...");
   
   const allProductLinks = await scrapeLinksToProducts();
-  // 2. Scrape szczegóły produktów
-  const productPromises = allProductLinks.map(link => productFromScrapper(link));
-  const products = await Promise.all(productPromises);
+  log(`Total product links found: ${allProductLinks.length}`);
+  
+  // 2. Scrape product details in batches to avoid overwhelming the server
+  const batchSize = 10;
+  const products: Product[] = [];
+  
+  for (let i = 0; i < allProductLinks.length; i += batchSize) {
+    const batch = allProductLinks.slice(i, i + batchSize);
+    log(`Scraping products batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(allProductLinks.length / batchSize)} (${i + 1}-${Math.min(i + batchSize, allProductLinks.length)}/${allProductLinks.length})`);
+    
+    const batchResults = await Promise.all(batch.map(link => productFromScrapper(link)));
+    products.push(...batchResults);
+    
+    // Save after each batch so we don't lose progress
+    await Bun.write(OUTPUT_PATH, JSON.stringify(products, null, 2));
+    log(`Saved ${products.length} products to ${OUTPUT_PATH}`);
+  }
 
-  writeFileSync(OUTPUT_PATH, JSON.stringify(products, null, 2));
+  log(`Finished! Total products scraped: ${products.length}`);
 }
 
 async function scrapeCategoryImageLinks() {
+  log("Fetching category images from homepage...");
   const response = await fetch(`${baseUrl}/pl-pl/`, {
   headers,
   body: null,
   method: "GET"
   });
+  log(`Homepage response: ${response.status}`);
 
   const text = await response.text();
   const $ = cheerio.load(text);
@@ -161,8 +192,12 @@ async function scrapeCategoryImageLinks() {
   }
   return acc;
   }, {} as Record<string, string>);
-  writeFileSync(OUTPUT_CAT_PATH, JSON.stringify(category_images, null, 2));
+  log(`Found ${Object.keys(category_images).length} category images`);
+  await Bun.write(OUTPUT_CAT_PATH, JSON.stringify(category_images, null, 2));
+  log("Category images written successfully!");
 }
 
+log("=== Scraper starting ===");
 await scrapeProducts();
 await scrapeCategoryImageLinks();
+log("=== Scraper finished ===");

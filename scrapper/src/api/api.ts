@@ -1,20 +1,22 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //temporary fix for ssl todo:
-import { readFileSync } from "fs";
-import path from "path";
 import * as cheerio from 'cheerio';
-import type { ProductApiPayload } from "../types";
-import { sleep } from "bun";
-import { API_KEY, API_URL, PRESTASHOP_DEFAULT_CAT_ID, PRESTASHOP_ROOT_CAT_ID } from "../constants";
+import type { ProductApiPayload } from "../types.ts";
+
+// Helper to read template files
+const readTemplate = async (templatePath: string) => await Bun.file(templatePath).text();
 
 
-
+const API_URL = process.env.PRESTASHOP_API_URL;
+const API_KEY = process.env.PRESTASHOP_API_KEY;
+const PRESTASHOP_ROOT_CAT_ID = "1";
+const PRESTASHOP_DEFAULT_CAT_ID = "2";
 
 
 /* ==== CREATE ==== */
 async function createCategoryOrSubcategory(name: string, parent_id: string): Promise<number> {
     const maxRetries = 5;
     for (let attempt = 1; attempt <= maxRetries; attempt++){
-        let XML = readFileSync("./xml_templates/subcategory_template.xml", "utf8");
+        let XML = await readTemplate("./src/templates/subcategory_template.xml");
         XML = substitutePlaceholders(XML, { name, parent_id: parent_id });
         const res = await fetch(`${API_URL}/categories?ws_key=${API_KEY}`, {
             method: "POST",
@@ -50,7 +52,7 @@ export async function createSubCategory(name: string, parent_id: number) {
 export async function createProduct(product: ProductApiPayload): Promise<number>{
     const { category_default_id, category_ids_xml, feature_associations_xml, name, description, description_short, price, ean13 } = product;
     
-    let XML = readFileSync("./xml_templates/product_template2.xml", "utf8");
+    let XML = await readTemplate("./src/templates/product_template2.xml");
     XML = substitutePlaceholders(XML, {category_default_id, name, description, description_short, 
         price, ean13, categories_xml: category_ids_xml, feature_associations_xml});
     const res = await fetch(`${API_URL}/products?ws_key=${API_KEY}`, {
@@ -75,7 +77,7 @@ export async function createProduct(product: ProductApiPayload): Promise<number>
 }
 
 export async function createFeature(feature_name: string): Promise<number>{
-    let featureXml = readFileSync("./xml_templates/create_product_feature_template.xml", "utf8");
+    let featureXml = await readTemplate("./src/templates/create_product_feature_template.xml");
     featureXml = substitutePlaceholders(featureXml, { feature_name });
     const resFeature = await fetch(`${API_URL}/product_features?ws_key=${API_KEY}`, {
         method: "POST",
@@ -98,7 +100,7 @@ export async function createFeature(feature_name: string): Promise<number>{
 }
 
 export async function createFeatureValue(featureId: number, value: string): Promise<number>{
-    let valueXml = readFileSync("./xml_templates/create_product_feature_value_template.xml", "utf8");
+    let valueXml = await readTemplate("./src/templates/create_product_feature_value_template.xml");
     valueXml = substitutePlaceholders(valueXml, {
         feature_id: featureId.toString(),
         value,
@@ -126,10 +128,11 @@ export async function createFeatureValue(featureId: number, value: string): Prom
 export async function uploadProductImage(productId: number, imagePath: string) {
     const MAX_RETRIES = 2;
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-        const blob = new Blob([readFileSync(imagePath)], { type: "image/jpeg" });
+        const file = Bun.file(imagePath);
+        const blob = new Blob([await file.arrayBuffer()], { type: "image/jpeg" });
 
         const formData = new FormData();
-        formData.append("image", blob, path.basename(imagePath));
+        formData.append("image", blob, imagePath.split('/').pop() ?? 'image.jpg');
 
         const res = await fetch(`${API_URL}/images/products/${productId}?ws_key=${API_KEY}`, {
             method: "POST",
@@ -295,7 +298,7 @@ export async function updateStockAvailable(productId: number, stockNum: number){
             continue;
         }
         
-        let modifiedStockXml = readFileSync("./xml_templates/stock_template.xml", "utf8");
+        let modifiedStockXml = await readTemplate("./src/templates/stock_template.xml");
         modifiedStockXml = substitutePlaceholders(modifiedStockXml, { stock_id: stock_availableId, product_id: productId.toString(), stock: stockNum.toString() });
     
         const putRes = await fetch(`${API_URL}/stock_availables/${stock_availableId}?ws_key=${API_KEY}`, {

@@ -1,6 +1,7 @@
-import products from '../scrapper-results/products.json' assert { type: 'json' };
 import { createCategory, createSubCategory } from './api';
-import type { Product } from '../types';
+import type { Product } from '../types.ts';
+
+const products = await Bun.file('../scrapper-results/products.json').json();
 
 interface CategoryInfo {
     parentUrlKey: string | undefined;

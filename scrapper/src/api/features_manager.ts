@@ -1,6 +1,7 @@
-import products from '../scrapper-results/products.json' assert { type: 'json' };
-import { createCategory, createFeature, createFeatureValue, createSubCategory } from './api';
-import type { FeatureValueIdMap, Product, StringIdMap } from '../types';
+import { createFeature, createFeatureValue } from './api.ts';
+import type { FeatureValueIdMap, Product, StringIdMap } from '../types.ts';
+
+const products = await Bun.file('../scrapper-results/products.json').json();
 
 function extractUniqueFeaturesValues(data: Product[], features_field_name: keyof Product): Map<string, Set<string>> {
     const uniqueFeatureValues = new Map<string, Set<string>>();
