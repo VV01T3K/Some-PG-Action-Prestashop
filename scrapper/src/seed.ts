@@ -10,13 +10,19 @@ const products = await Bun.file('../scrapper-results/products.json').json();
 const PRESTASHOP_DEFAULT_CAT_ID = "2";
 const PRESTASHOP_DEFAULT_CAT_ID_NUM = 2;
 const IMAGES_PATH = "../scrapper-results/images/";
+const MAX_IMAGES_PER_PRODUCT = 3;
+const MAX_PRODUCTS_TO_SEED = 1000;
 
 export async function seedShop() {
-    await cleanDatabase(); // could be faster, but not really needed?
-    const categoryNameIdMap = await seedCategories(); // can be maybe a little bit faster
-    const { featureIds, valueIds } = await seedFeatureValues(); 
-    await seedProducts(categoryNameIdMap, featureIds, valueIds);
+    await cleanDatabase();
     
+    // Run category and feature seeding in parallel (they're independent)
+    const [categoryNameIdMap, { featureIds, valueIds }] = await Promise.all([
+        seedCategories(),
+        seedFeatureValues()
+    ]);
+    
+    await seedProducts(categoryNameIdMap, featureIds, valueIds);
 }
 
 
@@ -24,8 +30,13 @@ async function seedProducts(
     categoryNameIdMap: StringIdMap, 
     featuresIdMap: StringIdMap, 
     valuesIdMap: FeatureValueIdMap) {
-    const allPromises = [];
-    for(const product of products) {
+    
+    // First, create all products and collect their data
+    const createdProducts: { productId: number; productImagesDirId: string; product: Product; quantity: number }[] = [];
+    
+    const productsToSeed = (products as Product[]).slice(0, MAX_PRODUCTS_TO_SEED);
+    
+    for (const product of productsToSeed) {
         const categoryNames = Object.keys(product.category_list);
         if (categoryNames.length === 0) continue;
         
@@ -37,18 +48,41 @@ async function seedProducts(
         const associations = createFeatureValueIdAssociations(product.product_specifications, featuresIdMap, valuesIdMap);
 
         //create payload -> create product
-        const productPayload = createProductApiPayload(product as unknown as Product, categoryIds, associations);
+        const productPayload = createProductApiPayload(product, categoryIds, associations);
         const productImagesDirId = product.product_specifications['Numer produktu'];
         const QUANTITY_TO_SET = Math.floor(Math.random() * 11);
 
+        if (!productImagesDirId) {
+            console.warn(`Skipping product "${product.name}" - no product number found`);
+            continue;
+        }
+
         const productId = await createProduct(productPayload);
         console.log(`Created product with id:${productId}`);
-                
-        allPromises.push(uploadAllProductImages(productId, productImagesDirId));
-        allPromises.push(updateStockAvailable(productId, QUANTITY_TO_SET));
-        allPromises.push(setProductUnitPrice(productId, product));
+        
+        createdProducts.push({ productId, productImagesDirId, product, quantity: QUANTITY_TO_SET });
     }
-    await Promise.all(allPromises);
+    
+    // Upload all images first and wait for completion
+    console.log('Uploading all product images...');
+    await Promise.all(
+        createdProducts.map(({ productId, productImagesDirId }) => 
+            uploadAllProductImages(productId, productImagesDirId)
+        )
+    );
+    console.log('All product images uploaded.');
+    
+    // Then run stock and unit price updates
+    console.log('Updating stock and unit prices...');
+    await Promise.all(
+        createdProducts.map(({ productId, product, quantity }) => 
+            Promise.all([
+                updateStockAvailable(productId, quantity),
+                setProductUnitPrice(productId, product)
+            ])
+        )
+    );
+    console.log('Stock and unit prices updated.');
 }
 
 function setProductUnitPrice(productId: number, product: any){
@@ -112,7 +146,7 @@ async function uploadAllProductImages(productId: number, productImagesDirId: str
     const imageDir = `${IMAGES_PATH}${productImagesDirId}/`;
     const imageFileNames = await readdir(imageDir);
     const imagePaths = imageFileNames.map(name => `${imageDir}${name}`);
-    const limitedImagePaths = imagePaths; //.slice(0,2)
+    const limitedImagePaths = imagePaths.slice(0, MAX_IMAGES_PER_PRODUCT);
 
     const uploadPromises = limitedImagePaths.map(imagePath => uploadProductImage(productId, imagePath));
     await Promise.all(uploadPromises);
@@ -180,7 +214,7 @@ function createFeatureValueIdAssociations(specifications: Record<string, string>
                 featureValueId: featureValueId 
             });
         } else {
-            console.warn(`⚠️ Pomięto wartość "${valueName}": Brak Value ID w mapie.`);
+            console.warn(`Pomięto wartość "${valueName}": Brak Value ID w mapie.`);
         }
     }
     return associations;

@@ -23,27 +23,38 @@ async function initializeFeaturesValuesMaps(uniqueFeatureValues: Map<string, Set
     const featureIds: StringIdMap = new Map();
     const valueIds: FeatureValueIdMap = new Map();
 
-    const allPromises = [];
-
-    for (const [featureName, valueSet] of uniqueFeatureValues.entries()) {
-        
-        const featureId = await createFeature(featureName); 
+    // Step 1: Create all features in parallel
+    const featureEntries = Array.from(uniqueFeatureValues.entries());
+    const featureCreationPromises = featureEntries.map(async ([featureName]) => {
+        const featureId = await createFeature(featureName);
+        return { featureName, featureId };
+    });
+    
+    const createdFeatures = await Promise.all(featureCreationPromises);
+    
+    // Populate featureIds map
+    for (const { featureName, featureId } of createdFeatures) {
         featureIds.set(featureName, featureId);
         valueIds.set(featureName, new Map());
+    }
 
-        const currentValueMap = valueIds.get(featureName)!; //takes the reference
-        const valuePromises = [];
+    // Step 2: Create all feature values in parallel
+    const allValuePromises: Promise<void>[] = [];
+    for (const { featureName, featureId } of createdFeatures) {
+        const valueSet = uniqueFeatureValues.get(featureName)!;
+        const currentValueMap = valueIds.get(featureName)!;
+        
         for (const valueName of valueSet) {
             const promise = createFeatureValue(featureId, valueName).then(
                 featureValueId => {
                     currentValueMap.set(valueName, featureValueId);
-            });
-            valuePromises.push(promise);            
+                }
+            );
+            allValuePromises.push(promise);
         }
-        // await Promise.all(valuePromises); // maybe await also can be removed?
-        allPromises.push(Promise.all(valuePromises));
     }
-    await Promise.all(allPromises);
+    
+    await Promise.all(allValuePromises);
     return { featureIds, valueIds };
 }
 
