@@ -14,7 +14,7 @@
     "seed": "bun run ./src/seed.ts",
     "clean-db": "bun run ./src/api/clean_database.ts",
     "git:download": "cd .. && rm -rf \"./scrapper-results\" && git restore --source origin/images -- scrapper-results/",
-    "git:upload": "./scripts/img-upload.sh",
+    "git:upload": "./scripts/scrap-upload.sh",
     "scrape:products": "mkdir -p ../scrapper-results && bun run ./src/products_scrapper.ts",
     "scrape:images": "bun run ./src/download_images.ts",
     "scrape:all": "bun scrape:products && bun scrape:images"

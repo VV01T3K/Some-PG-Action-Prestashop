@@ -1,5 +1,6 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //temporary fix for ssl todo:
 import * as cheerio from 'cheerio';
+import sharp from 'sharp';
 import type { ProductApiPayload } from "../types.ts";
 
 // Helper to read template files
@@ -129,10 +130,14 @@ export async function uploadProductImage(productId: number, imagePath: string) {
     const MAX_RETRIES = 2;
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
         const file = Bun.file(imagePath);
-        const blob = new Blob([await file.arrayBuffer()], { type: "image/jpeg" });
+        const imageBuffer = Buffer.from(await file.arrayBuffer());
+        
+        // Convert to PNG to preserve transparency (e.g., from webp)
+        const pngBuffer = await sharp(imageBuffer).png().toBuffer();
+        const blob = new Blob([pngBuffer], { type: "image/png" });
 
         const formData = new FormData();
-        formData.append("image", blob, imagePath.split('/').pop() ?? 'image.jpg');
+        formData.append("image", blob, imagePath.split('/').pop()?.replace(/\.\w+$/, '.png') ?? 'image.png');
 
         const res = await fetch(`${API_URL}/images/products/${productId}?ws_key=${API_KEY}`, {
             method: "POST",
