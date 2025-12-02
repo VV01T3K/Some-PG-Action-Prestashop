@@ -53,6 +53,13 @@ async function seedProducts(
 
 function setProductUnitPrice(productId: number, product: any){
     const {unity, unit_price} = retrieveUnityUnitPrice(product.price_description);
+    
+    // Skip if no unit price data available
+    if (!unit_price || !unity) {
+        console.log(`Skipping unit price for product ${productId} - no unit price data`);
+        return;
+    }
+    
     const unit_price_ratio = calculateUnitPriceRatio(product.price, unit_price);
     updateProductUnitPrice(productId, unity, unit_price_ratio);
 }

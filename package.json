@@ -21,7 +21,6 @@
     "db:restore": "bun db:up && ./.scripts/db.sh restore",
     "db:restore-s": "bun db:up && ./.scripts/db.sh --silent restore",
     "db:clean": "./.scripts/db.sh clean",
-    "scrap:del": "cd scrapper && bun run clean-db",
     "scrap:load": "cd scrapper && bun git:download",
     "scrap:seed": "cd scrapper && bun run seed",
     "scrap:sync": "bun scrap:load && bun scrap:seed"

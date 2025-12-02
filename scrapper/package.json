@@ -12,7 +12,6 @@
     "setup": "cp .env.example .env",
     "deps": "bun install && bun run setup",
     "seed": "bun run ./src/seed.ts",
-    "clean-db": "bun run ./src/api/clean_database.ts",
     "git:download": "cd .. && rm -rf \"./scrapper-results\" && git restore --source origin/images -- scrapper-results/",
     "git:upload": "./scripts/scrap-upload.sh",
     "scrape:products": "mkdir -p ../scrapper-results && bun run ./src/products_scrapper.ts",
