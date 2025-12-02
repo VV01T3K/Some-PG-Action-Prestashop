@@ -1,0 +1,115 @@
+/* Product page custom layout approximating Action style */
+
+.action-product .ap-container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 16px 20px 32px;
+  font-family: var(--action-font, Inter, Roboto, Arial, Helvetica, sans-serif);
+}
+
+/* Two-column grid: media left, info right */
+.action-product .ap-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .action-product .ap-grid {
+    grid-template-columns: 1fr;
+  }
+  .action-product .ap-side { max-width: 560px; margin: 0 auto; }
+}
+
+.action-product .ap-title {
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1.2;
+  margin: 0 0 12px;
+}
+
+/* Center image gallery */
+.action-product .ap-media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px auto 20px;
+  width: 100%;
+}
+.action-product .ap-media .images-container,
+.action-product .ap-media .product-cover,
+.action-product .ap-media .js-qv-product-cover {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  float: none !important;
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+.action-product .ap-media .product-cover img,
+.action-product .ap-media .js-qv-product-cover img,
+.action-product .ap-media img {
+  display: block;
+  margin: 0 auto;
+  height: auto;
+}
+
+/* Price centered and prominent */
+.action-product .ap-price {
+  text-align: center;
+  margin: 0 0 8px;
+}
+.action-product .ap-side .ap-price *,
+.action-product .ap-side .ap-desc { text-align: left; }
+.action-product .ap-side .ap-price { text-align: left; }
+.action-product .ap-price .current-price .price,
+.action-product .ap-price .product-prices .price {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+/* Stack buy box elements and center */
+.action-product .ap-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  margin-top: 8px;
+}
+.action-product .ap-variants,
+.action-product .ap-discounts,
+.action-product .ap-additional {
+  width: 100%;
+}
+.action-product .ap-add-to-cart {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+.action-product .ap-add-to-cart .add,
+.action-product .ap-add-to-cart .product-add-to-cart,
+.action-product .ap-add-to-cart .product-quantity {
+  width: 100%;
+}
+.action-product .ap-add-to-cart button[type="submit"],
+.action-product .ap-add-to-cart .btn-primary,
+.action-product .ap-add-to-cart .btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  font-weight: 700;
+}
+
+/* Tabs spacing */
+.action-product .ap-tabs {
+  margin-top: 32px;
+}
+
+/* Reassurance spacing */
+.action-product .ap-reassurance {
+  margin-top: 12px;
+}
