@@ -94,6 +94,11 @@ window.addToCartFeatured = function(event) {
 				resp: data
 			});
 		}
+
+		// Trigger the same refresh flow used by the quantity stepper
+		document.dispatchEvent(new CustomEvent('cartQuantityUpdated', {
+			detail: { response: data }
+		}));
 		// Re-enable button
 		setTimeout(() => {
 			button.disabled = false;
@@ -141,6 +146,7 @@ function showErrorMessage(productRow, message) {
 		}
 	}, 5000);
 }
+
 </script>
 {if isset($products) && count($products) > 0}
   <section style="width: 100%; max-width: 48rem;">

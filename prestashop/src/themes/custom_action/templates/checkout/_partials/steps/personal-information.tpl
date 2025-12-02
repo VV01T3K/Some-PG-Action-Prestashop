@@ -60,7 +60,7 @@
             aria-selected="{if !$show_login_form}true{else}false{/if}"
           >
             {if $guest_allowed}
-              {l s='Order as a guest' d='Shop.Theme.Checkout'}
+              {l s='Zarejestrój się' d='Shop.Theme.Checkout'}
             {else}
               {l s='Create an account' d='Shop.Theme.Customeraccount'}
             {/if}

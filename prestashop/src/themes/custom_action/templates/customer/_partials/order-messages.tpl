@@ -64,8 +64,8 @@
           </div>
         </div>
 
-        <div class="form-group row">
-          <label class="col-md-3 form-control-label"></label>
+        <div class="form-group row order-message-textarea-row">
+          <label class="col-md-3 form-control-label">{l s='Message' d='Shop.Forms.Labels'}</label>
           <div class="col-md-9">
             <textarea rows="3" name="msgText" class="form-control"></textarea>
           </div>

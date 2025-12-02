@@ -23,21 +23,40 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
 {block name='cart_footer'}
-  {if !empty($cart.products)}
-   <div class="bg-neutral-0 fixed bottom-0 left-0 z-60 flex w-full flex-col items-center border border-y-neutral-50">
-      <div class="flex w-full max-w-3xl items-center justify-between gap-2 p-4">
-        <span id="cart-total-price" class="text-dark-blue-500 truncate text-xl font-bold md:text-2xl" data-cart-refresh-url="{url entity='cart' params=['ajax' => true, 'action' => 'refresh']}">{$cart.totals.total.value}</span>
-        <div class="flex gap-2">
-          <a class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-transparent text-dark-blue-500 border border-dark-blue-500 hover:bg-neutral-50 active:bg-neutral-100 focus:bg-neutral-50 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2" href="{$urls.pages.index}" data-testid="add-products-button">
-            <span class="truncate px-1">{l s='Add products' d='Shop.Theme.Actions'}</span>
-          </a>
-          <a class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral" href="{$urls.pages.order}" data-testid="checkout-button">
-            <span class="truncate px-1">{l s='Proceed to checkout' d='Shop.Theme.Actions'}</span>
-          </a>
-        </div>
+  <div
+    id="cart-floating-footer"
+    class="bg-neutral-0 fixed bottom-0 left-0 z-60 flex w-full flex-col items-center border border-y-neutral-50 {if empty($cart.products)}cart-footer--hidden{/if}"
+    data-cart-footer-empty="{if empty($cart.products)}1{else}0{/if}"
+  >
+    <div class="flex w-full max-w-3xl items-center justify-between gap-2 p-4">
+      <span
+        id="cart-total-price"
+        class="text-dark-blue-500 truncate text-xl font-bold md:text-2xl"
+        data-cart-refresh-url="{url entity='cart' params=['ajax' => true, 'action' => 'refresh']}"
+      >
+        {if !empty($cart.products)}
+          {$cart.totals.total.value}
+        {else}
+          0,00 zł
+        {/if}
+      </span>
+      <div class="flex gap-2">
+        <a
+          class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-transparent text-dark-blue-500 border border-dark-blue-500 hover:bg-neutral-50 active:bg-neutral-100 focus:bg-neutral-50 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2"
+          href="{$urls.pages.index}"
+          data-testid="add-products-button"
+        >
+          <span class="truncate px-1">{l s='Add products' d='Shop.Theme.Actions'}</span>
+        </a>
+        <a
+          class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"
+          href="{$urls.pages.order}"
+          data-testid="checkout-button"
+        >
+          <span class="truncate px-1">{l s='Proceed to checkout' d='Shop.Theme.Actions'}</span>
+        </a>
       </div>
-      <style>#footer {{ padding-bottom: 96px; }}</style>
     </div>
-  {/if}
+  </div>
 {/block}
 

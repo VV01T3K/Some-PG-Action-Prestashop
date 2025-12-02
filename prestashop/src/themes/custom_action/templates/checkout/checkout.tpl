@@ -24,31 +24,29 @@
  *}
 {extends file=$layout}
 
+{block name='head' append}
+  <link rel="stylesheet" href="{$urls.theme_assets}css/checkout.css">
+{/block}
+
 
 {block name='content'}
-  <section id="main" style="background-color: #ffffff; padding: 2rem 0;">
-    <!-- Centered container matching Action.com structure -->
-    <div style="display: flex; width: 100%; flex-direction: column; padding-left: 1rem; padding-right: 1rem;">
-      <div style="margin-left: auto; margin-right: auto; width: 100%; max-width: 48rem;">
-        <div style="display: flex; flex-direction: column; gap: 2rem;">
-          
-          <!-- Checkout Process -->
-          <section style="width: 100%;">
+  <section id="main" class="checkout-main-section">
+    <div class="checkout-content-shell">
+      <div class="checkout-content-inner">
+        <div class="checkout-content-stack">
+
+          <section class="checkout-main-wrapper">
             {block name='checkout_process'}
               {render file='checkout/checkout-process.tpl' ui=$checkout_process}
             {/block}
           </section>
 
-          <!-- Cart Summary -->
-          <section style="background-color: #f9f9f9; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
-            <h3 style="color: #001489; font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Podsumowanie zamówienia</h3>
+          <section class="checkout-summary-section">
+            <h3 class="checkout-summary-title">{l s='Order summary' d='Shop.Theme.Checkout'}</h3>
             {block name='cart_summary'}
               {include file='checkout/_partials/cart-summary.tpl' cart=$cart}
             {/block}
           </section>
-
-          <!-- Reassurance Block -->
-          {hook h='displayReassurance'}
 
         </div>
       </div>

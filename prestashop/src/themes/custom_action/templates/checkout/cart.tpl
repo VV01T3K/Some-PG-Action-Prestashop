@@ -23,185 +23,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
 
-<style>
-  :root, :host {
-    --spacing: 0.25rem;
-    --text-xs: 0.75rem;
-    --text-xs--line-height: calc(1 / 0.75);
-    --text-sm: 0.875rem;
-    --text-sm--line-height: calc(1.25 / 0.875);
-    --text-lg: 1.125rem;
-    --text-lg--line-height: calc(1.75 / 1.125);
-    --text-xl: 1.25rem;
-    --text-xl--line-height: calc(1.75 / 1.25);
-    --text-2xl: 1.5rem;
-    --text-2xl--line-height: calc(2 / 1.5);
-    --text-3xl: 1.875rem;
-    --text-3xl--line-height: calc(2.25 / 1.875);
-    --text-4xl: 2.25rem;
-    --text-4xl--line-height: calc(2.5 / 2.25);
-    --text-8xl: 6rem;
-    --text-8xl--line-height: 1;
-    --font-weight-semibold: 600;
-    --leading-tight: 1.25;
-    --color-gray-200: #e5e7eb;
-    --color-gray-600: #4b5563;
-    --color-primary: #001489;
-    --color-primary-dark: #000b4a;
-    --color-success: #07bc0c;
-    --color-warning: #f1c40f;
-    --color-error: #e74c3c;
-    --ease-in: cubic-bezier(0.4, 0, 1, 1);
-    --ease-out: cubic-bezier(0, 0, 0.2, 1);
-    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-    --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    --blur-md: 12px;
-    --aspect-video: 16 / 9;
-    --default-transition-duration: 0.15s;
-    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-duration: 0.15s;
-    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-text-size-adjust: 100%;
-    tab-size: 4;
-    line-height: 1.5;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  *, ::backdrop, :after, :before {
-    border-color: var(--color-gray-200, currentcolor);
-    box-sizing: border-box;
-    border: 0 solid;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-tap-highlight-color: transparent;
-    font-family: ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    color: #505862;
-    font-weight: 400;
-    overflow-x: hidden;
-  }
-
-  .cart-grid {
-    padding-bottom: calc(var(--spacing) * 96);
-  }
-
-  .cart-grid-body,
-  .cart-grid-right {
-    transition: all var(--transition-duration) var(--transition-timing);
-  }
-
-  .cart-container,
-  .cart-summary,
-  .card {
-    border: 0 solid var(--color-gray-200);
-    background-color: #ffffff;
-    border-radius: 0.375rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-
-  .cart-summary {
-    position: sticky;
-    top: 2rem;
-  }
-
-  .payment-methods-section {
-    border-top: 1px solid var(--color-gray-200);
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-  }
-
-  .payment-method-item {
-    padding: 1rem 0;
-    transition: background-color var(--transition-duration) var(--transition-timing);
-  }
-
-  .payment-method-item:hover {
-    background-color: #f9fafb;
-  }
-
-  .custom-radio {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .custom-radio input[type="radio"] {
-    margin-right: 0.75rem;
-    cursor: pointer;
-  }
-
-  .custom-radio span {
-    cursor: pointer;
-    font-weight: 500;
-    color: var(--color-gray-600);
-  }
-
-  .payment-method-description {
-    margin-top: 0.5rem;
-    margin-left: 1.75rem;
-    font-size: var(--text-sm);
-    color: #9ca3af;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--leading-tight);
-  }
-
-  .h1 {
-    font-size: 2rem;
-    font-weight: 700;
-  }
-
-  .h3 {
-    font-size: var(--text-xl);
-  }
-
-  .h4 {
-    font-size: var(--text-lg);
-  }
-
-  .label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--color-primary);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color var(--transition-duration) var(--transition-timing);
-  }
-
-  .label:hover {
-    color: var(--color-primary-dark);
-  }
-
-  .separator {
-    border: none;
-    border-top: 1px solid var(--color-gray-200);
-    margin: 1.5rem 0;
-  }
-
-  .material-icons {
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    display: inline-block;
-    line-height: 1;
-    text-transform: none;
-    letter-spacing: normal;
-    word-wrap: normal;
-    white-space: nowrap;
-    direction: ltr;
-  }
-</style>
-
 {extends file=$layout}
 
 {block name='content'}
@@ -240,7 +61,6 @@
     {include file='checkout/_partials/cart-footer.tpl' cart=$cart}
   {/block}
 
-  {* RECOMMENDED PRODUCTS SECTION — Action.com Style *}
   {block name='recommended_products_section'}
     <section style="background-color: #ffffff; padding: 2rem 0;">
       <div style="display: flex; width: 100%; flex-direction: column; padding-left: 1rem; padding-right: 1rem;">
@@ -248,8 +68,6 @@
             <h2 style="font-size: 1rem; font-weight: 600; color:#001489; margin-bottom: 1rem; width: 100%; max-width: 48rem;">{l s='Polecane produkty' d='Shop.Theme.Checkout'}</h2>
           <div style="display: flex; flex-col: column; align-items: center;">
             
-
-            {* PRODUCT LIST — Featured products custom layout *}
             <div style="width: 100%; max-width: 48rem;">
               {block name='featured_products_list'}
                 {include file='checkout/_partials/featured-products-cart.tpl' products=$featured_products}

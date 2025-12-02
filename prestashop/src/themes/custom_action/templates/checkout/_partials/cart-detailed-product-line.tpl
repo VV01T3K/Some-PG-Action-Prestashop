@@ -56,7 +56,17 @@ if (window.prestashop && typeof window.prestashop.on === 'function') {
   {* CHECKBOX / FAVORITE BUTTON *}
   <div style="display: flex; flex-shrink: 0; padding-top: 0.25rem; position: absolute; left: 0; top: 0;">
         {if empty($product.is_gift)}
-          <button type="button" data-testid="cart-item-remove-btn" style="display: flex; height: 1.5rem; width: 1.5rem; align-items: center; justify-content: center; border-radius: 9999px; border: 1px solid #333; background-color: transparent; cursor: pointer; transition: all var(--transition-duration) var(--transition-timing); color: #e74c3c; flex-shrink: 0;" data-remove-url="{$product.remove_from_cart_url}" aria-label="{l s='Remove %productName% from cart' sprintf=['%productName%' => $product.name] d='Shop.Theme.Checkout'}" title="{l s='Remove from cart' d='Shop.Theme.Checkout'}">
+          <button
+            type="button"
+            data-testid="cart-item-remove-btn"
+            style="display: flex; height: 1.5rem; width: 1.5rem; align-items: center; justify-content: center; border-radius: 9999px; border: 1px solid #333; background-color: transparent; cursor: pointer; transition: all var(--transition-duration) var(--transition-timing); color: #e74c3c; flex-shrink: 0;"
+            data-remove-url="{$product.remove_from_cart_url}"
+            data-product-id="{$product.id_product}"
+            data-product-attribute-id="{$product.id_product_attribute}"
+            data-customization-id="{if isset($product.id_customization)}{$product.id_customization}{else}0{/if}"
+            aria-label="{l s='Remove %productName% from cart' sprintf=['%productName%' => $product.name] d='Shop.Theme.Checkout'}"
+            title="{l s='Remove from cart' d='Shop.Theme.Checkout'}"
+          >
            
           </button>
         {/if}
