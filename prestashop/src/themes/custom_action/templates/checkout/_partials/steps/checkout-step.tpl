@@ -260,6 +260,110 @@
     width: auto;
   }
 
+  /* Checkout authentication tabs */
+  body#checkout .checkout-auth {
+    margin-top: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 0.75rem;
+    background: #f8fafc;
+    box-shadow: 0 10px 25px rgba(0, 20, 137, 0.08);
+  }
+
+  body#checkout .checkout-auth__nav {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.25rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-gray-200);
+    background: #ffffff;
+    list-style: none;
+    margin-bottom: 1.75rem;
+  }
+
+  body#checkout .checkout-auth__item {
+    flex: 1;
+  }
+
+  body#checkout .checkout-auth__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #4b5563;
+    text-transform: none;
+    transition: all var(--transition-duration) var(--transition-timing);
+    background: transparent;
+    border: none;
+  }
+
+  body#checkout .checkout-auth__link:hover {
+    color: var(--color-primary);
+  }
+
+  body#checkout .checkout-auth__link.active {
+    background: var(--color-primary);
+    color: #ffffff !important;
+    box-shadow: 0 10px 25px rgba(0, 20, 137, 0.2);
+  }
+
+  body#checkout .checkout-auth__link.active:hover,
+  body#checkout .checkout-auth__link.active:focus,
+  body#checkout .checkout-auth__link.active:focus-visible {
+    color: #ffffff !important;
+  }
+
+  body#checkout .checkout-auth__content {
+    background: #ffffff;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--color-gray-200);
+  }
+
+  body#checkout .checkout-auth__pane {
+    display: none;
+    animation: fadeIn var(--transition-duration) var(--transition-timing);
+  }
+
+  body#checkout .checkout-auth__pane.active {
+    display: block;
+  }
+
+  body#checkout .checkout-auth [data-checkout-auth-pane][aria-hidden="true"] {
+    pointer-events: none;
+  }
+
+  body#checkout .checkout-auth [data-checkout-auth-pane][aria-hidden="false"] {
+    pointer-events: auto;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    body#checkout .checkout-auth__nav {
+      flex-direction: column;
+      border-radius: 1rem;
+      padding: 0.5rem;
+    }
+
+    body#checkout .checkout-auth__link {
+      font-size: 0.95rem;
+    }
+  }
+
   body#checkout section.checkout-step .content .form-fields {
     flex: 1;
   }
