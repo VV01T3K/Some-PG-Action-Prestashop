@@ -15,8 +15,8 @@
     "git:download": "cd .. && rm -rf \"./scrapper-results\" && git restore --source origin/images -- scrapper-results/",
     "git:upload": "./scripts/scrap-upload.sh",
     "scrape:products": "mkdir -p ../scrapper-results && bun run ./src/products_scrapper.ts",
-    "scrape:images": "bun run ./src/download_images.ts",
-    "scrape:all": "bun scrape:products && bun scrape:images",
+    "scrape:img": "bun run ./src/download_images.ts",
+    "scrape:all": "bun scrape:products && bun scrape:img",
     "convert:img": "bun run ./src/convert_images.ts"
   },
   "dependencies": {

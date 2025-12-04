@@ -83,7 +83,7 @@ bun run scrape:products
 Downloads all product and category images from the URLs in `products.json`:
 
 ```bash
-bun run scrape:images
+bun run scrape:img
 ```
 
 **Output:**
@@ -160,21 +160,16 @@ bun run seed
 ```
 
 **What the seed script does:**
-1. ✨ Cleans existing demo data from the database
-2. 📁 Creates all categories and subcategories
-3. 🖼️ Uploads category images
-4. 📦 Creates products with:
+1. Cleans existing demo data from the database
+2. Creates all categories and subcategories
+3. Uploads category images
+4. Creates products with:
    - Names and descriptions
    - Prices
    - Product specifications/features
    - Category assignments
-5. 🖼️ Uploads product images (max 3 per product)
-6. 📊 Sets random stock quantities
-
-### After Seeding
-
-1. Re-enable cache in PrestaShop if desired
-2. **Category images** may need manual adjustment in some cases
+5. Uploads product images (max 3 per product)
+6. Sets random stock quantities
 
 ---
 
@@ -182,14 +177,14 @@ bun run seed
 
 | Script | Command | Description |
 |--------|---------|-------------|
-| Setup | `bun run deps` | Install dependencies & create .env |
-| Scrape Products | `bun run scrape:products` | Scrape product data from Action.com |
-| Download Images | `bun run scrape:images` | Download all product/category images |
-| Scrape All | `bun run scrape:all` | Run both scraping steps |
-| Convert Images | `bun run convert:img` | Convert WebP images to PNG |
-| Seed | `bun run seed` | Seed all data to PrestaShop |
-| Git Download | `bun run git:download` | Download scraped data from `images` branch |
-| Git Upload | `bun run git:upload` | Upload scraped data to `images` branch |
+| Setup | `bun deps` | Install dependencies & create .env |
+| Scrape Products | `bun scrape:products` | Scrape product data from Action.com |
+| Download Images | `bun scrape:img` | Download all product/category images |
+| Scrape All | `bun scrape:all` | both scraping steps |
+| Convert Images | `bun convert:img` | Convert WebP images to PNG |
+| Seed | `bun seed` | Seed all data to PrestaShop |
+| Git Download | `bun git:download` | Download scraped data from `images` branch |
+| Git Upload | `bun git:upload` | Upload scraped data to `images` branch |
 
 ---
 
@@ -210,10 +205,6 @@ bun run seed
 - Check that `../scrapper-results/images/` contains the converted images
 - Verify API has `images` permission enabled
 
-### Server 500 Errors
-- The script will automatically retry (up to 5 times) on server errors
-- If persistent, check PrestaShop server logs
-
 ---
 
 ## Project Structure
@@ -226,8 +217,8 @@ scrapper/
 │   ├── convert_images.ts     # Converts WebP to PNG
 │   ├── seed.ts               # Seeds data to PrestaShop
 │   ├── types.ts              # TypeScript types
-│   ├── api/
-│   │   ├── api.ts            # PrestaShop API functions
+│   ├── api/                  # PrestaShop API interactions
+│   │   ├── api.ts
 │   │   ├── category_manager.ts
 │   │   ├── clean_database.ts
 │   │   └── features_manager.ts
