@@ -126,7 +126,7 @@ bun run git:upload
 
 1. Go to **Admin Panel** → **Configure** → **Advanced Parameters** → **Webservice**
 2. Enable **"Enable PrestaShop's webservice"**
-   > ⚠️ This setting sometimes disables itself after saving - verify it's enabled!
+   > This setting sometimes disables itself after saving - verify it's enabled!
 3. Click **"Add new webservice key"**
 4. Generate or paste your API key
 5. Set permissions (check ALL boxes) for:
