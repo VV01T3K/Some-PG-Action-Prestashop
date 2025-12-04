@@ -1,5 +1,5 @@
-import { createCategory, createSubCategory } from './api';
-import type { Product } from '../types.ts';
+import { createCategory, createSubCategory, uploadCategoryImage } from './api';
+import type { Product, StringIdMap } from '../types.ts';
 
 const products = await Bun.file('../scrapper-results/products.json').json();
 
@@ -7,6 +7,11 @@ interface CategoryInfo {
     parentUrlKey: string | undefined;
     urlKey: string;
     depth: number;
+}
+
+export interface CategorySeedResult {
+    categoryNameIdMap: StringIdMap;
+    mainCategoryNameIdMap: StringIdMap; // Only main categories (depth 5) for image upload
 }
 
 //analyzes products.json and extract all kategories 
@@ -61,34 +66,85 @@ function createCategoryMapWithCorrectOrder(): Map<string, CategoryInfo> {
     const unsortedMap = createCategoryMap(extractUniqueCategories(products as unknown as Product[], 'category_list')); 
     return sortCategoryMapByDepth(unsortedMap);
 }
-async function addAllCategoriesThroughApi(categoryMap: Map<string, CategoryInfo>): Promise<Map<string, number>>{
+
+interface AddCategoriesResult {
+    categoryNameIdMap: Map<string, number>;
+    mainCategoryNameIdMap: Map<string, number>;
+}
+
+async function addAllCategoriesThroughApi(categoryMap: Map<string, CategoryInfo>): Promise<AddCategoriesResult>{
     const categoryUrlKeyIdMap = new Map<string, number>();
     const categoryNameIdMap = new Map<string, number>();
+    const mainCategoryNameIdMap = new Map<string, number>(); // Only main categories
+    
     for (const [categoryName, categoryInfo] of categoryMap) {
         const parentUrlKey = categoryInfo.parentUrlKey;
         if (parentUrlKey == undefined) { //then it's category
             const createdId: number = await createCategory(categoryName); // we receive the id
             categoryUrlKeyIdMap.set(categoryInfo.urlKey, createdId);
             categoryNameIdMap.set(categoryName, createdId);
+            mainCategoryNameIdMap.set(categoryName, createdId); // Track main categories
         } else { //subcategory
             const parent_id = categoryUrlKeyIdMap.get(parentUrlKey); //parents are added first, so it should already be in that map
             if (!parent_id) {
                 console.log("Critical error occurred, parent category not found in map!");
-                return new Map<string, number>();
+                return { categoryNameIdMap: new Map<string, number>(), mainCategoryNameIdMap: new Map<string, number>() };
             }
             const createdId: number = await createSubCategory(categoryName, parent_id);
             categoryUrlKeyIdMap.set(categoryInfo.urlKey, createdId);
             categoryNameIdMap.set(categoryName, createdId);
         }
     }
-    return categoryNameIdMap;
+    return { categoryNameIdMap, mainCategoryNameIdMap };
 }
 
-export async function seedCategories(): Promise<Map<string, number>> {
+export async function seedCategories(): Promise<CategorySeedResult> {
     const categoryMap: Map<string, CategoryInfo> = createCategoryMapWithCorrectOrder();
-    const categoryNameIdMap = await addAllCategoriesThroughApi(categoryMap);
+    const { categoryNameIdMap, mainCategoryNameIdMap } = await addAllCategoriesThroughApi(categoryMap);
     console.log(categoryNameIdMap);
-    return categoryNameIdMap;
+    return { categoryNameIdMap, mainCategoryNameIdMap };
+}
+
+const CATEGORY_IMAGES_PATH = "../scrapper-results/categoryImages/";
+
+export async function uploadAllCategoryImages(
+    mainCategoryNameIdMap: StringIdMap
+): Promise<{ uploaded: number; failed: number }> {
+    let uploaded = 0;
+    let failed = 0;
+    const total = mainCategoryNameIdMap.size;
+    let current = 0;
+
+    for (const [categoryName, categoryId] of mainCategoryNameIdMap) {
+        current++;
+        const imagePath = `${CATEGORY_IMAGES_PATH}${categoryName}.webp`;
+        
+        try {
+            const file = Bun.file(imagePath);
+            const exists = await file.exists();
+            
+            if (!exists) {
+                console.warn(`⚠️ Category image not found: ${imagePath}`);
+                failed++;
+                console.log(`Progress: ${current}/${total}`);
+                continue;
+            }
+            
+            const success = await uploadCategoryImage(categoryId, imagePath);
+            if (success) {
+                uploaded++;
+            } else {
+                failed++;
+            }
+            console.log(`Progress: ${current}/${total}`);
+        } catch (error) {
+            console.error(`❌ Error uploading image for category "${categoryName}":`, error);
+            failed++;
+            console.log(`Progress: ${current}/${total}`);
+        }
+    }
+
+    return { uploaded, failed };
 }
 
 

@@ -1,8 +1,8 @@
 const products = await Bun.file('../scrapper-results/products.json').json();
 const categories = await Bun.file('../scrapper-results/categories.json').json();
 
-export const OUTPUT_IMAGES_PATH = '../scrapper-results/images/';
-export const OUTPUT_CAT_IMAGES_PATH = '../scrapper-results/categoryImages/';
+export const OUTPUT_IMAGES_PATH = '../scrapper-results/original/images/';
+export const OUTPUT_CAT_IMAGES_PATH = '../scrapper-results/original/categoryImages/';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -44,7 +44,7 @@ for (let product of products){
         const imageDir = `${productDir}/image_${i + 1}.${ext}`;
 
         await downloadImage(imageUrl, imageDir);
-        await delay(200); // small delay
+        await delay(50); // small delay
     }
 }
 

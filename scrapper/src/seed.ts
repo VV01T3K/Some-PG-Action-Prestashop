@@ -1,4 +1,4 @@
-import { seedCategories } from './api/category_manager';
+import { seedCategories, uploadAllCategoryImages } from './api/category_manager';
 import { cleanDatabase } from './api/clean_database';
 import type { FeatureAssociation, StringIdMap, FeatureValueIdMap, Product, ProductApiPayload } from "./types";
 import { createProduct, updateProductUnitPrice, updateStockAvailable, uploadProductImage } from './api/api';
@@ -14,15 +14,24 @@ const MAX_IMAGES_PER_PRODUCT = 3;
 const MAX_PRODUCTS_TO_SEED = 1000;
 
 export async function seedShop() {
+    console.log('Starting shop seeding...\n');
+    
     await cleanDatabase();
     
-    // Run category and feature seeding in parallel (they're independent)
-    const [categoryNameIdMap, { featureIds, valueIds }] = await Promise.all([
+    // Run category and feature seeding in parallel
+    const [{ categoryNameIdMap, mainCategoryNameIdMap }, { featureIds, valueIds }] = await Promise.all([
         seedCategories(),
         seedFeatureValues()
     ]);
     
+    // Upload category images
+    console.log('\nUploading category images...');
+    const { uploaded, failed } = await uploadAllCategoryImages(mainCategoryNameIdMap);
+    console.log(`\nCategory images complete! Uploaded: ${uploaded}, Failed: ${failed}`);
+    
     await seedProducts(categoryNameIdMap, featureIds, valueIds);
+    
+    console.log('\nShop seeding complete!');
 }
 
 
@@ -31,57 +40,82 @@ async function seedProducts(
     featuresIdMap: StringIdMap, 
     valuesIdMap: FeatureValueIdMap) {
     
-    // First, create all products and collect their data
     const createdProducts: { productId: number; productImagesDirId: string; product: Product; quantity: number }[] = [];
     
     const productsToSeed = (products as Product[]).slice(0, MAX_PRODUCTS_TO_SEED);
+    const totalProducts = productsToSeed.length;
+    let processed = 0;
+    
+    console.log(`\nCreating ${totalProducts} products...`);
     
     for (const product of productsToSeed) {
         const categoryNames = Object.keys(product.category_list);
-        if (categoryNames.length === 0) continue;
+        if (categoryNames.length === 0) {
+            processed++;
+            continue;
+        }
         
-        //retrieve category prestashop ids
         const categoryIds = categoryNames
             .map(name => categoryNameIdMap.get(name))
             .filter((id): id is number => id !== undefined);
-        // associations featureId:featureValueId, ...
         const associations = createFeatureValueIdAssociations(product.product_specifications, featuresIdMap, valuesIdMap);
 
-        //create payload -> create product
         const productPayload = createProductApiPayload(product, categoryIds, associations);
         const productImagesDirId = product.product_specifications['Numer produktu'];
         const QUANTITY_TO_SET = Math.floor(Math.random() * 11);
 
         if (!productImagesDirId) {
-            console.warn(`Skipping product "${product.name}" - no product number found`);
+            processed++;
             continue;
         }
 
         const productId = await createProduct(productPayload);
-        console.log(`Created product with id:${productId}`);
+        processed++;
+        console.log(`Progress: ${processed}/${totalProducts}`);
         
         createdProducts.push({ productId, productImagesDirId, product, quantity: QUANTITY_TO_SET });
     }
+    console.log(`Product creation complete! Created: ${createdProducts.length}`);
     
-    // Upload all images first and wait for completion
-    console.log('Uploading all product images...');
-    await Promise.all(
-        createdProducts.map(({ productId, productImagesDirId }) => 
-            uploadAllProductImages(productId, productImagesDirId)
-        )
-    );
-    console.log('All product images uploaded.');
+    // Upload images
+    console.log('\nUploading product images...');
+    let uploadedImages = 0;
+    const totalImages = createdProducts.length;
     
-    // Then run stock and unit price updates
-    console.log('Updating stock and unit prices...');
-    await Promise.all(
-        createdProducts.map(({ productId, product, quantity }) => 
-            Promise.all([
-                updateStockAvailable(productId, quantity),
-                setProductUnitPrice(productId, product)
-            ])
-        )
-    );
+    const IMAGE_BATCH_SIZE = 5;
+    for (let i = 0; i < createdProducts.length; i += IMAGE_BATCH_SIZE) {
+        const batch = createdProducts.slice(i, i + IMAGE_BATCH_SIZE);
+        
+        await Promise.all(
+            batch.map(async ({ productId, productImagesDirId }) => {
+                await uploadAllProductImages(productId, productImagesDirId);
+                uploadedImages++;
+                console.log(`Progress: ${uploadedImages}/${totalImages}`);
+            })
+        );
+    }
+    console.log('Product images uploaded.');
+    
+    // Update stock and unit prices
+    console.log('\nUpdating stock and unit prices...');
+    let updated = 0;
+    const totalUpdates = createdProducts.length;
+    
+    const UPDATE_BATCH_SIZE = 10;
+    for (let i = 0; i < createdProducts.length; i += UPDATE_BATCH_SIZE) {
+        const batch = createdProducts.slice(i, i + UPDATE_BATCH_SIZE);
+        
+        await Promise.all(
+            batch.map(async ({ productId, product, quantity }) => {
+                await Promise.all([
+                    updateStockAvailable(productId, quantity),
+                    setProductUnitPrice(productId, product)
+                ]);
+                updated++;
+                console.log(`Progress: ${updated}/${totalUpdates}`);
+            })
+        );
+    }
     console.log('Stock and unit prices updated.');
 }
 

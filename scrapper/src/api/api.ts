@@ -1,6 +1,5 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //temporary fix for ssl todo:
 import * as cheerio from 'cheerio';
-import sharp from 'sharp';
 import type { ProductApiPayload } from "../types.ts";
 
 // Helper to read template files
@@ -132,12 +131,11 @@ export async function uploadProductImage(productId: number, imagePath: string) {
         const file = Bun.file(imagePath);
         const imageBuffer = Buffer.from(await file.arrayBuffer());
         
-        // Convert to PNG to preserve transparency (e.g., from webp)
-        const pngBuffer = await sharp(imageBuffer).png().toBuffer();
-        const blob = new Blob([pngBuffer], { type: "image/png" });
+        // Images are already converted to PNG
+        const blob = new Blob([imageBuffer], { type: "image/png" });
 
         const formData = new FormData();
-        formData.append("image", blob, imagePath.split('/').pop()?.replace(/\.\w+$/, '.png') ?? 'image.png');
+        formData.append("image", blob, imagePath.split('/').pop() ?? 'image.png');
 
         const res = await fetch(`${API_URL}/images/products/${productId}?ws_key=${API_KEY}`, {
             method: "POST",
@@ -156,6 +154,49 @@ export async function uploadProductImage(productId: number, imagePath: string) {
             return;         
         }
     } 
+}
+
+export async function uploadCategoryImage(categoryId: number, imagePath: string): Promise<boolean> {
+    const MAX_RETRIES = 3;
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+            const file = Bun.file(imagePath);
+            const imageBuffer = Buffer.from(await file.arrayBuffer());
+            
+            // Determine image type from extension
+            const ext = imagePath.toLowerCase().split('.').pop();
+            let mimeType = 'image/jpeg';
+            if (ext === 'png') mimeType = 'image/png';
+            else if (ext === 'webp') mimeType = 'image/webp';
+            else if (ext === 'gif') mimeType = 'image/gif';
+            
+            const blob = new Blob([imageBuffer], { type: mimeType });
+            const formData = new FormData();
+            formData.append("image", blob, imagePath.split('/').pop() ?? 'category.jpg');
+
+            const res = await fetch(`${API_URL}/images/categories/${categoryId}?ws_key=${API_KEY}`, {
+                method: "POST",
+                body: formData
+            });
+
+            if (res.ok) {
+                return true;
+            } else {
+                if (attempt === MAX_RETRIES) {
+                    console.error(`❌ Category image upload failed for ID ${categoryId}. Status: ${res.status}`);
+                    return false;
+                }
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        } catch (error) {
+            if (attempt === MAX_RETRIES) {
+                console.error(`❌ Category image upload error for ID ${categoryId}:`, error);
+                return false;
+            }
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    }
+    return false;
 }
 
 /* ==== DELETE ====*/

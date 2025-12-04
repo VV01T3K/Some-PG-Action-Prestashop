@@ -16,7 +16,8 @@
     "git:upload": "./scripts/scrap-upload.sh",
     "scrape:products": "mkdir -p ../scrapper-results && bun run ./src/products_scrapper.ts",
     "scrape:images": "bun run ./src/download_images.ts",
-    "scrape:all": "bun scrape:products && bun scrape:images"
+    "scrape:all": "bun scrape:products && bun scrape:images",
+    "convert:img": "bun run ./src/convert_images.ts"
   },
   "dependencies": {
     "cheerio": "^1.1.2",
