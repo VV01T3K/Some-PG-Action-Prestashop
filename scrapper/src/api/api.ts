@@ -13,7 +13,7 @@ const PRESTASHOP_DEFAULT_CAT_ID = "2";
 
 
 /* ==== CREATE ==== */
-async function createCategoryOrSubcategory(name: string, parent_id: string): Promise<number> {
+async function createCategoryOrSubcategory(name: string, parent_id: string, imagePath?: string): Promise<number> {
     const maxRetries = 5;
     for (let attempt = 1; attempt <= maxRetries; attempt++){
         let XML = await readTemplate("./src/templates/subcategory_template.xml");
@@ -34,20 +34,27 @@ async function createCategoryOrSubcategory(name: string, parent_id: string): Pro
         } else {
             const $ = cheerio.load(xmlText, { xmlMode: true });
             const createdId = $("category > id").text();
+            const categoryId = parseInt(createdId);
             
             console.log(`✅ Kategoria dodana pomyślnie. Nazwa: ${name}, createdId: ${createdId}`);
-            return parseInt(createdId);
+            
+            // Upload image if provided
+            if (imagePath) {
+                await uploadCategoryImage(categoryId, imagePath);
+            }
+            
+            return categoryId;
         }
 
     }
     throw new Error(`Couldn't create a new category with name: ${name}`);
     
 }
-export async function createCategory(name: string) {
-    return createCategoryOrSubcategory(name, PRESTASHOP_DEFAULT_CAT_ID);
+export async function createCategory(name: string, imagePath?: string) {
+    return createCategoryOrSubcategory(name, PRESTASHOP_DEFAULT_CAT_ID, imagePath);
 }
-export async function createSubCategory(name: string, parent_id: number) {
-    return createCategoryOrSubcategory(name, parent_id.toString());
+export async function createSubCategory(name: string, parent_id: number, imagePath?: string) {
+    return createCategoryOrSubcategory(name, parent_id.toString(), imagePath);
 }
 export async function createProduct(product: ProductApiPayload): Promise<number>{
     const { category_default_id, category_ids_xml, feature_associations_xml, name, description, description_short, price, ean13 } = product;
@@ -157,46 +164,56 @@ export async function uploadProductImage(productId: number, imagePath: string) {
 }
 
 export async function uploadCategoryImage(categoryId: number, imagePath: string): Promise<boolean> {
-    const MAX_RETRIES = 3;
-    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-        try {
-            const file = Bun.file(imagePath);
-            const imageBuffer = Buffer.from(await file.arrayBuffer());
-            
-            // Determine image type from extension
-            const ext = imagePath.toLowerCase().split('.').pop();
-            let mimeType = 'image/jpeg';
-            if (ext === 'png') mimeType = 'image/png';
-            else if (ext === 'webp') mimeType = 'image/webp';
-            else if (ext === 'gif') mimeType = 'image/gif';
-            
-            const blob = new Blob([imageBuffer], { type: mimeType });
-            const formData = new FormData();
-            formData.append("image", blob, imagePath.split('/').pop() ?? 'category.jpg');
+    try {
+        const file = Bun.file(imagePath);
+        const imageBuffer = Buffer.from(await file.arrayBuffer());
+        
+        // Determine image type from extension
+        const ext = imagePath.toLowerCase().split('.').pop();
+        let mimeType = 'image/jpeg';
+        if (ext === 'png') mimeType = 'image/png';
+        else if (ext === 'webp') mimeType = 'image/webp';
+        else if (ext === 'gif') mimeType = 'image/gif';
+        
+        const blob = new Blob([imageBuffer], { type: mimeType });
+        
+        // Try POST (create new image)
+        const formData = new FormData();
+        formData.append("image", blob, imagePath.split('/').pop() ?? 'category.jpg');
 
-            const res = await fetch(`${API_URL}/images/categories/${categoryId}?ws_key=${API_KEY}`, {
-                method: "POST",
-                body: formData
-            });
+        const res = await fetch(`${API_URL}/images/categories/${categoryId}?ws_key=${API_KEY}`, {
+            method: "POST",
+            body: formData
+        });
 
-            if (res.ok) {
-                return true;
-            } else {
-                if (attempt === MAX_RETRIES) {
-                    console.error(`❌ Category image upload failed for ID ${categoryId}. Status: ${res.status}`);
-                    return false;
-                }
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
-        } catch (error) {
-            if (attempt === MAX_RETRIES) {
-                console.error(`❌ Category image upload error for ID ${categoryId}:`, error);
-                return false;
-            }
-            await new Promise(resolve => setTimeout(resolve, 1000));
+        // Success cases:
+        // - 200/201: Normal success
+        // - 500: PHP notice but image was uploaded (PrestaShop bug)
+        if (res.ok || res.status === 500) {
+            console.log(`✅ Category image uploaded for ID ${categoryId}`);
+            return true;
         }
+        
+        // If image already exists, consider it a success (no need to re-upload)
+        if (res.status === 400) {
+            const responseText = await res.text();
+            if (responseText.includes("already exists")) {
+                console.log(`ℹ️ Category image already exists for ID ${categoryId}, skipping`);
+                return true;
+            }
+            console.error(`❌ Category image upload failed for ID ${categoryId}. Status: ${res.status}`);
+            console.error(`Response: ${responseText}`);
+            return false;
+        }
+
+        const responseText = await res.text();
+        console.error(`❌ Category image upload failed for ID ${categoryId}. Status: ${res.status}`);
+        console.error(`Response: ${responseText}`);
+        return false;
+    } catch (error) {
+        console.error(`❌ Category image upload error for ID ${categoryId}:`, error);
+        return false;
     }
-    return false;
 }
 
 /* ==== DELETE ====*/

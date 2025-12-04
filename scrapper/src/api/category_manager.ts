@@ -72,6 +72,15 @@ interface AddCategoriesResult {
     mainCategoryNameIdMap: Map<string, number>;
 }
 
+const CATEGORY_IMAGES_PATH = "../scrapper-results/categoryImages/";
+
+async function getCategoryImagePath(categoryName: string): Promise<string | undefined> {
+    const imagePath = `${CATEGORY_IMAGES_PATH}${categoryName}.png`;
+    const file = Bun.file(imagePath);
+    const exists = await file.exists();
+    return exists ? imagePath : undefined;
+}
+
 async function addAllCategoriesThroughApi(categoryMap: Map<string, CategoryInfo>): Promise<AddCategoriesResult>{
     const categoryUrlKeyIdMap = new Map<string, number>();
     const categoryNameIdMap = new Map<string, number>();
@@ -79,12 +88,13 @@ async function addAllCategoriesThroughApi(categoryMap: Map<string, CategoryInfo>
     
     for (const [categoryName, categoryInfo] of categoryMap) {
         const parentUrlKey = categoryInfo.parentUrlKey;
-        if (parentUrlKey == undefined) { //then it's category
-            const createdId: number = await createCategory(categoryName); // we receive the id
+        if (parentUrlKey == undefined) { //then it's a main category - upload image with it
+            const imagePath = await getCategoryImagePath(categoryName);
+            const createdId: number = await createCategory(categoryName, imagePath); // we receive the id
             categoryUrlKeyIdMap.set(categoryInfo.urlKey, createdId);
             categoryNameIdMap.set(categoryName, createdId);
             mainCategoryNameIdMap.set(categoryName, createdId); // Track main categories
-        } else { //subcategory
+        } else { //subcategory - no image
             const parent_id = categoryUrlKeyIdMap.get(parentUrlKey); //parents are added first, so it should already be in that map
             if (!parent_id) {
                 console.log("Critical error occurred, parent category not found in map!");
@@ -105,8 +115,6 @@ export async function seedCategories(): Promise<CategorySeedResult> {
     return { categoryNameIdMap, mainCategoryNameIdMap };
 }
 
-const CATEGORY_IMAGES_PATH = "../scrapper-results/categoryImages/";
-
 export async function uploadAllCategoryImages(
     mainCategoryNameIdMap: StringIdMap
 ): Promise<{ uploaded: number; failed: number }> {
@@ -117,7 +125,7 @@ export async function uploadAllCategoryImages(
 
     for (const [categoryName, categoryId] of mainCategoryNameIdMap) {
         current++;
-        const imagePath = `${CATEGORY_IMAGES_PATH}${categoryName}.webp`;
+        const imagePath = `${CATEGORY_IMAGES_PATH}${categoryName}.png`;
         
         try {
             const file = Bun.file(imagePath);
