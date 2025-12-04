@@ -18,13 +18,11 @@ export async function seedShop() {
     
     await cleanDatabase();
     
-    // Run category and feature seeding in parallel
     const [{ categoryNameIdMap, mainCategoryNameIdMap }, { featureIds, valueIds }] = await Promise.all([
         seedCategories(),
         seedFeatureValues()
     ]);
     
-    // Upload category images
     console.log('\nUploading category images...');
     const { uploaded, failed } = await uploadAllCategoryImages(mainCategoryNameIdMap);
     console.log(`\nCategory images complete! Uploaded: ${uploaded}, Failed: ${failed}`);
@@ -77,7 +75,6 @@ async function seedProducts(
     }
     console.log(`Product creation complete! Created: ${createdProducts.length}`);
     
-    // Upload images
     console.log('\nUploading product images...');
     let uploadedImages = 0;
     const totalImages = createdProducts.length;
@@ -96,7 +93,6 @@ async function seedProducts(
     }
     console.log('Product images uploaded.');
     
-    // Update stock and unit prices
     console.log('\nUpdating stock and unit prices...');
     let updated = 0;
     const totalUpdates = createdProducts.length;
@@ -238,7 +234,7 @@ function createFeatureValueIdAssociations(specifications: Record<string, string>
         
         // Sprawdzenie, czy klucze cechy i mapy wartości istnieją
         if (featureId === undefined || featureValueMap === undefined) {
-            console.warn(`⚠️ Pomięto cechę "${featureName}": Brak ID w mapach.`);
+            console.warn(`Pomięto cechę "${featureName}": Brak ID w mapach.`);
             continue;
         }            
         const featureValueId = featureValueMap.get(valueName);

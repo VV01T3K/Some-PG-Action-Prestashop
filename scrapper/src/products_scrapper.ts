@@ -5,10 +5,8 @@ const OUTPUT_PATH = "../scrapper-results/products.json";
 const OUTPUT_CAT_PATH = "../scrapper-results/categories.json";
 const baseUrl = "https://www.action.com";
 
-// Logging helper
 const log = (message: string) => console.log(`[${new Date().toISOString()}] ${message}`);
 
-// list of categories
 const categories = [
   { path: "/pl-pl/c/hobby", pages: 21 },
   { path: "/pl-pl/c/zrob-to-sam", pages: 25 } 
@@ -32,7 +30,6 @@ const headers = {
   "Referer": "https://www.action.com/pl-pl/"
 };
 
-// Function to scrape a single category page and return product links
 async function scrapeCategoryPage(categoryPath: string, pageNumber: number): Promise<string[]> {
   log(`Fetching category page: ${categoryPath} page ${pageNumber}`);
   const response = await fetch(`${baseUrl}${categoryPath}?page=${pageNumber}`, {

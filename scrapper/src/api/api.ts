@@ -2,7 +2,6 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //temporary fix for ssl todo:
 import * as cheerio from 'cheerio';
 import type { ProductApiPayload } from "../types.ts";
 
-// Helper to read template files
 const readTemplate = async (templatePath: string) => await Bun.file(templatePath).text();
 
 
@@ -27,7 +26,7 @@ async function createCategoryOrSubcategory(name: string, parent_id: string, imag
         });
         const xmlText = await res.text();
         if (res.status >= 500) {
-            console.warn(`⚠️ Błąd serwera (Status ${res.status}) dla ${name}. Ponawiam próbę za 2s... (Próba ${attempt}/${maxRetries})`);
+            console.warn(`Błąd serwera (Status ${res.status}) dla ${name}. Ponawiam próbę za 2s... (Próba ${attempt}/${maxRetries})`);
             console.error("Odpowiedź serwera:\n", xmlText);
             await new Promise(resolve => setTimeout(resolve, 2000));
             continue;
@@ -36,9 +35,8 @@ async function createCategoryOrSubcategory(name: string, parent_id: string, imag
             const createdId = $("category > id").text();
             const categoryId = parseInt(createdId);
             
-            console.log(`✅ Kategoria dodana pomyślnie. Nazwa: ${name}, createdId: ${createdId}`);
+            console.log(`Kategoria dodana pomyślnie. Nazwa: ${name}, createdId: ${createdId}`);
             
-            // Upload image if provided
             if (imagePath) {
                 await uploadCategoryImage(categoryId, imagePath);
             }
@@ -97,10 +95,10 @@ export async function createFeature(feature_name: string): Promise<number>{
         const $ = cheerio.load(xmlText, { xmlMode: true });
         const idText = $("product_feature > id").text();
         const featureId = parseInt(idText.trim(), 10);
-        console.log(`✅ Utworzono feature "${feature_name}" z ID: ${idText}`);
+        console.log(`Utworzono feature "${feature_name}" z ID: ${idText}`);
         return featureId;
     } else {
-        console.error(`❌ Błąd POST /product_features (Status: ${resFeature.status}).`);
+        console.error(`Błąd POST /product_features (Status: ${resFeature.status}).`);
         console.log(await resFeature.text());
         return -1;
     }
@@ -123,10 +121,10 @@ export async function createFeatureValue(featureId: number, value: string): Prom
         const $ = cheerio.load(xmlText, { xmlMode: true });
         const idText = $("product_feature_value > id").text();
         const valueId = parseInt(idText.trim(), 10);
-        console.log(`✅ Utworzono feature_value "${value}" z ID: ${idText}`);
+        console.log(`Utworzono feature_value "${value}" z ID: ${idText}`);
         return valueId;
     } else {
-        console.error(`❌ Błąd POST /product_feature_values (Status: ${resValue.status}).`);
+        console.error(`Błąd POST /product_feature_values (Status: ${resValue.status}).`);
         console.log(await resValue.text());
         return -1;
     }
@@ -138,7 +136,6 @@ export async function uploadProductImage(productId: number, imagePath: string) {
         const file = Bun.file(imagePath);
         const imageBuffer = Buffer.from(await file.arrayBuffer());
         
-        // Images are already converted to PNG
         const blob = new Blob([imageBuffer], { type: "image/png" });
 
         const formData = new FormData();
@@ -151,13 +148,13 @@ export async function uploadProductImage(productId: number, imagePath: string) {
 
         if(res.status == 400) {
             if (attempt == MAX_RETRIES) {
-                console.log(`❌ Obraz dla produktu ${productId} nie został przesłany. Status: ${res.status}`)
+                console.log(`Obraz dla produktu ${productId} nie został przesłany. Status: ${res.status}`)
                 return;
             }
             await new Promise(resolve => setTimeout(resolve, 1000));
             continue;
         } else {
-            console.log(`✅ Obraz dla produktu ${productId} został przesłany. Status: ${res.status}`);
+            console.log(`Obraz dla produktu ${productId} został przesłany. Status: ${res.status}`);
             return;         
         }
     } 
@@ -168,13 +165,7 @@ export async function uploadCategoryImage(categoryId: number, imagePath: string)
         const file = Bun.file(imagePath);
         const imageBuffer = Buffer.from(await file.arrayBuffer());
         
-        // Determine image type from extension
-        const ext = imagePath.toLowerCase().split('.').pop();
-        let mimeType = 'image/jpeg';
-        if (ext === 'png') mimeType = 'image/png';
-        else if (ext === 'webp') mimeType = 'image/webp';
-        else if (ext === 'gif') mimeType = 'image/gif';
-        
+        let mimeType = 'image/png';
         const blob = new Blob([imageBuffer], { type: mimeType });
         
         // Try POST (create new image)
@@ -190,7 +181,7 @@ export async function uploadCategoryImage(categoryId: number, imagePath: string)
         // - 200/201: Normal success
         // - 500: PHP notice but image was uploaded (PrestaShop bug)
         if (res.ok || res.status === 500) {
-            console.log(`✅ Category image uploaded for ID ${categoryId}`);
+            console.log(`Category image uploaded for ID ${categoryId}`);
             return true;
         }
         
@@ -198,20 +189,20 @@ export async function uploadCategoryImage(categoryId: number, imagePath: string)
         if (res.status === 400) {
             const responseText = await res.text();
             if (responseText.includes("already exists")) {
-                console.log(`ℹ️ Category image already exists for ID ${categoryId}, skipping`);
+                console.log(`ℹCategory image already exists for ID ${categoryId}, skipping`);
                 return true;
             }
-            console.error(`❌ Category image upload failed for ID ${categoryId}. Status: ${res.status}`);
+            console.error(`Category image upload failed for ID ${categoryId}. Status: ${res.status}`);
             console.error(`Response: ${responseText}`);
             return false;
         }
 
         const responseText = await res.text();
-        console.error(`❌ Category image upload failed for ID ${categoryId}. Status: ${res.status}`);
+        console.error(`Category image upload failed for ID ${categoryId}. Status: ${res.status}`);
         console.error(`Response: ${responseText}`);
         return false;
     } catch (error) {
-        console.error(`❌ Category image upload error for ID ${categoryId}:`, error);
+        console.error(`Category image upload error for ID ${categoryId}:`, error);
         return false;
     }
 }

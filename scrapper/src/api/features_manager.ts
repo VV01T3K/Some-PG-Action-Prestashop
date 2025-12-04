@@ -18,12 +18,10 @@ function extractUniqueFeaturesValues(data: Product[], features_field_name: keyof
     return uniqueFeatureValues;
 }
 
-// creates all features-values through API and creates Maps with createdIds
 async function initializeFeaturesValuesMaps(uniqueFeatureValues: Map<string, Set<string>>) {
     const featureIds: StringIdMap = new Map();
     const valueIds: FeatureValueIdMap = new Map();
 
-    // Step 1: Create all features in parallel
     const featureEntries = Array.from(uniqueFeatureValues.entries());
     const featureCreationPromises = featureEntries.map(async ([featureName]) => {
         const featureId = await createFeature(featureName);
@@ -32,13 +30,11 @@ async function initializeFeaturesValuesMaps(uniqueFeatureValues: Map<string, Set
     
     const createdFeatures = await Promise.all(featureCreationPromises);
     
-    // Populate featureIds map
     for (const { featureName, featureId } of createdFeatures) {
         featureIds.set(featureName, featureId);
         valueIds.set(featureName, new Map());
     }
 
-    // Step 2: Create all feature values in parallel
     const allValuePromises: Promise<void>[] = [];
     for (const { featureName, featureId } of createdFeatures) {
         const valueSet = uniqueFeatureValues.get(featureName)!;

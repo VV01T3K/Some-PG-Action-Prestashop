@@ -132,7 +132,7 @@ export async function uploadAllCategoryImages(
             const exists = await file.exists();
             
             if (!exists) {
-                console.warn(`⚠️ Category image not found: ${imagePath}`);
+                console.warn(`Category image not found: ${imagePath}`);
                 failed++;
                 console.log(`Progress: ${current}/${total}`);
                 continue;
@@ -146,7 +146,7 @@ export async function uploadAllCategoryImages(
             }
             console.log(`Progress: ${current}/${total}`);
         } catch (error) {
-            console.error(`❌ Error uploading image for category "${categoryName}":`, error);
+            console.error(`Error uploading image for category "${categoryName}":`, error);
             failed++;
             console.log(`Progress: ${current}/${total}`);
         }

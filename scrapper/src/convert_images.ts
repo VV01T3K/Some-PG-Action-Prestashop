@@ -20,7 +20,6 @@ async function getWebpFiles(dirPath: string): Promise<string[]> {
             const stats = await stat(fullPath);
             
             if (stats.isDirectory()) {
-                // Recursively search subdirectories
                 const subFiles = await getWebpFiles(fullPath);
                 webpFiles.push(...subFiles);
             } else if (entry.toLowerCase().endsWith('.webp')) {
@@ -35,11 +34,9 @@ async function getWebpFiles(dirPath: string): Promise<string[]> {
 }
 
 async function convertWebpToPngGeneric(inputPath: string, inputBasePath: string, outputBasePath: string): Promise<void> {
-    // Replace base directory and extension
     const relativePath = inputPath.replace(inputBasePath, '');
     const outputPath = join(outputBasePath, relativePath.replace(/\.webp$/i, '.png'));
     
-    // Ensure output directory exists
     await mkdir(dirname(outputPath), { recursive: true });
     
     await sharp(inputPath)
