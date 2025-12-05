@@ -15,121 +15,70 @@ const MAX_PRODUCTS_TO_SEED = 1000;
 
 export async function seedShop() {
     console.log('Starting shop seeding...\n');
-    
+
     await cleanDatabase();
-    
+
     const [{ categoryNameIdMap, mainCategoryNameIdMap }, { featureIds, valueIds }] = await Promise.all([
         seedCategories(),
         seedFeatureValues()
     ]);
-    
+
     console.log('\nUploading category images...');
     const { uploaded, failed } = await uploadAllCategoryImages(mainCategoryNameIdMap);
     console.log(`\nCategory images complete! Uploaded: ${uploaded}, Failed: ${failed}`);
-    
+
     await seedProducts(categoryNameIdMap, featureIds, valueIds);
-    
+
     console.log('\nShop seeding complete!');
 }
 
 
 async function seedProducts(
-    categoryNameIdMap: StringIdMap, 
-    featuresIdMap: StringIdMap, 
+    categoryNameIdMap: StringIdMap,
+    featuresIdMap: StringIdMap,
     valuesIdMap: FeatureValueIdMap) {
-    
-    const createdProducts: { productId: number; productImagesDirId: string; product: Product; quantity: number }[] = [];
-    
-    const productsToSeed = (products as Product[]).slice(0, MAX_PRODUCTS_TO_SEED);
-    const totalProducts = productsToSeed.length;
-    let processed = 0;
-    
-    console.log(`\nCreating ${totalProducts} products...`);
-    
-    for (const product of productsToSeed) {
+    const allPromises = [];
+    for (const product of products) {
         const categoryNames = Object.keys(product.category_list);
-        if (categoryNames.length === 0) {
-            processed++;
-            continue;
-        }
-        
+        if (categoryNames.length === 0) continue;
+
+        //retrieve category prestashop ids
         const categoryIds = categoryNames
             .map(name => categoryNameIdMap.get(name))
             .filter((id): id is number => id !== undefined);
+        // associations featureId:featureValueId, ...
         const associations = createFeatureValueIdAssociations(product.product_specifications, featuresIdMap, valuesIdMap);
 
-        const productPayload = createProductApiPayload(product, categoryIds, associations);
+        //create payload -> create product
+        const productPayload = createProductApiPayload(product as unknown as Product, categoryIds, associations);
         const productImagesDirId = product.product_specifications['Numer produktu'];
         const QUANTITY_TO_SET = Math.floor(Math.random() * 11);
 
-        if (!productImagesDirId) {
-            processed++;
-            continue;
-        }
-
         const productId = await createProduct(productPayload);
-        processed++;
-        console.log(`Progress: ${processed}/${totalProducts}`);
-        
-        createdProducts.push({ productId, productImagesDirId, product, quantity: QUANTITY_TO_SET });
+        console.log(`Created product with id:${productId}`);
+
+        allPromises.push(uploadAllProductImages(productId, productImagesDirId));
+        allPromises.push(updateStockAvailable(productId, QUANTITY_TO_SET));
+        allPromises.push(setProductUnitPrice(productId, product));
     }
-    console.log(`Product creation complete! Created: ${createdProducts.length}`);
-    
-    console.log('\nUploading product images...');
-    let uploadedImages = 0;
-    const totalImages = createdProducts.length;
-    
-    const IMAGE_BATCH_SIZE = 5;
-    for (let i = 0; i < createdProducts.length; i += IMAGE_BATCH_SIZE) {
-        const batch = createdProducts.slice(i, i + IMAGE_BATCH_SIZE);
-        
-        await Promise.all(
-            batch.map(async ({ productId, productImagesDirId }) => {
-                await uploadAllProductImages(productId, productImagesDirId);
-                uploadedImages++;
-                console.log(`Progress: ${uploadedImages}/${totalImages}`);
-            })
-        );
-    }
-    console.log('Product images uploaded.');
-    
-    console.log('\nUpdating stock and unit prices...');
-    let updated = 0;
-    const totalUpdates = createdProducts.length;
-    
-    const UPDATE_BATCH_SIZE = 10;
-    for (let i = 0; i < createdProducts.length; i += UPDATE_BATCH_SIZE) {
-        const batch = createdProducts.slice(i, i + UPDATE_BATCH_SIZE);
-        
-        await Promise.all(
-            batch.map(async ({ productId, product, quantity }) => {
-                await Promise.all([
-                    updateStockAvailable(productId, quantity),
-                    setProductUnitPrice(productId, product)
-                ]);
-                updated++;
-                console.log(`Progress: ${updated}/${totalUpdates}`);
-            })
-        );
-    }
-    console.log('Stock and unit prices updated.');
+    await Promise.all(allPromises);
 }
 
-function setProductUnitPrice(productId: number, product: any){
-    const {unity, unit_price} = retrieveUnityUnitPrice(product.price_description);
-    
+function setProductUnitPrice(productId: number, product: any) {
+    const { unity, unit_price } = retrieveUnityUnitPrice(product.price_description);
+
     // Skip if no unit price data available
     if (!unit_price || !unity) {
         console.log(`Skipping unit price for product ${productId} - no unit price data`);
         return;
     }
-    
+
     const unit_price_ratio = calculateUnitPriceRatio(product.price, unit_price);
     updateProductUnitPrice(productId, unity, unit_price_ratio);
 }
 
 //TODO: add rest of the fields
-function createProductApiPayload(product: Product, categoryIds: number[], associations: FeatureAssociation[]){
+function createProductApiPayload(product: Product, categoryIds: number[], associations: FeatureAssociation[]) {
     const categoryDefaultId = categoryIds[0] ?? PRESTASHOP_DEFAULT_CAT_ID;
     //???we need to add also default category(id=2)
     const finalCategoryIds: number[] = [...categoryIds, PRESTASHOP_DEFAULT_CAT_ID_NUM];
@@ -188,13 +137,13 @@ seedShop();
 
 
 // ---- HELPERS ----
-function retrieveUnityUnitPrice(price_description: string){
+function retrieveUnityUnitPrice(price_description: string) {
     const priceDescription = price_description?.trim() || "";
 
     let unity = "";
     let unit_price = "";
     if (priceDescription) {
-        const [ pricePart, unityPart ] = priceDescription.split('/');
+        const [pricePart, unityPart] = priceDescription.split('/');
         unit_price = (pricePart ?? "")
             .replace("zł", "")
             .replace(/\s/g, "")
@@ -204,7 +153,7 @@ function retrieveUnityUnitPrice(price_description: string){
     }
     return { unit_price, unity };
 }
-function calculateUnitPriceRatio(price: string, unit_price: string){
+function calculateUnitPriceRatio(price: string, unit_price: string) {
     const basePriceNum = parseFloat(price.replace(/\s/g, '').replace(',', '.'));
     const unitPriceNum = parseFloat(unit_price.replace(/\s/g, '').replace(',', '.'));
 
@@ -223,25 +172,25 @@ function generateRandomEAN13(): string {
     const checkDigit = (10 - (sum % 10)) % 10;
     return digits.join("") + checkDigit;
 }
-function createFeatureValueIdAssociations(specifications: Record<string, string>, 
-    featuresIdMap: StringIdMap, 
+function createFeatureValueIdAssociations(specifications: Record<string, string>,
+    featuresIdMap: StringIdMap,
     valuesIdMap: FeatureValueIdMap) {
     const associations: FeatureAssociation[] = [];
     for (const [featureName, featureValue] of Object.entries(specifications)) {
         const valueName = featureValue.trim();
         const featureId = featuresIdMap.get(featureName);
         const featureValueMap = valuesIdMap.get(featureName);
-        
+
         // Sprawdzenie, czy klucze cechy i mapy wartości istnieją
         if (featureId === undefined || featureValueMap === undefined) {
             console.warn(`Pomięto cechę "${featureName}": Brak ID w mapach.`);
             continue;
-        }            
+        }
         const featureValueId = featureValueMap.get(valueName);
         if (featureValueId !== undefined) {
-            associations.push({ 
-                featureId: featureId, 
-                featureValueId: featureValueId 
+            associations.push({
+                featureId: featureId,
+                featureValueId: featureValueId
             });
         } else {
             console.warn(`Pomięto wartość "${valueName}": Brak Value ID w mapie.`);
