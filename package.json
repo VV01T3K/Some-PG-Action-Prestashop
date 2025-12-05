@@ -6,7 +6,7 @@
     "dev": "bun presta:restart",
     "all:del": "bun presta:del && (cd selenium && bun sel:down) && (rm -rf scrapper-results)",
     "all:down": "bun presta:down && (cd selenium && bun sel:down)",
-    "all:setup": "bun all:deps && (bun db:restore || true) && bun db:down && echo 'Setup complete. You can now `bun presta:up` to start the PrestaShop environment.'",
+    "all:setup": "git fetch && bun all:deps && (bun db:restore || true) && bun db:down && echo 'Setup complete. You can now `bun presta:up` to start the PrestaShop environment.'",
     "all:deps": "bun presta:deps && (cd scrapper && bun deps) && (cd selenium && bun deps)",
     "presta:deps": "cd prestashop && docker compose -f compose.dev.yaml pull && docker compose -f compose.dev.yaml build",
     "presta:up": "cd prestashop && docker compose -f compose.dev.yaml up -d --build",
@@ -21,8 +21,8 @@
     "db:restore": "bun db:up && ./.scripts/db.sh restore",
     "db:restore-s": "bun db:up && ./.scripts/db.sh --silent restore",
     "db:clean": "./.scripts/db.sh clean",
-    "scrap:load": "cd scrapper && bun git:download",
+    "scrap:get": "cd scrapper && bun git:download",
     "scrap:seed": "cd scrapper && bun run seed",
-    "scrap:sync": "bun scrap:load && bun scrap:seed"
+    "scrap:sync": "bun scrap:get && bun scrap:seed"
   }
 }
