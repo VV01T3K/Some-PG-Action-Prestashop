@@ -21,26 +21,26 @@ function extractUniqueCategories(data: Product[], categories_field_name: keyof P
         const categories = product[categories_field_name] as Record<string, string>;
         if (!categories) continue;
 
-        for(const [categoryName, categoryUrl] of Object.entries(categories)) {
+        for (const [categoryName, categoryUrl] of Object.entries(categories)) {
             uniqueCategories.set(categoryName, categoryUrl);
         }
-    }   
+    }
     return uniqueCategories;
 }
 //creates a map of CategoryName("Hobby",...) and parentUrlKey(needed later)("hobby", "zrob-to-sam",...), 
 // ourUrlKey + depth num(e.g. 4==mainCategory, 5==subCategory, 6==subsubCategory,...)
 function createCategoryMap(categories: Map<string, string>): Map<string, CategoryInfo> {
     const categoryMap = new Map<string, CategoryInfo>();
-    
+
     for (const [categoryName, categoryUrl] of categories) {
         const parts = categoryUrl.split('/');
         const depth: number = parts.length;
         const urlKey = parts[depth - 2];
         let parentCategoryUrlKey: string | undefined = undefined;
-        if (depth >= 6){ //then it's a subcategory
+        if (depth >= 6) { //then it's a subcategory
             parentCategoryUrlKey = parts[depth - 3];
-        } 
-        if(!urlKey){
+        }
+        if (!urlKey) {
             console.log("Something went wrong. UrlKey not found");
             return new Map<string, CategoryInfo>();
         }
@@ -63,7 +63,7 @@ function sortCategoryMapByDepth(categoryMap: Map<string, CategoryInfo>): Map<str
     return sortedMap;
 }
 function createCategoryMapWithCorrectOrder(): Map<string, CategoryInfo> {
-    const unsortedMap = createCategoryMap(extractUniqueCategories(products as unknown as Product[], 'category_list')); 
+    const unsortedMap = createCategoryMap(extractUniqueCategories(products as unknown as Product[], 'category_list'));
     return sortCategoryMapByDepth(unsortedMap);
 }
 
@@ -81,16 +81,16 @@ async function getCategoryImagePath(categoryName: string): Promise<string | unde
     return exists ? imagePath : undefined;
 }
 
-async function addAllCategoriesThroughApi(categoryMap: Map<string, CategoryInfo>): Promise<AddCategoriesResult>{
+async function addAllCategoriesThroughApi(categoryMap: Map<string, CategoryInfo>): Promise<AddCategoriesResult> {
     const categoryUrlKeyIdMap = new Map<string, number>();
     const categoryNameIdMap = new Map<string, number>();
     const mainCategoryNameIdMap = new Map<string, number>(); // Only main categories
-    
+
     for (const [categoryName, categoryInfo] of categoryMap) {
         const parentUrlKey = categoryInfo.parentUrlKey;
         if (parentUrlKey == undefined) { //then it's a main category - upload image with it
             const imagePath = await getCategoryImagePath(categoryName);
-            const createdId: number = await createCategory(categoryName, imagePath); // we receive the id
+            const createdId: number = await createCategory(categoryName); // we receive the id
             categoryUrlKeyIdMap.set(categoryInfo.urlKey, createdId);
             categoryNameIdMap.set(categoryName, createdId);
             mainCategoryNameIdMap.set(categoryName, createdId); // Track main categories
@@ -126,18 +126,18 @@ export async function uploadAllCategoryImages(
     for (const [categoryName, categoryId] of mainCategoryNameIdMap) {
         current++;
         const imagePath = `${CATEGORY_IMAGES_PATH}${categoryName}.png`;
-        
+
         try {
             const file = Bun.file(imagePath);
             const exists = await file.exists();
-            
+
             if (!exists) {
                 console.warn(`Category image not found: ${imagePath}`);
                 failed++;
                 console.log(`Progress: ${current}/${total}`);
                 continue;
             }
-            
+
             const success = await uploadCategoryImage(categoryId, imagePath);
             if (success) {
                 uploaded++;

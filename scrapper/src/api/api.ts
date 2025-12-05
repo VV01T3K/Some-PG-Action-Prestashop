@@ -157,6 +157,53 @@ export async function uploadProductImage(productId: number, imagePath: string) {
     }
 }
 
+export async function uploadCategoryImage(categoryId: number, imagePath: string): Promise<boolean> {
+    try {
+        const file = Bun.file(imagePath);
+        const imageBuffer = Buffer.from(await file.arrayBuffer());
+
+        let mimeType = 'image/png';
+        const blob = new Blob([imageBuffer], { type: mimeType });
+
+        // Try POST (create new image)
+        const formData = new FormData();
+        formData.append("image", blob, imagePath.split('/').pop() ?? 'category.jpg');
+
+        const res = await fetch(`${API_URL}/images/categories/${categoryId}?ws_key=${API_KEY}`, {
+            method: "POST",
+            body: formData
+        });
+
+        // Success cases:
+        // - 200/201: Normal success
+        // - 500: PHP notice but image was uploaded (PrestaShop bug)
+        if (res.ok || res.status === 500) {
+            console.log(`Category image uploaded for ID ${categoryId}`);
+            return true;
+        }
+
+        // If image already exists, consider it a success (no need to re-upload)
+        if (res.status === 400) {
+            const responseText = await res.text();
+            if (responseText.includes("already exists")) {
+                console.log(`ℹCategory image already exists for ID ${categoryId}, skipping`);
+                return true;
+            }
+            console.error(`Category image upload failed for ID ${categoryId}. Status: ${res.status}`);
+            console.error(`Response: ${responseText}`);
+            return false;
+        }
+
+        const responseText = await res.text();
+        console.error(`Category image upload failed for ID ${categoryId}. Status: ${res.status}`);
+        console.error(`Response: ${responseText}`);
+        return false;
+    } catch (error) {
+        console.error(`Category image upload error for ID ${categoryId}:`, error);
+        return false;
+    }
+}
+
 /* ==== DELETE ====*/
 // delete product with all its images
 export async function deleteProductById(productId: number) {

@@ -11,7 +11,7 @@ const PRESTASHOP_DEFAULT_CAT_ID = "2";
 const PRESTASHOP_DEFAULT_CAT_ID_NUM = 2;
 const IMAGES_PATH = "../scrapper-results/images/";
 const MAX_IMAGES_PER_PRODUCT = 3;
-const MAX_PRODUCTS_TO_SEED = 1000;
+const MAX_PRODUCTS_TO_SEED = 100;
 
 export async function seedShop() {
     console.log('Starting shop seeding...\n');
@@ -38,9 +38,21 @@ async function seedProducts(
     featuresIdMap: StringIdMap,
     valuesIdMap: FeatureValueIdMap) {
     const allPromises = [];
-    for (const product of products) {
+    const limitedProducts = MAX_PRODUCTS_TO_SEED <= 0
+        ? products
+        : products.slice(0, MAX_PRODUCTS_TO_SEED);
+    const totalProducts = limitedProducts.length;
+    let created = 0;
+    let skipped = 0;
+
+    console.log(`\nSeeding ${totalProducts} products...`);
+
+    for (const product of limitedProducts) {
         const categoryNames = Object.keys(product.category_list);
-        if (categoryNames.length === 0) continue;
+        if (categoryNames.length === 0) {
+            skipped++;
+            continue;
+        }
 
         //retrieve category prestashop ids
         const categoryIds = categoryNames
@@ -55,13 +67,16 @@ async function seedProducts(
         const QUANTITY_TO_SET = Math.floor(Math.random() * 11);
 
         const productId = await createProduct(productPayload);
-        console.log(`Created product with id:${productId}`);
+        created++;
+        console.log(`Progress ${created}/${totalProducts} (ID: ${productId})`);
 
         allPromises.push(uploadAllProductImages(productId, productImagesDirId));
         allPromises.push(updateStockAvailable(productId, QUANTITY_TO_SET));
         allPromises.push(setProductUnitPrice(productId, product));
     }
     await Promise.all(allPromises);
+
+    console.log(`\nProducts seeding complete! Created: ${created}, Skipped: ${skipped}`);
 }
 
 function setProductUnitPrice(productId: number, product: any) {
