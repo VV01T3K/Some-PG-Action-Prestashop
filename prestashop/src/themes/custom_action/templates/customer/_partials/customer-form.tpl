@@ -75,7 +75,7 @@
                       {elseif $field.type == 'checkbox'}
                         <div data-testid="{$field.name}-input">
                           <div class="relative flex min-h-12 items-center gap-4">
-                            <input id="{$field.name}" type="checkbox"
+                            <input id="{$field.name}" type="checkbox" value="1"
                               class="accent-dark-blue focus:ring-dark-blue h-5 w-5 cursor-pointer rounded border border-neutral-50 focus:ring-2 focus:ring-dark-blue ring-neutral-300"
                               data-testid="input" {if $field.required}required="" {/if} name="{$field.name}"
                               {if isset($is_identity_page) && $is_identity_page && $field.value}checked{/if}>
