@@ -11,9 +11,9 @@
 	// Configure tool-specific properties.
 	// "customizations": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [
-	// 	8080
-	// ],
+	"forwardPorts": [
+		443
+	],
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	},
