@@ -24,44 +24,71 @@
  *}
 {if $product.show_price}
   <div class="product-prices js-product-prices">
-    {block name='product_discount'}
-      {if $product.has_discount}
-        <div class="product-discount">
-          {hook h='displayProductPriceBlock' product=$product type="old_price"}
-          <span class="regular-price">{$product.regular_price}</span>
-        </div>
-      {/if}
-    {/block}
-
     {block name='product_price'}
-      <div
-        class="product-price h5 {if $product.has_discount}has-discount{/if}">
-
+      <div class="product-price {if $product.has_discount}has-discount{/if}">
         <div class="current-price">
-          <span class='current-price-value' content="{$product.rounded_display_price}">
-            {capture name='custom_price'}{hook h='displayProductPriceBlock' product=$product type='custom_price' hook_origin='product_sheet'}{/capture}
-            {if '' !== $smarty.capture.custom_price}
-              {$smarty.capture.custom_price nofilter}
+          {* Action.com style price display *}
+          <div class="mb-1 flex items-end align-baseline action-price-container" data-testid="product-card-price">
+            {* Split price into whole and fractional parts *}
+            {assign var="price_parts" value=','|explode:$product.price}
+            {if isset($price_parts[0]) && isset($price_parts[1])}
+              {* Extract numbers only from whole part *}
+              {assign var="whole_part" value=$price_parts[0]|regex_replace:"/[^0-9]/":""}
+              {* Extract first 2 digits from fractional part *}
+              {assign var="fractional_part" value=$price_parts[1]|regex_replace:"/[^0-9]/":""|substr:0:2}
             {else}
-              {$product.price}
+              {* Fallback for prices without decimals *}
+              {assign var="whole_part" value=$product.price|regex_replace:"/[^0-9]/":""}
+              {assign var="fractional_part" value="00"}
             {/if}
-          </span>
+            
+            {* Price color - orange for discounted, blue for regular *}
+            {assign var="price_color" value="text-dark-blue-500"}
+            {if $product.has_discount}
+              {assign var="price_color" value="text-orange-500"}
+            {/if}
+            
+            {* Main price display *}
+            <div class="flex items-end align-baseline {$price_color}">
+              {* Whole number - large display *}
+              <span data-testid="product-card-price-whole" 
+                    class="flex items-baseline self-baseline text-[3.5rem] leading-[48px] font-bold tracking-[-1px] sm:text-[4.5rem] sm:leading-[56px] action-price-whole">
+                {$whole_part}
+              </span>
+              
+              {* Fractional part and unit price *}
+              <span class="flex flex-col justify-around self-stretch action-price-fraction-container">
+                <span data-testid="product-card-price-fractional" 
+                      class="ml-[2px] text-[32px] leading-[28px] font-bold tracking-[-1.32px] sm:text-[42px] sm:leading-[28px] action-price-fractional">
+                  {$fractional_part}
+                </span>
+                {if $displayUnitPrice}
+                  <span data-testid="product-card-price-description" 
+                        class="ml-px flex self-end text-[14px] leading-[12px] text-neutral-700 sm:leading-none action-price-unit">
+                    {$product.unit_price_full}
+                  </span>
+                {/if}
+              </span>
+            </div>
 
-          {if $product.has_discount}
-            {if $product.discount_type === 'percentage'}
-              <span class="discount discount-percentage">{l s='Save %percentage%' d='Shop.Theme.Catalog' sprintf=['%percentage%' => $product.discount_percentage_absolute]}</span>
-            {else}
-              <span class="discount discount-amount">
-                  {l s='Save %amount%' d='Shop.Theme.Catalog' sprintf=['%amount%' => $product.discount_to_display]}
+            {* Discount badge - original price and percentage *}
+            {if $product.has_discount}
+              <span class="ml-1 flex flex-col items-start self-start text-neutral-700 action-discount-badge" data-testid="product-card-price-discount">
+                <span class="flex" data-testid="product-card-price-original-amount">
+                  <span class="text-center text-sm line-through">{$product.regular_price}</span>
+                  <span class="pl-0.5 text-[9px]">*</span>
+                </span>
+                <span class="border border-neutral-700 px-1 text-xs" data-testid="product-card-price-discount-percentage">
+                  -{$product.discount_percentage_absolute}
+                </span>
               </span>
             {/if}
-          {/if}
+          </div>
+
         </div>
 
         {block name='product_unit_price'}
-          {if $displayUnitPrice}
-            <p class="product-unit-price sub">{l s='(%unit_price%)' d='Shop.Theme.Catalog' sprintf=['%unit_price%' => $product.unit_price_full]}</p>
-          {/if}
+          {* Unit price now displayed in the main price container *}
         {/block}
       </div>
     {/block}
@@ -98,7 +125,7 @@
       {/if}
       {hook h='displayProductPriceBlock' product=$product type="price"}
       {hook h='displayProductPriceBlock' product=$product type="after_price"}
-      {if $product.is_virtual	== 0}
+      {if $product.is_virtual == 0}
         {if $product.additional_delivery_times == 1}
           {if $product.delivery_information}
             <span class="delivery-information">{$product.delivery_information}</span>
@@ -106,7 +133,6 @@
         {elseif $product.additional_delivery_times == 2}
           {if $product.quantity > 0}
             <span class="delivery-information">{$product.delivery_in_stock}</span>
-          {* Out of stock message should not be displayed if customer can't order the product. *}
           {elseif $product.quantity <= 0 && $product.add_to_cart_url}
             <span class="delivery-information">{$product.delivery_out_stock}</span>
           {/if}

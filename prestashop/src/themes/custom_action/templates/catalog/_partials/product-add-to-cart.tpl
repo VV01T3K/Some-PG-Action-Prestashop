@@ -27,7 +27,7 @@
     <span class="control-label">{l s='Quantity' d='Shop.Theme.Catalog'}</span>
 
     {block name='product_quantity'}
-      <div class="product-quantity clearfix">
+      <div class="product-quantity clearfix flex gap-2 items-center">
         <div class="qty">
           <input
             type="number"
@@ -47,7 +47,7 @@
           >
         </div>
 
-        <div class="add">
+        <div class="add flex-1">
           <button
             class="btn btn-primary add-to-cart"
             data-button-action="add-to-cart"
@@ -56,7 +56,9 @@
               disabled
             {/if}
           >
-            <i class="material-icons shopping-cart">&#xE547;</i>
+            <span class="shrink-0" style="display:inline-block;width:24px;height:24px">
+              <svg aria-hidden="true" data-testid="Heart01" class="shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21a1 1 0 0 1-.486-.126C11.126 20.658 2 15.514 2 9c0-3.665 2.218-5.425 4.293-5.849 2.171-.44 4.328.402 5.707 2.113 1.38-1.712 3.537-2.552 5.707-2.113C19.782 3.575 22 5.335 22 9.001c0 6.513-9.126 11.657-9.515 11.873A1 1 0 0 1 12 21z"></path></svg>
+            </span>
             {l s='Add to cart' d='Shop.Theme.Actions'}
           </button>
         </div>

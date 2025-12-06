@@ -22,7 +22,7 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-<div class="images-container js-images-container">
+<div class="images-container js-images-container" style="display: flex; flex-direction: column;">
   {block name='product_cover'}
     <div class="product-cover">
       {if $product.default_image}
@@ -39,9 +39,6 @@
           width="{$product.default_image.bySize.large_default.width}"
           height="{$product.default_image.bySize.large_default.height}"
         >
-        <div class="layer hidden-sm-down" data-toggle="modal" data-target="#product-modal">
-          <i class="material-icons zoom-in">search</i>
-        </div>
       {else}
         <img
           class="img-fluid"
@@ -55,10 +52,10 @@
   {/block}
 
   {block name='product_images'}
-    <div class="js-qv-mask mask">
-      <ul class="product-images js-qv-product-images">
+    <div class="js-qv-mask mask" style="width: 100%; margin-top: 16px;">
+      <ul class="product-images js-qv-product-images" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0;">
         {foreach from=$product.images item=image}
-          <li class="thumb-container js-thumb-container">
+          <li class="thumb-container js-thumb-container" style="display: inline-block;">
             <img
               class="thumb js-thumb {if $image.id_image == $product.default_image.id_image} selected js-thumb-selected {/if}"
               data-image-medium-src="{$image.bySize.medium_default.url}"
@@ -73,6 +70,7 @@
               loading="lazy"
               width="{$product.default_image.bySize.small_default.width}"
               height="{$product.default_image.bySize.small_default.height}"
+              style="width: 70px; height: 70px; object-fit: contain; border: 2px solid transparent; border-radius: 4px; cursor: pointer; background: #fff;"
             >
           </li>
         {/foreach}

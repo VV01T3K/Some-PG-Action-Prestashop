@@ -26,11 +26,15 @@
   {foreach from=$groups key=id_attribute_group item=group}
     {if !empty($group.attributes)}
     <div class="clearfix product-variants-item">
-      <span class="control-label">{$group.name}{l s=': ' d='Shop.Theme.Catalog'}
+      {* Display selected value in label *}
+      <span class="control-label">{$group.name}
           {foreach from=$group.attributes key=id_attribute item=group_attribute}
-            {if $group_attribute.selected}{$group_attribute.name}{/if}
+            {if $group_attribute.selected}
+              <span class="selected-variant-name">: {$group_attribute.name}</span>
+            {/if}
           {/foreach}
       </span>
+      
       {if $group.group_type == 'select'}
         <select
           class="form-control form-control-select"
@@ -42,28 +46,50 @@
             <option value="{$id_attribute}" title="{$group_attribute.name}"{if $group_attribute.selected} selected="selected"{/if}>{$group_attribute.name}</option>
           {/foreach}
         </select>
+        
       {elseif $group.group_type == 'color'}
-        <ul id="group_{$id_attribute_group}">
-          {foreach from=$group.attributes key=id_attribute item=group_attribute}
-            <li class="float-xs-left input-container">
-              <label aria-label="{$group_attribute.name}">
-                <input class="input-color" type="radio" data-product-attribute="{$id_attribute_group}" name="group[{$id_attribute_group}]" value="{$id_attribute}" title="{$group_attribute.name}"{if $group_attribute.selected} checked="checked"{/if}>
-                <span
-                  {if $group_attribute.texture}
-                    class="color texture" style="background-image: url({$group_attribute.texture})"
-                  {elseif $group_attribute.html_color_code}
-                    class="color" style="background-color: {$group_attribute.html_color_code}"
-                  {/if}
-                ><span class="attribute-name sr-only">{$group_attribute.name}</span></span>
-              </label>
-            </li>
-          {/foreach}
-        </ul>
+        {* Action.com style color selector *}
+        <div class="action-color-selector">
+          <ul id="group_{$id_attribute_group}" class="color-list">
+            {foreach from=$group.attributes key=id_attribute item=group_attribute}
+              <li class="color-item input-container">
+                <label aria-label="{$group_attribute.name}" class="color-label" title="{$group_attribute.name}">
+                  <input 
+                    class="input-color" 
+                    type="radio" 
+                    data-product-attribute="{$id_attribute_group}" 
+                    name="group[{$id_attribute_group}]" 
+                    value="{$id_attribute}" 
+                    {if $group_attribute.selected} checked="checked"{/if}
+                  >
+                  <span class="color-swatch-wrapper">
+                    <span
+                      class="color-swatch{if $group_attribute.texture} texture{/if}"
+                      {if $group_attribute.texture}
+                        style="background-image: url({$group_attribute.texture})"
+                      {elseif $group_attribute.html_color_code}
+                        style="background-color: {$group_attribute.html_color_code}"
+                      {/if}
+                    >
+                      <span class="checkmark-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      </span>
+                    </span>
+                    <span class="color-name">{$group_attribute.name}</span>
+                  </span>
+                </label>
+              </li>
+            {/foreach}
+          </ul>
+        </div>
+        
       {elseif $group.group_type == 'radio'}
-        <ul id="group_{$id_attribute_group}">
+        <ul id="group_{$id_attribute_group}" class="radio-list">
           {foreach from=$group.attributes key=id_attribute item=group_attribute}
-            <li class="input-container float-xs-left">
-              <label>
+            <li class="input-container radio-item">
+              <label class="radio-label-wrapper">
                 <input class="input-radio" type="radio" data-product-attribute="{$id_attribute_group}" name="group[{$id_attribute_group}]" value="{$id_attribute}" title="{$group_attribute.name}"{if $group_attribute.selected} checked="checked"{/if}>
                 <span class="radio-label">{$group_attribute.name}</span>
               </label>
