@@ -22,75 +22,15 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-<style>
-  /* Inline 404 styles (scoped to this template) */
-  .page-not-found {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 1rem;
-    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
-    color: #111827;
-  }
 
-  .page-not-found .page-content {
-    max-width: 880px;
-    text-align: center;
-    padding: 2rem;
-    border-radius: 12px;
-  }
-
-  .page-not-found h4 {
-    font-size: 2rem;
-    margin: 0 0 0.75rem 0;
-    color: #0b1220;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
-
-  .page-not-found p {
-    color: #475569;
-    font-size: 1.05rem;
-    margin: 0 0 1.25rem 0;
-  }
-
-  .page-not-found .btn-back-home {
-    display: inline-block;
-    background: #0f1724;
-    color: #ffffff;
-    padding: 0.625rem 1rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    box-shadow: 0 6px 20px rgba(2,6,23,0.08);
-    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
-  }
-
-  .page-not-found .btn-back-home:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(2,6,23,0.12);
-    opacity: 0.98;
-  }
-
-  @media (max-width: 640px) {
-    .page-not-found {
-      padding: 2rem 0.75rem;
-    }
-
-    .page-not-found h4 {
-      font-size: 1.5rem;
-    }
-  }
-</style>
-
-<section id="content" class="page-content page-not-found">
+<section id="content" class="page-content page-not-found" style="min-height: 70vh; display: flex; justify-content: center; align-items: center; flex-direction: column;">
   {block name='page_content'}
     {block name="error_content"}
       {if isset($errorContent)}
         {$errorContent nofilter}
       {else}
-        <h4>{l s='This page could not be found' d='Shop.Theme.Global'}</h4>
-        <p>{l s='Try to search our catalog, you may find what you are looking for!' d='Shop.Theme.Global'}</p>
+        <h2 style="font-size: 2em;">{l s='This page could not be found' d='Shop.Theme.Global'}</h2>
+        <p style="font-size: 1.2em;">{l s='Try to search our catalog, you may find what you are looking for!' d='Shop.Theme.Global'}</p>
       {/if}
     {/block}
 
