@@ -23,8 +23,9 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
 <div id="js-product-list">
-  {include file="catalog/_partials/productlist.tpl" products=$listing.products cssClass="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"}
-
+  <div class="grid w-full grid-cols-2 gap-px *:outline *:outline-[1px] *:outline-neutral-300 md:grid-cols-3">
+    {include file="catalog/_partials/productlist.tpl" products=$listing.products}
+  </div>
   {block name='pagination'}
     {include file='_partials/pagination.tpl' pagination=$listing.pagination}
   {/block}

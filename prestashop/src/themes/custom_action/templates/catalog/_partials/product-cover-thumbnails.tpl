@@ -24,7 +24,7 @@
  *}
 <div class="images-container js-images-container" style="display: flex; flex-direction: column;">
   {block name='product_cover'}
-    <div class="product-cover">
+    <div class="product-cover relative">
       {if $product.default_image}
         <img
           class="js-qv-product-cover img-fluid"
@@ -48,6 +48,30 @@
           height="{$urls.no_picture_image.bySize.medium_default.height}"
         >
       {/if}
+      
+      {* Promotion Badge - Top Left *}
+      <span class="absolute top-0 left-0 flex flex-col gap-0.5">
+        {if $product.new}
+          <span class="flex overflow-hidden h-[22px] sm:h-[26px] text-neutral-0 text-[12px] leading-[14px] font-bold sm:text-sm sm:leading-[18px]" data-testid="product-tag">
+            <span class="flex w-fit items-center pr-1 pl-1.5 sm:pr-1.5 sm:pl-2 bg-cyan-500">
+              <span>{l s='Nowości' d='Shop.Theme.Catalog'}</span>
+            </span>
+            <span class="w-[8px]">
+              <span class="-mr-px block h-full -translate-x-px bg-cyan-500" style="clip-path:polygon(0 0, 100% 0, 1px 100%, 0 100%)"></span>
+            </span>
+          </span>
+        {/if}
+        {if $product.has_discount}
+          <span class="flex overflow-hidden h-[22px] sm:h-[26px] text-neutral-0 text-[12px] leading-[14px] font-bold sm:text-sm sm:leading-[18px]" data-testid="product-tag">
+            <span class="flex w-fit items-center pr-1 pl-1.5 sm:pr-1.5 sm:pl-2 bg-orange-500">
+              <span>{l s='Promocja' d='Shop.Theme.Catalog'}</span>
+            </span>
+            <span class="w-[8px]">
+              <span class="-mr-px block h-full -translate-x-px bg-orange-500" style="clip-path:polygon(0 0, 100% 0, 1px 100%, 0 100%)"></span>
+            </span>
+          </span>
+        {/if}
+      </span>
     </div>
   {/block}
 

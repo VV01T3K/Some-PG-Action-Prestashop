@@ -22,7 +22,7 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-<div id="js-product-list-top" class="flex w-full items-center justify-between gap-3 px-4 pb-6 sm:px-0 md:py-5 lg:w-3/4">
+<div id="js-product-list-top" class="flex w-full items-center justify-between gap-3 px-4 pb-6 sm:px-0 md:py-5">
   {* Category name and product count *}
   <div>
     <h2 class="text-2xl font-bold text-dark-blue-500" data-testid="grid-title">{$listing.label}</h2>
