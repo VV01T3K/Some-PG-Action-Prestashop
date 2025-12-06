@@ -76,9 +76,17 @@
                 {* Product Title *}
                 {block name='page_header_container'}
                   {block name='page_header'}
-                    <h1 class="ap-title">{block name='page_title'}{$product.name}{/block}</h1>
-                    {if isset($product.reference) && $product.reference}
-                      <p class="ap-reference">{l s='SKU:' d='Shop.Theme.Catalog'} {$product.reference}</p>
+                    <h1 class="heading-2xl mb-1">{block name='page_title'}{$product.name}{/block}</h1>
+                    {* Quick product features *}
+                    {if $product.grouped_features}
+                      <p class="ap-reference text-sm text-neutral-700">
+                        <span class="font-medium">{l s='Właściwości:' d='Shop.Theme.Catalog'}</span>
+                        {foreach from=$product.grouped_features item=feature name=quickFeatures}
+                          {if $smarty.foreach.quickFeatures.index < 4}
+                            {$feature.value|escape:'htmlall'}{if !$smarty.foreach.quickFeatures.last && $smarty.foreach.quickFeatures.index < 3} | {/if}
+                          {/if}
+                        {/foreach}
+                      </p>
                     {/if}
                   {/block}
                 {/block}
@@ -183,11 +191,11 @@
                   {/block}
                 </div>
 
-                {if $product.is_customizable && count($product.customizations.fields)}
+                {*{if $product.is_customizable && count($product.customizations.fields)}
                   {block name='product_customization'}
                     {include file="catalog/_partials/product-customization.tpl" customizations=$product.customizations}
                   {/block}
-                {/if}
+                {/if} chyba nie potrzebne jakby co to odkomentowac *}
 
               </aside>
             </div>

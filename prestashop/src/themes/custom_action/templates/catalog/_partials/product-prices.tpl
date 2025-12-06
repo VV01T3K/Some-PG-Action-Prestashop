@@ -62,12 +62,10 @@
                       class="ml-[2px] text-[32px] leading-[28px] font-bold tracking-[-1.32px] sm:text-[42px] sm:leading-[28px] action-price-fractional">
                   {$fractional_part}
                 </span>
-                {if $displayUnitPrice}
-                  <span data-testid="product-card-price-description" 
-                        class="ml-px flex self-end text-[14px] leading-[12px] text-neutral-700 sm:leading-none action-price-unit">
-                    {$product.unit_price_full}
-                  </span>
-                {/if}
+                <span data-testid="product-card-price-description" 
+                      class="ml-px flex self-end text-[14px] leading-[12px] text-neutral-700 sm:leading-none action-price-unit">
+                  {$product.price}/szt.
+                </span>
               </span>
             </div>
 
@@ -117,27 +115,18 @@
 
     {hook h='displayProductPriceBlock' product=$product type="weight" hook_origin='product_sheet'}
 
-    <div class="tax-shipping-delivery-label">
-      {if !$configuration.taxes_enabled}
-        {l s='No tax' d='Shop.Theme.Catalog'}
-      {elseif $configuration.display_taxes_label}
-        {$product.labels.tax_long}
-      {/if}
-      {hook h='displayProductPriceBlock' product=$product type="price"}
-      {hook h='displayProductPriceBlock' product=$product type="after_price"}
-      {if $product.is_virtual == 0}
-        {if $product.additional_delivery_times == 1}
-          {if $product.delivery_information}
-            <span class="delivery-information">{$product.delivery_information}</span>
-          {/if}
-        {elseif $product.additional_delivery_times == 2}
-          {if $product.quantity > 0}
-            <span class="delivery-information">{$product.delivery_in_stock}</span>
-          {elseif $product.quantity <= 0 && $product.add_to_cart_url}
-            <span class="delivery-information">{$product.delivery_out_stock}</span>
-          {/if}
+    {if $product.is_virtual == 0}
+      {if $product.additional_delivery_times == 1}
+        {if $product.delivery_information}
+          <span class="delivery-information">{$product.delivery_information}</span>
+        {/if}
+      {elseif $product.additional_delivery_times == 2}
+        {if $product.quantity > 0}
+          <span class="delivery-information">{$product.delivery_in_stock}</span>
+        {elseif $product.quantity <= 0 && $product.add_to_cart_url}
+          <span class="delivery-information">{$product.delivery_out_stock}</span>
         {/if}
       {/if}
-    </div>
+    {/if}
   </div>
 {/if}

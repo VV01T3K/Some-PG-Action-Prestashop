@@ -36,7 +36,7 @@
               <path fill="#001489" d="M13 16a1 1 0 0 1-.707-.293l-3-3a1 1 0 0 1 0-1.414l3-3a1 1 0 1 1 1.414 1.414L11.414 12l2.293 2.293A1 1 0 0 1 13 16"></path>
             </svg>
           </span>
-          <span class="text-dark-blue-500 group-hover:shadow-bottom-border ml-1.5 font-bold">{l s='Back' d='Shop.Theme.Actions'}</span>
+          <span class="text-dark-blue-500 group-hover:shadow-bottom-border ml-1.5 font-bold">{l s='Wstecz' d='Shop.Theme.Actions'}</span>
         </button>
         <span aria-hidden="true" class="mx-3 inline text-neutral-500">|</span>
       </div>

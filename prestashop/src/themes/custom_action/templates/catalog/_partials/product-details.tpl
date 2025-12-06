@@ -5,7 +5,7 @@
   {* Product Characteristics Section - Action.com style *}
   <section class="mt-8" aria-labelledby="product-characteristics-title">
     <h2 id="product-characteristics-title" class="heading-lg mb-4" data-testid="title-view-title">
-      {l s='Product Characteristics' d='Shop.Theme.Catalog'}
+      {l s='Cechy produktu' d='Shop.Theme.Catalog'}
     </h2>
     
     <div class="bg-neutral-50 p-3 pt-4" style="background-color: #f5f5f5; padding: 16px; padding-top: 20px;">
