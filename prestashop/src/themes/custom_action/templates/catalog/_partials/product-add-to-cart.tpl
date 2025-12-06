@@ -95,29 +95,3 @@
     {/block}
   {/if}
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const qtyInput = document.getElementById('quantity_wanted');
-  const decreaseBtn = document.querySelector('.qty-decrease');
-  const increaseBtn = document.querySelector('.qty-increase');
-  
-  if (qtyInput && decreaseBtn && increaseBtn) {
-    const minQty = parseInt(qtyInput.getAttribute('min')) || 1;
-    
-    decreaseBtn.addEventListener('click', function() {
-      let currentVal = parseInt(qtyInput.value) || minQty;
-      if (currentVal > minQty) {
-        qtyInput.value = currentVal - 1;
-        qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    });
-    
-    increaseBtn.addEventListener('click', function() {
-      let currentVal = parseInt(qtyInput.value) || minQty;
-      qtyInput.value = currentVal + 1;
-      qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
-    });
-  }
-});
-</script>
