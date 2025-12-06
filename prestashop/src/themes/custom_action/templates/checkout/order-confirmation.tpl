@@ -1,5 +1,9 @@
 {extends file='page.tpl'}
 
+{block name='head' append}
+  <link rel="stylesheet" href="{$urls.theme_assets}css/order-confirmation.css">
+{/block}
+
 {block name='page_content_container' prepend}
     <section id="content-hook_order_confirmation" class="card">
       <div class="card-block">
@@ -8,7 +12,7 @@
 
             {block name='order_confirmation_header'}
               <h3 class="h1 card-title">
-                <i class="material-icons rtl-no-flip done">&#xE876;</i>{l s='Your order is confirmed' d='Shop.Theme.Checkout'}
+                {l s='Your order is confirmed' d='Shop.Theme.Checkout'}
               </h3>
             {/block}
 

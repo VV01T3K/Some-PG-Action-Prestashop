@@ -1,0 +1,195 @@
+/* Quantity Stepper Styles - Action.com Design */
+.quantity-stepper {
+  display: flex;
+  align-items: center;
+  border: 0;
+  border-radius: 24px;
+  background-color: #f3f4f6;
+  width: 120px;
+  height: 32px;
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.quantity-stepper .stepper-minus,
+.quantity-stepper .stepper-plus {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 16px;
+  color: #505862;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 32px;
+  font-weight: 600;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.quantity-stepper .stepper-minus:hover,
+.quantity-stepper .stepper-plus:hover {
+  background-color: rgba(0, 20, 137, 0.08);
+  color: #001489;
+}
+
+.quantity-stepper .stepper-minus:active,
+.quantity-stepper .stepper-plus:active {
+  background-color: rgba(0, 20, 137, 0.12);
+  color: #001489;
+}
+
+.quantity-stepper .stepper-minus:disabled,
+.quantity-stepper .stepper-plus:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  color: #8593a3;
+}
+
+.quantity-stepper .stepper-minus:disabled:hover,
+.quantity-stepper .stepper-plus:disabled:hover {
+  background-color: transparent;
+}
+
+/* Quantity display input */
+.quantity-stepper .js-cart-line-product-quantity {
+  border: none;
+  width: 40px;
+  text-align: center;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: transparent;
+  color: #505862;
+  margin: 0;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.quantity-stepper .js-cart-line-product-quantity:focus {
+  outline: none;
+  background-color: rgba(0, 20, 137, 0.08);
+  color: #001489;
+  box-shadow: none;
+}
+
+/* Remove spinner arrows from number input */
+.quantity-stepper .js-cart-line-product-quantity::-webkit-outer-spin-button,
+.quantity-stepper .js-cart-line-product-quantity::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity-stepper .js-cart-line-product-quantity[type=number] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .quantity-stepper {
+    width: 100%;
+    flex: 1;
+  }
+
+  .quantity-stepper .stepper-minus,
+  .quantity-stepper .stepper-plus {
+    flex: 1;
+    min-width: 40px;
+    padding: 8px 10px;
+    height: 40px;
+  }
+
+  .quantity-stepper .js-cart-line-product-quantity {
+    flex: 1;
+    min-width: 50px;
+    font-size: 14px;
+    padding: 8px 0;
+  }
+}
+
+/* Icon styling */
+.quantity-stepper .fa {
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+/* Shopping cart container styles */
+.cart-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease;
+}
+
+.cart-item:hover {
+  background-color: #f3f4f6;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+/* Cart totals styling */
+.cart-totals {
+  background-color: #f3f4f6;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.cart-totals-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 16px;
+  color: #505862;
+}
+
+.cart-totals-row.total {
+  border-top: 2px solid #001489;
+  padding-top: 12px;
+  margin-top: 12px;
+  font-weight: 700;
+  color: #001489;
+  font-size: 18px;
+}
+
+/* Button styling for checkout */
+.btn-checkout {
+  background-color: #ff8200;
+  color: #fff;
+  border: 2px solid #ff8200;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  margin-top: 16px;
+}
+
+.btn-checkout:hover {
+  background-color: #994e00;
+  border-color: #994e00;
+}
+
+.btn-checkout:active {
+  background-color: #994e00;
+  border-color: #994e00;
+}

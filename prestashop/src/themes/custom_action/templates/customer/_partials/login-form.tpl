@@ -97,34 +97,37 @@
                                   </svg>
                                 </button>
                                 <script>
-                                  document.addEventListener('DOMContentLoaded', function() {
-                                    var passwordInput = document.getElementById('{$field.name}');
-                                    var toggleBtn = document.querySelector(
-                                      '[data-testid="password-input-visiblity-toggle"]');
+                                  (function() {
+                                    var script = document.currentScript;
+                                    if (!script) {
+                                      return;
+                                    }
+
+                                    var block = script.closest('[data-testid="password-input"]');
+                                    if (!block) {
+                                      return;
+                                    }
+
+                                    var toggleBtn = block.querySelector('[data-testid="password-input-visiblity-toggle"]');
+                                    var passwordInput = block.querySelector('input[name="{$field.name}"]');
+                                    if (!toggleBtn || !passwordInput) {
+                                      return;
+                                    }
+
                                     var icon = toggleBtn.querySelector('svg');
-
-                                    if (!passwordInput || !toggleBtn) return;
-
-                                    function showIcon() {
-                                      icon.setAttribute('data-testid', 'Hide');
-                                      toggleBtn.setAttribute('aria-label', "{l s='Hide password' d='Shop.Theme.Customeraccount'}");
-                                    }
-
-                                    function hideIcon() {
-                                      icon.setAttribute('data-testid', 'Show');
-                                      toggleBtn.setAttribute('aria-label', "{l s='Show password' d='Shop.Theme.Customeraccount'}");
-                                    }
+                                    var showLabel = "{l s='Show password' d='Shop.Theme.Customeraccount'}";
+                                    var hideLabel = "{l s='Hide password' d='Shop.Theme.Customeraccount'}";
 
                                     toggleBtn.addEventListener('click', function() {
-                                      if (passwordInput.type === 'password') {
-                                        passwordInput.type = 'text';
-                                        showIcon();
-                                      } else {
-                                        passwordInput.type = 'password';
-                                        hideIcon();
+                                      var willShow = passwordInput.type === 'password';
+                                      passwordInput.type = willShow ? 'text' : 'password';
+                                      toggleBtn.setAttribute('aria-label', willShow ? hideLabel : showLabel);
+
+                                      if (icon) {
+                                        icon.setAttribute('data-testid', willShow ? 'Hide' : 'Show');
                                       }
                                     });
-                                  });
+                                  })();
                                 </script>
                               </div>
                             </div>
@@ -176,6 +179,8 @@
           <!--$-->
           <!--/$-->
         </div>
+
+        {if $page.page_name ne 'checkout'}
         <div
           class="relative hidden justify-center after:absolute after:top-0 after:left-0 after:h-full after:w-px after:bg-neutral-50 lg:order-last lg:flex lg:basis-1/2">
           <aside class="max-w-md py-20 pl-4" aria-label="Korzyści z posiadania konta „Moje Action”">
@@ -203,6 +208,8 @@
             </ul>
           </aside>
         </div>
+        {/if}
+
       </div>
     </div>
   </div>

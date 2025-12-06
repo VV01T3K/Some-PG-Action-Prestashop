@@ -107,9 +107,11 @@
 
           </div>
         </div>
-        <button type="submit" class="continue btn btn-primary float-xs-right" name="confirmDeliveryOption" value="1">
-          {l s='Continue' d='Shop.Theme.Actions'}
-        </button>
+        <div class="clearfix">
+          <button type="submit" class="btn btn-primary continue float-xs-right" name="confirmDeliveryOption" value="1">
+            {l s='Continue' d='Shop.Theme.Actions'}
+          </button>
+        </div>
       </form>
     {else}
       <p class="alert alert-danger">{l s='Unfortunately, there are no carriers available for your delivery address.' d='Shop.Theme.Checkout'}</p>

@@ -24,28 +24,32 @@
  *}
 {extends file=$layout}
 
-{block name='header'}
-  {include file='checkout/_partials/header.tpl'}
+{block name='head' append}
+  <link rel="stylesheet" href="{$urls.theme_assets}css/checkout.css">
 {/block}
 
+
 {block name='content'}
-  <section id="content">
-    <div class="row">
-      <div class="cart-grid-body col-xs-12 col-lg-8">
-        {block name='checkout_process'}
-          {render file='checkout/checkout-process.tpl' ui=$checkout_process}
-        {/block}
-      </div>
-      <div class="cart-grid-right col-xs-12 col-lg-4">
-        {block name='cart_summary'}
-          {include file='checkout/_partials/cart-summary.tpl' cart=$cart}
-        {/block}
-        {hook h='displayReassurance'}
+  <section id="main" class="checkout-main-section">
+    <div class="checkout-content-shell">
+      <div class="checkout-content-inner">
+        <div class="checkout-content-stack">
+
+          <section class="checkout-main-wrapper">
+            {block name='checkout_process'}
+              {render file='checkout/checkout-process.tpl' ui=$checkout_process}
+            {/block}
+          </section>
+
+          <section class="checkout-summary-section">
+            <h3 class="checkout-summary-title">{l s='Order summary' d='Shop.Theme.Checkout'}</h3>
+            {block name='cart_summary'}
+              {include file='checkout/_partials/cart-summary.tpl' cart=$cart}
+            {/block}
+          </section>
+
+        </div>
       </div>
     </div>
   </section>
-{/block}
-
-{block name='footer'}
-  {include file='checkout/_partials/footer.tpl'}
 {/block}
