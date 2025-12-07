@@ -88,7 +88,7 @@
       {/if}
     {/block}
 
-    {* {hook h='displayProductPriceBlock' product=$product type="weight" hook_origin='product_sheet'}
+    {hook h='displayProductPriceBlock' product=$product type="weight" hook_origin='product_sheet'}
 
     <div class="tax-shipping-delivery-label">
       {if !$configuration.taxes_enabled}
@@ -111,6 +111,6 @@
           {/if}
         {/if}
       {/if}
-    </div> *}
+    </div>
   </div>
 {/if}
