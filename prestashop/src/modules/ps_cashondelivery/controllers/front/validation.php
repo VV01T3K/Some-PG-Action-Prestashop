@@ -64,7 +64,7 @@ class Ps_CashondeliveryValidationModuleFrontController extends ModuleFrontContro
 
         $this->module->validateOrder(
             (int) $this->context->cart->id,
-            (int) Configuration::getGlobalValue(Ps_Cashondelivery::CONFIG_OS_CASH_ON_DELIVERY),
+            (int) Configuration::get('PS_OS_PAYMENT'),
             (float) $this->context->cart->getOrderTotal(true, Cart::BOTH),
             $this->module->displayName,
             null,
