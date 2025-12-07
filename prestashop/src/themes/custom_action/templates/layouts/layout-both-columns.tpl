@@ -59,7 +59,9 @@
       {hook h="displayWrapperTop"}
       <div class="container mx-auto px-4 md:px-6 lg:px-12">
         {block name='breadcrumb'}
-          {include file='_partials/breadcrumb.tpl'}
+          {if $page.page_name != 'product'}
+            {include file='_partials/breadcrumb.tpl'}
+          {/if}
         {/block}
 
         <div class="flex flex-col md:flex-row gap-6 mt-4">

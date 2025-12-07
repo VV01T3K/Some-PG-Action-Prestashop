@@ -24,10 +24,10 @@
  *}
 <div class="product-add-to-cart js-product-add-to-cart">
   {if !$configuration.is_catalog}
-    <span class="control-label">{l s='Quantity' d='Shop.Theme.Catalog'}</span>
 
     {block name='product_quantity'}
-      <div class="product-quantity clearfix">
+      <div class="product-quantity clearfix flex gap-2 items-center">
+        <span class="control-label" style="font-size: 1.25rem; font-weight: 600;">{l s='Quantity' d='Shop.Theme.Catalog'}</span>
         <div class="qty">
           <input
             type="number"
@@ -47,17 +47,19 @@
           >
         </div>
 
-        <div class="add">
+        <div class="add flex-1">
           <button
-            class="btn btn-primary add-to-cart"
+            class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-orange-500 text-neutral-0 hover:bg-orange-700 active:bg-orange-900 focus:bg-orange-700 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"
             data-button-action="add-to-cart"
             type="submit"
             {if !$product.add_to_cart_url}
               disabled
             {/if}
           >
-            <i class="material-icons shopping-cart">&#xE547;</i>
-            {l s='Add to cart' d='Shop.Theme.Actions'}
+            <span class="shrink-0" style="display:inline-block;width:24px;height:24px">
+              <svg aria-hidden="true" data-testid="Heart01" class="shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21a1 1 0 0 1-.486-.126C11.126 20.658 2 15.514 2 9c0-3.665 2.218-5.425 4.293-5.849 2.171-.44 4.328.402 5.707 2.113 1.38-1.712 3.537-2.552 5.707-2.113C19.782 3.575 22 5.335 22 9.001c0 6.513-9.126 11.657-9.515 11.873A1 1 0 0 1 12 21z"></path></svg>
+            </span>
+            <span class="truncate px-1">{l s='Add to cart' d='Shop.Theme.Actions'}</span>
           </button>
         </div>
 

@@ -59,7 +59,7 @@
             {/foreach}
           </ul>
           <div class="clearfix">
-            <button class="btn btn-primary float-xs-right" type="submit" name="submitCustomizedData">{l s='Save Customization' d='Shop.Theme.Actions'}</button>
+            <button class="btn btn-primary float-xs-right" type="submit" name="submitCustomizedData" style="color: #ffffff;">{l s='Save Customization' d='Shop.Theme.Actions'}</button>
           </div>
         </form>
       {/block}

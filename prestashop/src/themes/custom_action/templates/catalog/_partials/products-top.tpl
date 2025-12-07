@@ -22,35 +22,40 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-<div id="js-product-list-top" class="row products-selection">
-  <div class="col-md-6 hidden-sm-down total-products">
-    {if $listing.pagination.total_items > 1}
-      <p>{l s='There are %product_count% products.' d='Shop.Theme.Catalog' sprintf=['%product_count%' => $listing.pagination.total_items]}</p>
-    {elseif $listing.pagination.total_items > 0}
-      <p>{l s='There is 1 product.' d='Shop.Theme.Catalog'}</p>
-    {/if}
+<div id="js-product-list-top" class="flex w-full items-center justify-between gap-3 px-4 pb-6 sm:px-0 md:py-5">
+  {* Category name and product count *}
+  <div>
+    <h2 class="text-2xl font-bold text-dark-blue-500" data-testid="grid-title">{$listing.label}</h2>
+    <p class="text-base text-neutral-700" data-testid="product-grid-number-of-items">
+      {if $listing.pagination.total_items > 1}
+        {$listing.pagination.total_items} {l s='products' d='Shop.Theme.Catalog'}
+      {elseif $listing.pagination.total_items == 1}
+        1 {l s='product' d='Shop.Theme.Catalog'}
+      {else}
+        0 {l s='products' d='Shop.Theme.Catalog'}
+      {/if}
+    </p>
   </div>
-  <div class="col-md-6">
-    <div class="row sort-by-row">
-
+  
+  {* Sorting and mobile filters *}
+  <div class="flex items-center justify-between gap-4 ml-auto">
+    {* Mobile filters button *}
+    {if !empty($listing.rendered_facets)}
+      <div class="lg:hidden">
+        <button id="search_filter_toggler" class="btn-base group btn-tertiary w-fit flex items-center gap-2 js-search-toggler" type="button" data-testid="mobile-filters-button">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M6 21a1 1 0 0 1-1-1v-1H3a1 1 0 1 1 0-2h2v-1a1 1 0 1 1 2 0v4a1 1 0 0 1-1 1m15-2H10a1 1 0 1 1 0-2h11a1 1 0 1 1 0 2m-5-4a1 1 0 0 1-1-1v-1H3a1 1 0 1 1 0-2h12v-1a1 1 0 1 1 2 0v4a1 1 0 0 1-1 1m5-2h-1a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2M10 9a1 1 0 0 1-1-1V7H3a1 1 0 1 1 0-2h6V4a1 1 0 1 1 2 0v4a1 1 0 0 1-1 1m11-2h-7a1 1 0 1 1 0-2h7a1 1 0 1 1 0 2"></path>
+          </svg>
+          <span>{l s='Filter' d='Shop.Theme.Actions'}</span>
+        </button>
+      </div>
+    {/if}
+    
+    {* Desktop sorting *}
+    <div class="hidden lg:block" data-testid="grid-sorting-options-desktop">
       {block name='sort_by'}
         {include file='catalog/_partials/sort-orders.tpl' sort_orders=$listing.sort_orders}
       {/block}
-
-      {if !empty($listing.rendered_facets)}
-        <div class="col-sm-3 col-xs-4 hidden-md-up filter-button">
-          <button id="search_filter_toggler" class="btn btn-secondary js-search-toggler">
-            {l s='Filter' d='Shop.Theme.Actions'}
-          </button>
-        </div>
-      {/if}
     </div>
-  </div>
-  <div class="col-sm-12 hidden-md-up text-sm-center showing">
-    {l s='Showing %from%-%to% of %total% item(s)' d='Shop.Theme.Catalog' sprintf=[
-    '%from%' => $listing.pagination.items_shown_from ,
-    '%to%' => $listing.pagination.items_shown_to,
-    '%total%' => $listing.pagination.total_items
-    ]}
   </div>
 </div>
