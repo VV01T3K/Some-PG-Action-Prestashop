@@ -27,7 +27,9 @@
 				"charliermarsh.ruff",
 				"GitHub.copilot",
 				"GitHub.copilot-chat",
-				"tamasfe.even-better-toml"
+				"tamasfe.even-better-toml",
+				"aswinkumar863.smarty-template-support",
+				"GitHub.vscode-pull-request-github"
 			]
 		}
 	},

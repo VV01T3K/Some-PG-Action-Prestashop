@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'ubuntu';
+  src: url('../fonts/ubuntu-regular.5100d595.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ubuntu';
+  src: url('../fonts/ubuntu-italic.81145685.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ubuntu';
+  src: url('../fonts/ubuntu-medium.167430b6.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ubuntu';
+  src: url('../fonts/ubuntu-bold.a2c40db2.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: 'ubuntu', Arial, sans-serif;
+}

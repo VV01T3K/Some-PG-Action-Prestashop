@@ -108,9 +108,18 @@ class CartControllerCore extends FrontController
         $presenter = new CartPresenter();
         $presented_cart = $presenter->present($this->context->cart, $shouldSeparateGifts = true);
 
+        // Get featured products from ps_featuredproducts module
+        $featuredProducts = [];
+        $featuredProductsModule = Module::getInstanceByName('ps_featuredproducts');
+        if ($featuredProductsModule && $featuredProductsModule->active) {
+            $variables = $featuredProductsModule->getWidgetVariables('displayHome');
+            $featuredProducts = $variables['products'] ?? [];
+        }
+
         $this->context->smarty->assign([
             'cart' => $presented_cart,
             'static_token' => Tools::getToken(false),
+            'featured_products' => $featuredProducts,
         ]);
 
         if (count($presented_cart['products']) > 0) {
@@ -246,6 +255,10 @@ class CartControllerCore extends FrontController
                 $this->processChangeProductInCart();
             } elseif (Tools::getIsset('delete')) {
                 $this->processDeleteProductInCart();
+                // Redirect to clean URL after product deletion to prevent re-deleting on refresh
+                if (!Tools::getValue('ajax')) {
+                    Tools::redirect($this->context->link->getPageLink('cart', true, $this->context->language->id, ['action' => 'show']));
+                }
             } elseif (CartRule::isFeatureActive()) {
                 if (Tools::getIsset('addDiscount')) {
                     if (!($code = trim(Tools::getValue('discount_name')))) {

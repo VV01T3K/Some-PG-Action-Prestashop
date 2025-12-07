@@ -114,10 +114,6 @@ function createProductApiPayload(product: Product, categoryIds: number[], associ
     // --- HTML DESCRIPTION BLOCK ---
     const htmlDescriptionBlock = `
 <div id="product-description">
-    <div id="product-description-title">
-        <h2>Opis</h2>
-    </div>
-
     <div id="product-description-long">
         ${product.description_long || ""}
     </div>

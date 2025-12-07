@@ -49,9 +49,12 @@
 
         <div class="add">
           <button
-            class="btn btn-primary add-to-cart"
+            class="add-to-cart"
             data-button-action="add-to-cart"
             type="submit"
+            style="display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem; border-radius: 9999px; font-size: 1rem; font-weight: 500; padding: 0.625rem 1.25rem; background-color: #ff6900; color: #ffffff; border: none; cursor: pointer; transition: background-color 0.2s ease;"
+            onmouseover="this.style.backgroundColor='#cc5500'"
+            onmouseout="this.style.backgroundColor='#ff6900'"
             {if !$product.add_to_cart_url}
               disabled
             {/if}
