@@ -22,9 +22,9 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-<div class="images-container js-images-container">
+<div class="images-container js-images-container" style="display: flex; flex-direction: column;">
   {block name='product_cover'}
-    <div class="product-cover">
+    <div class="product-cover relative">
       {if $product.default_image}
         <img
           class="js-qv-product-cover img-fluid"
@@ -39,9 +39,6 @@
           width="{$product.default_image.bySize.large_default.width}"
           height="{$product.default_image.bySize.large_default.height}"
         >
-        <div class="layer hidden-sm-down" data-toggle="modal" data-target="#product-modal">
-          <i class="material-icons zoom-in">search</i>
-        </div>
       {else}
         <img
           class="img-fluid"
@@ -51,14 +48,38 @@
           height="{$urls.no_picture_image.bySize.medium_default.height}"
         >
       {/if}
+      
+      {* Promotion Badge - Top Left *}
+      <span class="absolute top-0 left-0 flex flex-col gap-0.5">
+        {if $product.new}
+          <span class="flex overflow-hidden h-[22px] sm:h-[26px] text-neutral-0 text-[12px] leading-[14px] font-bold sm:text-sm sm:leading-[18px]" data-testid="product-tag">
+            <span class="flex w-fit items-center pr-1 pl-1.5 sm:pr-1.5 sm:pl-2 bg-cyan-500">
+              <span>{l s='Nowości' d='Shop.Theme.Catalog'}</span>
+            </span>
+            <span class="w-[8px]">
+              <span class="-mr-px block h-full -translate-x-px bg-cyan-500" style="clip-path:polygon(0 0, 100% 0, 1px 100%, 0 100%)"></span>
+            </span>
+          </span>
+        {/if}
+        {if $product.has_discount}
+          <span class="flex overflow-hidden h-[22px] sm:h-[26px] text-neutral-0 text-[12px] leading-[14px] font-bold sm:text-sm sm:leading-[18px]" data-testid="product-tag">
+            <span class="flex w-fit items-center pr-1 pl-1.5 sm:pr-1.5 sm:pl-2 bg-orange-500">
+              <span>{l s='Promocja' d='Shop.Theme.Catalog'}</span>
+            </span>
+            <span class="w-[8px]">
+              <span class="-mr-px block h-full -translate-x-px bg-orange-500" style="clip-path:polygon(0 0, 100% 0, 1px 100%, 0 100%)"></span>
+            </span>
+          </span>
+        {/if}
+      </span>
     </div>
   {/block}
 
   {block name='product_images'}
-    <div class="js-qv-mask mask">
-      <ul class="product-images js-qv-product-images">
+    <div class="js-qv-mask mask" style="width: 100%; margin-top: 16px;">
+      <ul class="product-images js-qv-product-images" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0;">
         {foreach from=$product.images item=image}
-          <li class="thumb-container js-thumb-container">
+          <li class="thumb-container js-thumb-container" style="display: inline-block;">
             <img
               class="thumb js-thumb {if $image.id_image == $product.default_image.id_image} selected js-thumb-selected {/if}"
               data-image-medium-src="{$image.bySize.medium_default.url}"
@@ -73,6 +94,7 @@
               loading="lazy"
               width="{$product.default_image.bySize.small_default.width}"
               height="{$product.default_image.bySize.small_default.height}"
+              style="width: 70px; height: 70px; object-fit: contain; border: 2px solid transparent; border-radius: 4px; cursor: pointer; background: #fff;"
             >
           </li>
         {/foreach}

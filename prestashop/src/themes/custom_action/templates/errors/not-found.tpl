@@ -22,23 +22,24 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-<section id="content" class="page-content page-not-found">
+
+<section id="content" class="page-content page-not-found" style="min-height: 70vh; display: flex; justify-content: center; align-items: center; flex-direction: column;">
   {block name='page_content'}
     {block name="error_content"}
       {if isset($errorContent)}
         {$errorContent nofilter}
       {else}
-        <h4>{l s='This page could not be found' d='Shop.Theme.Global'}</h4>
-        <p>{l s='Try to search our catalog, you may find what you are looking for!' d='Shop.Theme.Global'}</p>
+        <h2 style="font-size: 2em;">{l s='This page could not be found' d='Shop.Theme.Global'}</h2>
+        <p style="font-size: 1.2em;">{l s='Try to search our catalog, you may find what you are looking for!' d='Shop.Theme.Global'}</p>
       {/if}
     {/block}
 
-    {block name='search'}
+    {* {block name='search'}
       {hook h='displaySearch'}
     {/block}
 
     {block name='hook_not_found'}
       {hook h='displayNotFound'}
-    {/block}
+    {/block} *}
   {/block}
 </section>

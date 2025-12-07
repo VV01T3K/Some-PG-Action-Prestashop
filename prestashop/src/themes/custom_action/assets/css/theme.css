@@ -1,2 +1,129 @@
 /* empty look in attached css at ./custom-lib.css and ./action/*.css */
 @import url('./fonts.css');
+
+/* ================================================
+   Action.com Style Breadcrumb Navigation
+   ================================================ */
+
+.action-breadcrumb {
+  margin: 0 0 20px 0;
+  padding: 0.125rem 0;
+  font-size: 13px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  overflow-y: auto;
+  margin-right: -1rem;
+}
+
+.action-breadcrumb::-webkit-scrollbar {
+  display: none;
+}
+
+.action-breadcrumb {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Back button styling */
+.action-breadcrumb-back {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  line-height: 1.4;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+}
+
+.action-breadcrumb-back .text-dark-blue-500 {
+  color: #001489;
+  font-weight: 700;
+  margin-left: 0.375rem;
+}
+
+.action-breadcrumb-back:hover .group-hover\:shadow-bottom-border {
+  box-shadow: 0 1px 0 0 currentColor;
+}
+
+.action-breadcrumb .text-neutral-500 {
+  color: #6b7280;
+}
+
+/* Breadcrumb link styling */
+.action-breadcrumb-link {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.action-breadcrumb-link .text-dark-blue-500 {
+  color: #001489;
+}
+
+.action-breadcrumb-link:hover .group-hover\:shadow-bottom-border {
+  box-shadow: 0 1px 0 0 currentColor;
+}
+
+/* Current breadcrumb item */
+.text-neutral-900 {
+  color: #1a1a1a;
+}
+
+.first-letter\:uppercase::first-letter {
+  text-transform: uppercase;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .action-breadcrumb {
+    margin: 0 0 16px 0;
+    font-size: 12px;
+  }
+  
+  .action-breadcrumb-back,
+  .action-breadcrumb-link {
+    font-size: 12px;
+  }
+}
+
+/* Integration with product page layout */
+.action-product .action-breadcrumb {
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .action-product .action-breadcrumb {
+    margin-bottom: 24px;
+  }
+}
+
+/* Utility classes */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.text-body-small {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.shrink-0 {
+  flex-shrink: 0;
+}

@@ -58,12 +58,6 @@ assets:
         path: assets/css/custom-lib.css
       - id: custom-lib-splide
         path: assets/css/splide.min.css
-
-#    product:
-#      - id: product-style
-#        path: assets/css/product.css
-#        media: all
-#        priority: 200
   js:
     all:
       - id: cat-extra-lib-splide

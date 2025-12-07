@@ -10,8 +10,8 @@ const products = await Bun.file('../scrapper-results/products.json').json();
 const PRESTASHOP_DEFAULT_CAT_ID = "2";
 const PRESTASHOP_DEFAULT_CAT_ID_NUM = 2;
 const IMAGES_PATH = "../scrapper-results/images/";
-const MAX_IMAGES_PER_PRODUCT = 3;
-const MAX_PRODUCTS_TO_SEED = -1;
+const MAX_IMAGES_PER_PRODUCT = 100;
+const MAX_PRODUCTS_TO_SEED = 100;
 
 export async function seedShop() {
     console.log('Starting shop seeding...\n');
@@ -114,10 +114,6 @@ function createProductApiPayload(product: Product, categoryIds: number[], associ
     // --- HTML DESCRIPTION BLOCK ---
     const htmlDescriptionBlock = `
 <div id="product-description">
-    <div id="product-description-title">
-        <h2>Opis</h2>
-    </div>
-
     <div id="product-description-long">
         ${product.description_long || ""}
     </div>
