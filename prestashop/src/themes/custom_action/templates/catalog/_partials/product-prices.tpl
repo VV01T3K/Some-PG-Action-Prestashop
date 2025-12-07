@@ -77,7 +77,11 @@
                   <span class="pl-0.5 text-[9px]">*</span>
                 </span>
                 <span class="border border-neutral-700 px-1 text-xs" data-testid="product-card-price-discount-percentage">
-                  -{$product.discount_percentage_absolute}
+                  {if $product.discount_type == 'percentage'}
+                    -{$product.discount_percentage_absolute}%
+                  {else}
+                    -{$product.discount_to_display}
+                  {/if}
                 </span>
               </span>
             {/if}

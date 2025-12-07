@@ -46,7 +46,7 @@
           href="{$urls.pages.index}"
           data-testid="add-products-button"
         >
-          <span class="truncate px-1">{l s='Add products' d='Shop.Theme.Actions'}</span>
+          <span class="truncate px-1">{l s='Dodaj produkty' d='Shop.Theme.Actions'}</span>
         </a>
         <a
           class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"

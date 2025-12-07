@@ -89,7 +89,11 @@
                     <span class="pl-0.5 text-xs">*</span>
                   </span>
                   <span class="rounded border border-neutral-700 px-1.5 py-0.5 text-xs leading-[12px] font-medium" data-testid="product-card-price-discount-percentage">
-                    {$product.discount_percentage}
+                    {if $product.discount_type == 'percentage'}
+                      {$product.discount_percentage}
+                    {else}
+                      {$product.discount_to_display}
+                    {/if}
                   </span>
                 </span>
                 {* Discount Footnote *}
