@@ -41,7 +41,7 @@ class FormattedTextareaType extends AbstractType
     /**
      * Max size of UTF-8 content in MySQL text column
      */
-    public const LIMIT_TEXT_UTF8 = 21844;
+    public const LIMIT_TEXT_UTF8 = 65535;
 
     /**
      * {@inheritdoc}

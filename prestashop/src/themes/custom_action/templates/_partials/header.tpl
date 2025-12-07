@@ -121,7 +121,7 @@
             </div>
             <div lang="pl-pl" class="flex gap-6"><a
                 class="flex flex-col justify-center group text-body-small font-normal text-dark-blue-500 my-0.5"
-                href="/pl-pl/aplikacja/"><span class="group-hover:shadow-bottom-border">Pobierz aplikację
+                href="/content/6-aplikacja"><span class="group-hover:shadow-bottom-border">Pobierz aplikację
                   Action</span></a><a
                 class="flex flex-col justify-center group text-body-small font-normal text-dark-blue-500 my-0.5"
                 href="{$urls.pages.stores}"><span class="group-hover:shadow-bottom-border">Znajdź sklep</span></a><a
