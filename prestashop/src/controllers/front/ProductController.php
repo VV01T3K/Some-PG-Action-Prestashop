@@ -1260,6 +1260,19 @@ class ProductControllerCore extends ProductPresentingFrontControllerCore
             ];
         }
 
+        // Add subcategory if product is in one
+        $productCategories = $this->product->getCategories();
+        foreach ($productCategories as $catId) {
+            $cat = new Category($catId, $this->context->language->id);
+            if ($cat->id_parent == $categoryDefault->id && $cat->active && $cat->id != $categoryDefault->id) {
+                $breadcrumb['links'][] = [
+                    'title' => $cat->name,
+                    'url' => $this->context->link->getCategoryLink($cat),
+                ];
+                break; // Add only the first subcategory found
+            }
+        }
+
         $breadcrumb['links'][] = [
             'title' => $this->product->name,
             'url' => $this->context->link->getProductLink($this->product, null, null, null, null, null, (int) $this->getIdProductAttributeByRequest()),
