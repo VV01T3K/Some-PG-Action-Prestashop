@@ -28,6 +28,7 @@ services:
       <<: *node-env
     volumes:
       - /dev/shm:/dev/shm
+      - /workspaces/Some-PG-Action-Prestashop/selenium/tests/downloads:/home/seluser/Downloads
     shm_size: 2gb
     ports:
       - "7900:7900"

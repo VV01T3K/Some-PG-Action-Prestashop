@@ -25,12 +25,24 @@ def main():
     prestashop_domain = os.getenv("SHOP_DOMAIN", "shop.pg.wojtecs.com")
     prestashop_url = f"https://{prestashop_domain}"
 
+    host_downloads_dir = os.path.join(os.path.dirname(__file__), "downloads")
+    os.makedirs(host_downloads_dir, exist_ok=True)
+    container_downloads_dir = "/home/seluser/Downloads"
+
     options = webdriver.ChromeOptions()
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--ignore-certificate-errors")
     options.add_argument("--ignore-ssl-errors")
     options.add_argument("--start-maximized")
+    options.add_experimental_option(
+        "prefs",
+        {
+            "download.default_directory": container_downloads_dir,
+            "download.prompt_for_download": False,
+            "download.directory_upgrade": True,
+        },
+    )
 
     driver = webdriver.Remote(command_executor="http://localhost:4444", options=options)
     
@@ -52,6 +64,7 @@ def main():
         result_1 = register_account.run_test(driver)
         results["test_1_register"] = result_1
         
+
         # TEST 2: Search and Add to Cart (run 5 times)
         logger.info("▶️  TEST 2: Search and Add to Cart (5 iterations)")
         logger.info("-"*70)
@@ -86,83 +99,9 @@ def main():
             results["test_4_checkout"] = {"status": "skipped", "reason": "Cart is empty"}
             results["test_5_order_status"] = {"status": "skipped", "reason": "Cart is empty"}
 
-        # Print summary
-        logger.info("="*70)
-        logger.info("TEST SUMMARY")
-        logger.info("="*70)
         
-        # Summary for TEST 1 (Registration)
-        if "test_1_register" in results:
-            result = results["test_1_register"]
-            status = result.get("status", "UNKNOWN")
-            if status == "success":
-                firstname = result.get("firstname", "N/A")
-                lastname = result.get("lastname", "N/A")
-                email = result.get("email", "N/A")
-                gender = result.get("gender", "N/A")
-                logger.info(f"✅ test_1_register: SUCCESS")
-                logger.info(f"   - Name: {firstname} {lastname}")
-                logger.info(f"   - Email: {email}")
-                logger.info(f"   - Gender: {gender}")
-            else:
-                logger.info(f"❌ test_1_register: FAILED - {result.get('reason', 'Unknown error')}")
         
-        # Summary for TEST 2 (5 iterations of search/add)
-        if "test_2_search_add" in results:
-            test_2_list = results["test_2_search_add"]
-            passed_count = sum(1 for r in test_2_list if r.get("status") == "PASSED")
-            logger.info(f"✅ test_2_search_add: {passed_count}/5 iterations passed")
-            for i, result in enumerate(test_2_list, 1):
-                status = result.get("status", "UNKNOWN")
-                if status == "PASSED":
-                    product = result.get('product', {}).get('title', 'N/A')
-                    qty = result.get('quantity_added', 0)
-                    logger.info(f"   Iteration {i}: {status} - {product} (qty: {qty})")
-                else:
-                    logger.info(f"   Iteration {i}: {status}")
         
-        # Summary for TEST 3 (Remove from Cart)
-        if "test_3_remove" in results:
-            result = results["test_3_remove"]
-            status = result.get("status", "UNKNOWN")
-            removed = result.get("removed_count", 0)
-            logger.info(f"✅ test_3_remove: {status}")
-            logger.info(f"   - Products removed: {removed}")
-        
-        # Summary for TEST 4 (Checkout)
-        if "test_4_checkout" in results:
-            result = results["test_4_checkout"]
-            status = result.get("status", "UNKNOWN")
-            if status == "skipped":
-                logger.info(f"⏭️  test_4_checkout: SKIPPED - {result.get('reason', 'Unknown')}")
-            elif status == "success":
-                address = result.get("address", "N/A")
-                postcode = result.get("postcode", "N/A")
-                city = result.get("city", "N/A")
-                payment = result.get("payment_method", "N/A")
-                logger.info(f"✅ test_4_checkout: SUCCESS")
-                logger.info(f"   - Address: {address}")
-                logger.info(f"   - Postcode: {postcode}")
-                logger.info(f"   - City: {city}")
-                logger.info(f"   - Payment Method: {payment}")
-            else:
-                logger.info(f"❌ test_4_checkout: FAILED - {result.get('reason', 'Unknown error')}")
-        
-        # Summary for TEST 5 (Order Status)
-        if "test_5_order_status" in results:
-            result = results["test_5_order_status"]
-            status = result.get("status", "UNKNOWN")
-            if status == "skipped":
-                logger.info(f"⏭️  test_5_order_status: SKIPPED - {result.get('reason', 'Unknown')}")
-            elif status == "success":
-                order_status_text = result.get("order_status", "N/A")
-                logger.info(f"✅ test_5_order_status: SUCCESS")
-                logger.info(f"   - Order Status: {order_status_text}")
-            else:
-                logger.info(f"❌ test_5_order_status: FAILED - {result.get('reason', 'Unknown error')}")
-        
-        logger.info("="*70)
-
     except Exception as e:
         logger.error(f"❌ Unexpected error: {e}")
         import traceback

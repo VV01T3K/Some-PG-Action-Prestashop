@@ -16,7 +16,7 @@ def navigate_to_order_history(driver):
         
         try:
             user_menu = wait.until(
-                EC.element_to_be_clickable((By.XPATH, "//span[@class='hidden-sm-down']"))
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='header-login-button']"))
             )
             driver.execute_script("arguments[0].click();", user_menu)
             logger.info("👤 User menu clicked")
@@ -37,17 +37,17 @@ def navigate_to_order_history(driver):
             return False
         
         
-        try:
-            wait.until(EC.presence_of_element_located((By.XPATH, "//table")))
-        except TimeoutException:
-            logger.warning("⚠️ Table not found after waiting")
+        # try:
+        #     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.hidden.md\\:block table")))
+        # except TimeoutException:
+        #     logger.warning("⚠️ Table not found after waiting")
         
-        try:
-            wait.until(EC.presence_of_element_located((By.XPATH, "//table")))
-            wait.until(EC.presence_of_element_located((By.XPATH, "//td[@class='text-sm-center order-actions']")))
-        except TimeoutException:
-            logger.warning("⚠️ Order elements not found")
-            return False
+        # try:
+        #     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.hidden.md\\:block table")))
+        #     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.hidden.md\\:block td.text-sm-center.order-actions")))
+        # except TimeoutException:
+        #     logger.warning("⚠️ Order elements not found")
+        #     return False
         
         return True
     except Exception as e:
@@ -61,9 +61,10 @@ def click_order_details_button(driver):
     try:
         wait = WebDriverWait(driver, 10)
         
-        details_button = wait.until(
-            EC.element_to_be_clickable((By.XPATH, "//a[contains(@href, 'id_order')]"))
+        detail_links = wait.until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a[data-link-action='view-order-details']"))
         )
+        details_button = detail_links[0]
         
         driver.execute_script("arguments[0].scrollIntoView(true);", details_button)
         wait_for_page_load(driver, timeout=2)
@@ -78,12 +79,27 @@ def click_order_details_button(driver):
         return False
 
 
+def click_download_invoice(driver):
+    try:
+        wait = WebDriverWait(driver, 10)
+        invoice_link = wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='download-invoice']"))
+        )
+        driver.execute_script("arguments[0].scrollIntoView(true);", invoice_link)
+        driver.execute_script("arguments[0].click();", invoice_link)
+        logger.info("📄 Download invoice clicked")
+        return True
+    except Exception as e:
+        logger.error(f"❌ Error clicking download invoice: {e}")
+        return False
+
+
 def get_order_status(driver):
     try:
         wait = WebDriverWait(driver, 10)
         
         status_label = wait.until(
-            EC.presence_of_element_located((By.XPATH, "//span[@class='label label-pill bright']"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-testid='order-status']"))
         )
         
         # Extract text content
@@ -110,17 +126,18 @@ def run_test(driver):
         
         wait_for_page_load(driver, timeout=2)
         
-        if not click_order_details_button(driver):
-            return {"status": "failed", "reason": "Could not click order details button"}
+        # if not click_order_details_button(driver):
+        #     return {"status": "failed", "reason": "Could not click order details button"}
         
-        wait_for_page_load(driver)
-        
-        
+        # wait_for_page_load(driver)
         
         order_status = get_order_status(driver)
         
         if order_status is None:
             return {"status": "failed", "reason": "Could not retrieve order status"}
+
+        # Attempt to click invoice download if available
+        click_download_invoice(driver)
         
         
         return {

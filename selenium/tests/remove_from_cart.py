@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 def get_cart_count(driver):
     try:
-        cart_badge = driver.find_element(By.CLASS_NAME, "cart-products-count")
+        cart_badge = driver.find_element(By.CSS_SELECTOR, "[data-testid='cart-button-badge-text']")
         text = cart_badge.text.strip("()")
         count = int(text)
         return count
@@ -22,38 +22,34 @@ def open_cart(driver):
         logger.info("🛒 Opening cart...")
         wait = WebDriverWait(driver, 10)
         
-        try:
-            cart_button = driver.find_element(By.XPATH, "//a[@aria-label and contains(@aria-label, 'koszyka')]")
-            driver.execute_script("arguments[0].scrollIntoView(true);", cart_button)
-            driver.execute_script("arguments[0].click();", cart_button)
-            # Wait for cart page to load - check for product-line-grid elements
-            wait.until(EC.presence_of_all_elements_located((By.XPATH, "//div[@class='product-line-grid']")))
-            return True
-        except Exception as e:
-            logger.debug(f"Cart button with aria-label not found: {str(e)[:100]}")
-            
+        cart_button = driver.find_element(By.CSS_SELECTOR, "a[data-testid='shopping-cart']")
+        driver.execute_script("arguments[0].scrollIntoView(true);", cart_button)
+        driver.execute_script("arguments[0].click();", cart_button)
+        # Wait for cart items rendered via data-testid within cart list
+        wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
+        return True
     except Exception as e:
         logger.error(f"❌ Error opening cart: {e}")
         return False
 def get_cart_items_with_details(driver, display=True):
     try:
         items = []
-        cart_rows = driver.find_elements(By.XPATH, "//div[@class='product-line-grid']")
+        cart_rows = driver.find_elements(By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")
         
         
         for idx, row in enumerate(cart_rows):
             try:
                 product_name = "Unknown Product"
                 try:
-                    product_link = row.find_element(By.XPATH, ".//a[@class='label']")
+                    product_link = row.find_element(By.CSS_SELECTOR, "[data-testid='product-row-title']")
                     product_name = product_link.text.strip()
                 except Exception as e:
                     logger.debug(f"Could not find product name in row {idx+1}: {e}")
                 
                 quantity = 1
                 try:
-                    qty_input = row.find_element(By.XPATH, ".//input[@class='js-cart-line-product-quantity form-control']")
-                    quantity = int(qty_input.get_attribute("value"))
+                    qty_el = row.find_element(By.CSS_SELECTOR, "[data-testid='quantity-stepper'] .js-cart-line-product-quantity")
+                    quantity = int(qty_el.text.strip())
                 except Exception as e:
                     logger.debug(f"Could not find quantity in row {idx+1}: {e}")
                 
@@ -85,17 +81,15 @@ def remove_product_from_cart(driver, items_before, item_index):
         logger.info(f"🗑️  Removing item #{item_index + 1}: {removed_item['name']} (qty: {removed_item['quantity']})")
         
         try:
-            product_lines = wait.until(EC.presence_of_all_elements_located((By.XPATH, "//div[@class='product-line-grid']")))
+            product_lines = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
             
             product_line = product_lines[item_index]
             
-            delete_btn = product_line.find_element(By.XPATH, ".//i[@class='material-icons float-xs-left']")
+            delete_btn = product_line.find_element(By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']")
             
-            delete_link = delete_btn.find_element(By.XPATH, "./parent::a")
+            driver.execute_script("arguments[0].scrollIntoView(true);", delete_btn)
             
-            driver.execute_script("arguments[0].scrollIntoView(true);", delete_link)
-            
-            driver.execute_script("arguments[0].click();", delete_link)
+            driver.execute_script("arguments[0].click();", delete_btn)
             
             wait.until(EC.staleness_of(product_line))
             logger.debug("✅ Confirmed product removed from DOM")

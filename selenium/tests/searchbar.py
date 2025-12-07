@@ -29,7 +29,7 @@ def search_product(driver, product_name):
         logger.info(f"🔍 Searching for product: {product_name}")
         
         search_input = wait.until(
-            EC.presence_of_element_located((By.NAME, "s"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "input[data-testid='search-bar']"))
         )
         search_input.clear()
         search_input.send_keys(product_name)
@@ -37,7 +37,7 @@ def search_product(driver, product_name):
         search_input.send_keys(Keys.RETURN)
         
         products = wait.until(
-            EC.presence_of_all_elements_located((By.CLASS_NAME, "quick-view"))
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-testid='product-card']"))
         )
         
         logger.info(f"✅ Found {len(products)} products")
@@ -125,16 +125,37 @@ def add_to_cart(driver, product_element):
             logger.info("✅ Clicked with JavaScript")
         
         wait.until(EC.presence_of_element_located((By.NAME, "qty")))
-        
-        quantity = random.randint(1, 5)
+
+        stock_available = None
+        try:
+            stock_el = wait.until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "[data-stock]"))
+            )
+            stock_attr = stock_el.get_attribute("data-stock")
+            if stock_attr and stock_attr.isdigit():
+                stock_available = int(stock_attr)
+                logger.info(f"📦 Stock available: {stock_available}")
+        except Exception as e:
+            logger.debug(f"ℹ️  Could not read stock info: {e}")
+            stock_available = None
+
+        if stock_available < 1:
+            run_test(driver)
+            return False, 0
+        quantity = random.randint(1, min(5,stock_available))
+
+       
         logger.info(f"📦 Selected quantity: {quantity}")
         
         try:
             quantity_input = wait.until(
                 EC.presence_of_element_located((By.NAME, "qty"))
             )
-            if quantity > 1:
-                quantity_input.clear()
+            if quantity >= 1:
+                # Some browsers ignore clear() when min is enforced; select-all + delete, then type.
+                quantity_input.click()
+                quantity_input.send_keys(Keys.CONTROL, "a")
+                quantity_input.send_keys(Keys.DELETE)
                 quantity_input.send_keys(str(quantity))
         except Exception as e:
             logger.warning(f"⚠️  Could not set quantity: {e}, using default 1")
@@ -142,7 +163,7 @@ def add_to_cart(driver, product_element):
         
         try:
             button = wait.until(
-                EC.element_to_be_clickable((By.CLASS_NAME, "add-to-cart"))
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='add-to-cart']"))
             )
         except:
             logger.error("❌ Could not find add to cart button")

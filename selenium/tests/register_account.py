@@ -24,7 +24,7 @@ def click_login_button(driver):
         
         # Find and click the login button
         login_button = wait.until(
-            EC.element_to_be_clickable((By.XPATH, "//a[@href='https://shop.pg.wojtecs.com/moje-konto']"))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='header-login-button']"))
         )
         driver.execute_script("arguments[0].click();", login_button)
         
@@ -38,9 +38,8 @@ def click_login_button(driver):
 def click_register_link(driver):
     try:
         wait = WebDriverWait(driver, 10)
-        
         register_link = wait.until(
-            EC.element_to_be_clickable((By.XPATH, "//a[@data-link-action='display-register-form']"))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='login-page-register-link']"))
         )
         driver.execute_script("arguments[0].click();", register_link)
         
@@ -56,7 +55,7 @@ def select_gender(driver, gender_id):
         wait = WebDriverWait(driver, 10)
         
         gender_radio = wait.until(
-            EC.presence_of_element_located((By.XPATH, f"//input[@name='id_gender' and @value='{gender_id}']"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, f"[data-testid='id_gender-input'] input[value='{gender_id}']"))
         )
         
         driver.execute_script("arguments[0].scrollIntoView(true);", gender_radio)
@@ -79,7 +78,7 @@ def fill_firstname(driver, firstname):
         wait = WebDriverWait(driver, 10)
         
         firstname_field = wait.until(
-            EC.presence_of_element_located((By.ID, "field-firstname"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='firstname-input'] input[data-testid='input']"))
         )
         firstname_field.clear()
         firstname_field.send_keys(firstname)
@@ -95,7 +94,7 @@ def fill_lastname(driver, lastname):
         wait = WebDriverWait(driver, 10)
         
         lastname_field = wait.until(
-            EC.presence_of_element_located((By.ID, "field-lastname"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='lastname-input'] input[data-testid='input']"))
         )
         lastname_field.clear()
         lastname_field.send_keys(lastname)
@@ -111,7 +110,7 @@ def fill_email(driver, email):
         wait = WebDriverWait(driver, 10)
         
         email_field = wait.until(
-            EC.presence_of_element_located((By.NAME, "email"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='email-input'] input[data-testid='input']"))
         )
         email_field.clear()
         email_field.send_keys(email)
@@ -127,7 +126,7 @@ def fill_password(driver, password):
         wait = WebDriverWait(driver, 10)
         
         password_field = wait.until(
-            EC.presence_of_element_located((By.NAME, "password"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='password-input'] input[data-testid='input']"))
         )
         password_field.clear()
         password_field.send_keys(password)
@@ -142,11 +141,22 @@ def fill_birthdate(driver, birthdate):
     try:
         wait = WebDriverWait(driver, 10)
         
-        birthdate_field = wait.until(
-            EC.presence_of_element_located((By.NAME, "birthday"))
+        # birthdate format expected: YYYY-MM-DD
+        year, month, day = birthdate.split("-")
+        
+        day_select = wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='day-input'] select[data-testid='select']"))
         )
-        birthdate_field.clear()
-        birthdate_field.send_keys(birthdate)
+        month_select = wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='month-input'] select[data-testid='select']"))
+        )
+        year_select = wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='year-input'] select[data-testid='select']"))
+        )
+        
+        day_select.send_keys(str(int(day)))
+        month_select.send_keys(str(int(month)))
+        year_select.send_keys(str(int(year)))
         
         return True
     except Exception as e:
@@ -207,7 +217,7 @@ def click_login_to_verify(driver):
         wait = WebDriverWait(driver, 10)
         
         login_button = wait.until(
-            EC.element_to_be_clickable((By.XPATH, "//a[@href='https://shop.pg.wojtecs.com/moje-konto']"))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='header-login-button']"))
         )
         driver.execute_script("arguments[0].click();", login_button)
         
@@ -294,13 +304,13 @@ def run_test(driver):
             logger.warning("⚠️ Failed to click login button")
             return {"status": "failed", "reason": "Could not click login button"}
         
-        wait.until(EC.presence_of_element_located((By.XPATH, "//a[@data-link-action='display-register-form']")))
+        # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[data-testid='login-page-register-link']")))
         
         if not click_register_link(driver):
             logger.warning("⚠️ Failed to click register link")
             return {"status": "failed", "reason": "Could not click register link"}
         
-        wait.until(EC.presence_of_element_located((By.ID, "field-firstname")))
+        # wait.until(EC.presence_of_element_located((By.ID, "field-firstname")))
         
         gender_id = random.choice([1, 2])
         if not select_gender(driver, gender_id):

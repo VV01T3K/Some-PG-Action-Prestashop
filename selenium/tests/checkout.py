@@ -38,7 +38,7 @@ def click_cart_button(driver):
         wait = WebDriverWait(driver, 10)
         
         cart_button = wait.until(
-            EC.element_to_be_clickable((By.XPATH, "//a[@href='//shop.pg.wojtecs.com/koszyk?action=show']"))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='shopping-cart']"))
         )
         driver.execute_script("arguments[0].click();", cart_button)
         
@@ -70,7 +70,7 @@ def click_checkout_button(driver):
         wait = WebDriverWait(driver, 10)
         
         checkout_button = wait.until(
-            EC.element_to_be_clickable((By.XPATH, "//a[@href='https://shop.pg.wojtecs.com/zamówienie' and @class='btn btn-primary']"))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='checkout-button']"))
         )
         driver.execute_script("arguments[0].click();", checkout_button)
         
@@ -85,7 +85,7 @@ def fill_address(driver, address):
         wait = WebDriverWait(driver, 10)
         
         address_field = wait.until(
-            EC.presence_of_element_located((By.ID, "field-address1"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='address1-input'] input[data-testid='input']"))
         )
         address_field.clear()
         address_field.send_keys(address)
@@ -101,7 +101,7 @@ def fill_postcode(driver, postcode):
         wait = WebDriverWait(driver, 10)
         
         postcode_field = wait.until(
-            EC.presence_of_element_located((By.ID, "field-postcode"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='postcode-input'] input[data-testid='input']"))
         )
         postcode_field.clear()
         postcode_field.send_keys(postcode)
@@ -117,7 +117,7 @@ def fill_city(driver, city):
         wait = WebDriverWait(driver, 10)
         
         city_field = wait.until(
-            EC.presence_of_element_located((By.ID, "field-city"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='city-input'] input[data-testid='input']"))
         )
         city_field.clear()
         city_field.send_keys(city)
@@ -182,17 +182,17 @@ def select_shipping_method(driver):
         return None
 
 
-def select_payment_method(driver, payment_module="ps_wirepayment"):
+def select_payment_method(driver, payment_module="ps_cashondelivery"):
     try:
         wait = WebDriverWait(driver, 10)
         
         try:
             wait.until(
-                EC.presence_of_element_located((By.XPATH, "//input[@name='payment-option']"))
+                EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='payment-option']"))
             )
         except:
             try:
-                payment_radios = driver.find_elements(By.XPATH, "//input[@name='payment-option']")
+                payment_radios = driver.find_elements(By.CSS_SELECTOR, "input[name='payment-option']")
                 if payment_radios:
                     selected_payment = payment_radios[0].get_attribute("data-module-name")
                     driver.execute_script("arguments[0].click();", payment_radios[0])
@@ -208,7 +208,7 @@ def select_payment_method(driver, payment_module="ps_wirepayment"):
         try:
             short_wait = WebDriverWait(driver, 3)
             payment_radio = short_wait.until(
-                EC.presence_of_element_located((By.XPATH, f"//input[@name='payment-option' and @data-module-name='{payment_module}']"))
+                EC.presence_of_element_located((By.CSS_SELECTOR, f"input[name='payment-option'][data-module-name='{payment_module}']"))
             )
             
             #wait_for_page_load(driver, timeout=2)
@@ -218,7 +218,7 @@ def select_payment_method(driver, payment_module="ps_wirepayment"):
             return payment_module
         except Exception as specific_e:
             try:
-                payment_radios = driver.find_elements(By.XPATH, "//input[@name='payment-option']")
+                payment_radios = driver.find_elements(By.CSS_SELECTOR, "input[name='payment-option']")
                 if payment_radios:
                     selected_payment = payment_radios[0].get_attribute("data-module-name")
                     driver.execute_script("arguments[0].click();", payment_radios[0])
@@ -295,12 +295,12 @@ def run_test(driver):
         
         wait = WebDriverWait(driver, 10)
         
-        wait.until(EC.presence_of_element_located((By.XPATH, "//a[@href='https://shop.pg.wojtecs.com/zamówienie' and @class='btn btn-primary']")))
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[data-testid='checkout-button']")))
         
         if not click_checkout_button(driver):
             return {"status": "failed", "reason": "Could not click checkout button"}
         
-        wait.until(EC.presence_of_element_located((By.ID, "field-address1")))
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='address1-input'] input[data-testid='input']"))) 
         
         address = random.choice(ADDRESSES)
         city = random.choice(CITIES)
@@ -325,7 +325,7 @@ def run_test(driver):
         click_shipping_confirm_button(driver)
         
         wait_for_page_load(driver)
-        payment_method = select_payment_method(driver, "ps_wirepayment")
+        payment_method = select_payment_method(driver, "ps_cashondelivery")
         wait_for_page_load(driver, timeout=2)
         click_payment_confirm_button(driver)
         
