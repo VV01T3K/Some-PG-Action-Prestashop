@@ -64,7 +64,7 @@
                 </span>
                 <span data-testid="product-card-price-description" 
                       class="ml-px flex self-end text-[14px] leading-[12px] text-neutral-700 sm:leading-none action-price-unit">
-                  {$product.price}/szt.
+                  {$product.unit_price_full}
                 </span>
               </span>
             </div>

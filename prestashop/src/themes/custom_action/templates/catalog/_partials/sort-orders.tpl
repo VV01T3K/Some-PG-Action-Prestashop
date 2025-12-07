@@ -34,7 +34,9 @@
       onchange="if (this.value) { window.location.href = this.value; }"
     >
       {foreach from=$listing.sort_orders item=sort_order}
+        {if !strstr($sort_order.label, 'Reference')}
         <option value="{$sort_order.url}" {if $sort_order.current}selected{/if}>{$sort_order.label}</option>
+        {/if}
       {/foreach}
     </select>
 

@@ -68,16 +68,15 @@
     {/block}
 
     {block name='product_availability'}
-      <span id="product-availability" class="js-product-availability">
+      <span id="product-availability" class="js-product-availability flex items-center text-sm font-medium text-dark-blue-500">
         {if $product.show_availability && $product.availability_message}
           {if $product.availability == 'available'}
-            <i class="material-icons rtl-no-flip product-available">&#xE5CA;</i>
+            <span class="text-dark-blue-500">{$product.availability_message}</span>
           {elseif $product.availability == 'last_remaining_items'}
-            <i class="material-icons product-last-items">&#xE002;</i>
+            <span class="text-dark-blue-600 text-lg font-semibold">{$product.availability_message}</span>
           {else}
-            <i class="material-icons product-unavailable">&#xE14B;</i>
+            <span class="text-dark-blue-700">{$product.availability_message}</span>
           {/if}
-          {$product.availability_message}
         {/if}
       </span>
     {/block}
