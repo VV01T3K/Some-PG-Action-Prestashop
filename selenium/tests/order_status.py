@@ -20,7 +20,7 @@ def navigate_to_order_history(driver):
             user_menu = wait.until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='header-login-button']"))
             )
-            driver.execute_script("arguments[0].click();", user_menu)
+            user_menu.click()
             logger.info("User menu clicked")
             wait_for_page_load(driver, timeout=2)
         except TimeoutException:
