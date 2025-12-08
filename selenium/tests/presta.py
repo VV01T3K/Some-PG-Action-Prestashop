@@ -28,6 +28,11 @@ def main():
 
     host_downloads_dir = os.path.join(os.path.dirname(__file__), "downloads")
     os.makedirs(host_downloads_dir, exist_ok=True)
+    try:
+        os.chmod(host_downloads_dir, 0o777)
+    except Exception as e:
+        logger.warning(f"Could not change permissions of downloads directory: {e}")
+
     container_downloads_dir = "/home/seluser/Downloads"
 
     options = webdriver.ChromeOptions()
@@ -36,16 +41,33 @@ def main():
     options.add_argument("--ignore-certificate-errors")
     options.add_argument("--ignore-ssl-errors")
     options.add_argument("--start-maximized")
+    options.add_argument("--disable-popup-blocking")
     options.add_experimental_option(
         "prefs",
         {
             "download.default_directory": container_downloads_dir,
+            "savefile.default_directory": container_downloads_dir,
             "download.prompt_for_download": False,
             "download.directory_upgrade": True,
+            "plugins.always_open_pdf_externally": True,
+            "profile.default_content_settings.popups": 0,
+            "profile.content_settings.exceptions.automatic_downloads.*.setting": 1,
+            "safebrowsing.enabled": True,
+            "safebrowsing.disable_download_protection": True,
         },
     )
 
     driver = webdriver.Remote(command_executor="http://localhost:4444", options=options)
+    
+    # Force download behavior using CDP
+    try:
+        driver.execute_cdp_cmd("Page.setDownloadBehavior", {
+            "behavior": "allow",
+            "downloadPath": container_downloads_dir
+        })
+        logger.info("Set CDP download behavior to allow")
+    except Exception as e:
+        logger.warning(f"Could not set CDP download behavior: {e}")
     
 
     try:
