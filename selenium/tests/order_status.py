@@ -87,44 +87,14 @@ def click_download_invoice(driver):
         invoice_link = wait.until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "a[data-testid='download-invoice']"))
         )
-        
-        href = invoice_link.get_attribute('href')
-        logger.info(f"Found invoice link with href: {href}")
 
-        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", invoice_link)
-        
         wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='download-invoice']")))
         
-        # Check existing files
-        download_dir = os.path.join(os.path.dirname(__file__), "downloads")
-        if not os.path.exists(download_dir):
-            os.makedirs(download_dir)
-            
-        initial_files = set(os.listdir(download_dir))
-        logger.info(f"Initial files in download dir: {initial_files}")
+        invoice_link.click()
         
-        try:
-            invoice_link.click()
-            logger.info("Download invoice clicked (standard click)")
-        except Exception:
-            driver.execute_script("arguments[0].click();", invoice_link)
-            logger.info("Download invoice clicked (JS click)")
-            
-        # Wait for download
-        logger.info("Waiting for download to complete...")
-        end_time = time.time() + 15
-        while time.time() < end_time:
-            current_files = set(os.listdir(download_dir))
-            new_files = current_files - initial_files
-            # Filter out temp files
-            valid_new_files = [f for f in new_files if not f.endswith('.crdownload') and not f.endswith('.part')]
-            
-            if valid_new_files:
-                logger.info(f"File downloaded successfully: {valid_new_files}")
-                return True
-            time.sleep(1)
-            
-        logger.warning("Download timed out - no new file detected")
+        logger.info("Download invoice clicked")
+        logger.info("Waiting 10 seconds for download to complete")
+        time.sleep(10)
         return True
     except Exception as e:
         logger.error(f"Error clicking download invoice: {e}")

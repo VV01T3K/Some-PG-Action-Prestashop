@@ -28,10 +28,6 @@ def main():
 
     host_downloads_dir = os.path.join(os.path.dirname(__file__), "downloads")
     os.makedirs(host_downloads_dir, exist_ok=True)
-    try:
-        os.chmod(host_downloads_dir, 0o777)
-    except Exception as e:
-        logger.warning(f"Could not change permissions of downloads directory: {e}")
 
     container_downloads_dir = "/home/seluser/Downloads"
 
