@@ -19,7 +19,7 @@ def get_cart_count(driver):
 
 def open_cart(driver):
     try:
-        logger.info("🛒 Opening cart...")
+        logger.info("Opening cart...")
         wait = WebDriverWait(driver, 10)
         
         cart_button = driver.find_element(By.CSS_SELECTOR, "a[data-testid='shopping-cart']")
@@ -29,7 +29,7 @@ def open_cart(driver):
         wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
         return True
     except Exception as e:
-        logger.error(f"❌ Error opening cart: {e}")
+        logger.error(f"Error opening cart: {e}")
         return False
 def get_cart_items_with_details(driver, display=True):
     try:
@@ -59,7 +59,7 @@ def get_cart_items_with_details(driver, display=True):
                 continue
         
         if display:
-            logger.info(f"ℹ️  Found {len(items)} items in cart:")
+            logger.info(f"Found {len(items)} items in cart:")
             for i, item in enumerate(items, 1):
                 logger.info(f"   {i}. {item['name']} (qty: {item['quantity']})")
         
@@ -74,11 +74,11 @@ def remove_product_from_cart(driver, items_before, item_index):
         wait = WebDriverWait(driver, 10)
         
         if item_index >= len(items_before):
-            logger.error(f"❌ Invalid index {item_index}, only {len(items_before)} items available")
+            logger.error(f"Invalid index {item_index}, only {len(items_before)} items available")
             return False, {}
         
         removed_item = items_before[item_index]
-        logger.info(f"🗑️  Removing item #{item_index + 1}: {removed_item['name']} (qty: {removed_item['quantity']})")
+        logger.info(f"Removing item #{item_index + 1}: {removed_item['name']} (qty: {removed_item['quantity']})")
         
         try:
             product_lines = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
@@ -92,25 +92,22 @@ def remove_product_from_cart(driver, items_before, item_index):
             driver.execute_script("arguments[0].click();", delete_btn)
             
             wait.until(EC.staleness_of(product_line))
-            logger.debug("✅ Confirmed product removed from DOM")
+            logger.debug("Confirmed product removed from DOM")
             
             return True, removed_item
         except Exception as e:
-            logger.error(f"❌ Error finding delete button: {e}")
+            logger.error(f"Error finding delete button: {e}")
             return False, removed_item
         
     except Exception as e:
-        logger.error(f"❌ Error removing product: {e}")
+        logger.error(f"Error removing product: {e}")
         return False, {}
 
 
 def run_test(driver):
-    logger.info("\n" + "="*70)
-    logger.info("TEST 3: Usunięcie 3 produktów z koszyka")
-    logger.info("="*70)
     
     initial_cart = get_cart_count(driver)
-    logger.info(f"🛒 Initial cart count: {initial_cart}")
+    logger.info(f"Initial cart count: {initial_cart}")
     
     # Open cart
     if not open_cart(driver):
@@ -123,7 +120,7 @@ def run_test(driver):
         }
     
     # Get initial items
-    logger.info("📦 ITEMS IN CART (BEFORE):")
+    logger.info("ITEMS IN CART (BEFORE):")
     items_before = get_cart_items_with_details(driver)
     
     # Remove 3 products (or less if not enough items) - RANDOMLY
@@ -133,13 +130,13 @@ def run_test(driver):
     
     for i in range(3):
         if not items_remaining:
-            logger.warning("⚠️  No more items to remove")
+            logger.warning("Warning: No more items to remove")
             break
         
         # Select random index from remaining items
         random_index = random.randint(0, len(items_remaining) - 1)
         logger.debug(f"--- Removal {i+1}/3 ---")
-        logger.debug(f"🎲 Selected random index: {random_index} out of {len(items_remaining)} remaining items")
+        logger.debug(f"Selected random index: {random_index} out of {len(items_remaining)} remaining items")
         
         success, removed_item = remove_product_from_cart(driver, items_remaining, random_index)
         
@@ -151,7 +148,7 @@ def run_test(driver):
             # Refresh items list from page (without displaying)
             items_remaining = get_cart_items_with_details(driver, display=False)
         else:
-            logger.warning(f"⚠️  Failed to remove product #{i+1}")
+            logger.warning(f"Warning: Failed to remove product #{i+1}")
             break
     
     # Get final items - wait a moment for any async operations
@@ -160,15 +157,15 @@ def run_test(driver):
     # Get final items
     items_after = get_cart_items_with_details(driver)
     
-    logger.info("\n" + "="*70)
+    logger.info("="*70)
     logger.info("DELETION SUMMARY:")
     logger.info("="*70)
     
-    logger.info(f"✂️  REMOVED ITEMS ({removed_count}):")
+    logger.info(f"REMOVED ITEMS ({removed_count}):")
     for i, item in enumerate(removed_items, 1):
         logger.info(f"   {i}. {item['name']} (qty: {item['quantity']})")
     
-    logger.info(f"📦 REMAINING ITEMS ({len(items_after)}):")
+    logger.info(f"REMAINING ITEMS ({len(items_after)}):")
     if items_after:
         for i, item in enumerate(items_after, 1):
             logger.info(f"   {i}. {item['name']} (qty: {item['quantity']})")
@@ -176,7 +173,7 @@ def run_test(driver):
         logger.info("   (cart is empty)")
     
     if removed_count > 0:
-        logger.info(f"✨ SUCCESS! Removed {removed_count} product(s)")
+        logger.info(f"SUCCESS! Removed {removed_count} product(s)")
         return {
             "status": "PASSED",
             "removed_count": removed_count,
@@ -186,7 +183,7 @@ def run_test(driver):
             "final_cart": final_cart
         }
     else:
-        logger.warning("⚠️  Could not remove any products")
+        logger.warning("Warning: Could not remove any products")
         return {
             "status": "FAILED",
             "reason": "Could not remove products",

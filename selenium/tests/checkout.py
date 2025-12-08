@@ -44,7 +44,7 @@ def click_cart_button(driver):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error clicking cart button: {e}")
+        logger.error(f"Error clicking cart button: {e}")
         return False
 
 
@@ -56,7 +56,7 @@ def is_cart_empty(driver):
         count = int(count_text) if count_text else 0
         
         if count == 0:
-            logger.info("🛒 Cart is empty (0 products)")
+            logger.info("Cart is empty (0 products)")
             return True
         
         return False
@@ -76,7 +76,7 @@ def click_checkout_button(driver):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error clicking checkout button: {e}")
+        logger.error(f"Error clicking checkout button: {e}")
         return False
 
 
@@ -92,7 +92,7 @@ def fill_address(driver, address):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error filling address: {e}")
+        logger.error(f"Error filling address: {e}")
         return False
 
 
@@ -108,7 +108,7 @@ def fill_postcode(driver, postcode):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error filling postcode: {e}")
+        logger.error(f"Error filling postcode: {e}")
         return False
 
 
@@ -124,7 +124,7 @@ def fill_city(driver, city):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error filling city: {e}")
+        logger.error(f"Error filling city: {e}")
         return False
 
 
@@ -139,7 +139,7 @@ def click_address_confirm_button(driver):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error confirming address: {e}")
+        logger.error(f"Error confirming address: {e}")
         return False
 
 
@@ -154,7 +154,7 @@ def click_shipping_confirm_button(driver):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error confirming shipping method: {e}")
+        logger.error(f"Error confirming shipping method: {e}")
         return False
 
 
@@ -172,13 +172,13 @@ def select_shipping_method(driver):
             
             driver.execute_script("arguments[0].click();", selected_option)
             
-            logger.info(f"🚚 Shipping: {option_id}")
+            logger.info(f"Shipping: {option_id}")
             return option_id
         else:
-            logger.warning("⚠️ No shipping options found")
+            logger.warning("Warning: No shipping options found")
             return None
     except Exception as e:
-        logger.error(f"❌ Error selecting shipping method: {e}")
+        logger.error(f"Error selecting shipping method: {e}")
         return None
 
 
@@ -196,13 +196,13 @@ def select_payment_method(driver, payment_module="ps_cashondelivery"):
                 if payment_radios:
                     selected_payment = payment_radios[0].get_attribute("data-module-name")
                     driver.execute_script("arguments[0].click();", payment_radios[0])
-                    logger.info(f"💳 Payment: {selected_payment}")
+                    logger.info(f"Payment: {selected_payment}")
                     return selected_payment
                 else:
-                    logger.warning("⚠️ No payment options found")
+                    logger.warning("Warning: No payment options found")
                     return None
             except Exception as fallback_e:
-                logger.error(f"❌ Fallback payment selection failed: {fallback_e}")
+                logger.error(f"Error: Fallback payment selection failed: {fallback_e}")
                 return None
         
         try:
@@ -214,7 +214,7 @@ def select_payment_method(driver, payment_module="ps_cashondelivery"):
             #wait_for_page_load(driver, timeout=2)
             driver.execute_script("arguments[0].click();", payment_radio)
             
-            logger.info(f"💳 Payment: {payment_module}")
+            logger.info(f"Payment: {payment_module}")
             return payment_module
         except Exception as specific_e:
             try:
@@ -222,17 +222,17 @@ def select_payment_method(driver, payment_module="ps_cashondelivery"):
                 if payment_radios:
                     selected_payment = payment_radios[0].get_attribute("data-module-name")
                     driver.execute_script("arguments[0].click();", payment_radios[0])
-                    logger.info(f"💳 Payment: {selected_payment}")
+                    logger.info(f"Payment: {selected_payment}")
                     return selected_payment
                 else:
-                    logger.warning("⚠️ No payment options found")
+                    logger.warning("Warning: No payment options found")
                     return None
             except Exception as fallback_e:
-                logger.error(f"❌ Fallback payment selection failed: {fallback_e}")
+                logger.error(f"Error: Fallback payment selection failed: {fallback_e}")
                 return None
                 
     except Exception as e:
-        logger.error(f"❌ Error selecting payment method: {e}")
+        logger.error(f"Error selecting payment method: {e}")
         return None
 
 
@@ -246,10 +246,10 @@ def click_payment_confirm_button(driver):
             terms_checkbox = driver.find_element(By.XPATH, "//input[@id and contains(@id, 'conditions')]")
             if not terms_checkbox.is_selected():
                 driver.execute_script("arguments[0].click();", terms_checkbox)
-                logger.info("✅ Terms and conditions checked")
+                logger.info("Terms and conditions checked")
             wait_for_page_load(driver, timeout=2)
         except Exception as terms_e:
-            logger.debug(f"⚠️ Could not find or click terms checkbox: {terms_e}")
+            logger.debug(f"Could not find or click terms checkbox: {terms_e}")
         
         try:
             order_button = wait.until(
@@ -278,12 +278,12 @@ def click_payment_confirm_button(driver):
                 driver.execute_script("arguments[0].click();", last_button)
                 return True
         except Exception as fallback_e:
-            logger.error(f"❌ Fallback button click failed: {fallback_e}")
+            logger.error(f"Error: Fallback button click failed: {fallback_e}")
         
-        logger.warning("⚠️ Could not find payment confirmation button")
+        logger.warning("Warning: Could not find payment confirmation button")
         return False
     except Exception as e:
-        logger.error(f"❌ Error confirming payment: {e}")
+        logger.error(f"Error confirming payment: {e}")
         return False
 
 
@@ -306,7 +306,7 @@ def run_test(driver):
         city = random.choice(CITIES)
         postcode = random.choice(POSTCODES)
         
-        logger.info(f"📋 Address: {address}, {postcode} {city}")
+        logger.info(f"Address: {address}, {postcode} {city}")
         
         if not fill_address(driver, address):
             return {"status": "failed", "reason": "Could not fill address"}
@@ -329,7 +329,7 @@ def run_test(driver):
         wait_for_page_load(driver, timeout=2)
         click_payment_confirm_button(driver)
         
-        logger.info("✅ Checkout completed!")
+        logger.info("Checkout completed!")
         
         return {
             "status": "success",
@@ -341,5 +341,5 @@ def run_test(driver):
         }
         
     except Exception as e:
-        logger.error(f"❌ Checkout test failed: {e}")
+        logger.error(f"Checkout test failed: {e}")
         return {"status": "failed", "reason": str(e)}

@@ -28,10 +28,10 @@ def click_login_button(driver):
         )
         driver.execute_script("arguments[0].click();", login_button)
         
-        logger.info("🔑 Clicked login button")
+        logger.info("Clicked login button")
         return True
     except Exception as e:
-        logger.error(f"❌ Error clicking login button: {e}")
+        logger.error(f"Error clicking login button: {e}")
         return False
 
 
@@ -43,10 +43,10 @@ def click_register_link(driver):
         )
         driver.execute_script("arguments[0].click();", register_link)
         
-        logger.info("📝 Clicked register link")
+        logger.info("Clicked register link")
         return True
     except Exception as e:
-        logger.error(f"❌ Error clicking register link: {e}")
+        logger.error(f"Error clicking register link: {e}")
         return False
 
 
@@ -64,10 +64,10 @@ def select_gender(driver, gender_id):
         driver.execute_script("arguments[0].click();", gender_radio)
         
         gender_label = "Pan" if gender_id == 1 else "Pani"
-        logger.info(f"✅ Selected gender: {gender_label}")
+        logger.info(f"Selected gender: {gender_label}")
         return True
     except Exception as e:
-        logger.error(f"❌ Error selecting gender: {e}")
+        logger.error(f"Error selecting gender: {e}")
         import traceback
         logger.debug(traceback.format_exc())
         return False
@@ -85,7 +85,7 @@ def fill_firstname(driver, firstname):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error filling first name: {e}")
+        logger.error(f"Error filling first name: {e}")
         return False
 
 
@@ -101,7 +101,7 @@ def fill_lastname(driver, lastname):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error filling last name: {e}")
+        logger.error(f"Error filling last name: {e}")
         return False
 
 
@@ -117,7 +117,7 @@ def fill_email(driver, email):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error filling email: {e}")
+        logger.error(f"Error filling email: {e}")
         return False
 
 
@@ -133,7 +133,7 @@ def fill_password(driver, password):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error filling password: {e}")
+        logger.error(f"Error filling password: {e}")
         return False
 
 
@@ -160,7 +160,7 @@ def fill_birthdate(driver, birthdate):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error filling birthdate: {e}")
+        logger.error(f"Error filling birthdate: {e}")
         return False
 
 
@@ -188,10 +188,10 @@ def accept_customer_privacy(driver):
         except Exception as e:
             logger.debug(f"Could not find psgdpr checkboxes: {e}")
         
-        logger.info("✅ All required checkboxes accepted")
+        logger.info("All required checkboxes accepted")
         return True
     except Exception as e:
-        logger.error(f"❌ Error accepting privacy policies: {e}")
+        logger.error(f"Error accepting privacy policies: {e}")
         return False
 
 
@@ -204,16 +204,16 @@ def submit_registration(driver):
         )
         driver.execute_script("arguments[0].click();", submit_button)
         
-        logger.info("✅ Registration submitted")
+        logger.info("Registration submitted")
         return True
     except Exception as e:
-        logger.error(f"❌ Error submitting registration: {e}")
+        logger.error(f"Error submitting registration: {e}")
         return False
 
 
 def click_login_to_verify(driver):
     try:
-        logger.info("🔐 Clicking login button to verify account...")
+        logger.info("Clicking login button to verify account...")
         wait = WebDriverWait(driver, 10)
         
         login_button = wait.until(
@@ -221,10 +221,10 @@ def click_login_to_verify(driver):
         )
         driver.execute_script("arguments[0].click();", login_button)
         
-        logger.info("✅ Login button clicked")
+        logger.info("Login button clicked")
         return True
     except Exception as e:
-        logger.error(f"❌ Error clicking login button: {e}")
+        logger.error(f"Error clicking login button: {e}")
         return False
 
 
@@ -238,10 +238,10 @@ def fill_login_email(driver, email):
         email_field.clear()
         email_field.send_keys(email)
         
-        logger.info(f"✅ Filled login email: {email}")
+        logger.info(f"Filled login email: {email}")
         return True
     except Exception as e:
-        logger.error(f"❌ Error filling login email: {e}")
+        logger.error(f"Error filling login email: {e}")
         return False
 
 
@@ -255,10 +255,10 @@ def fill_login_password(driver, password):
         password_field.clear()
         password_field.send_keys(password)
         
-        logger.info(f"✅ Filled login password: {password}")
+        logger.info(f"Filled login password: {password}")
         return True
     except Exception as e:
-        logger.error(f"❌ Error filling login password: {e}")
+        logger.error(f"Error filling login password: {e}")
         return False
 
 
@@ -285,10 +285,10 @@ def submit_login(driver):
         
         driver.execute_script("arguments[0].click();", submit_button)
         
-        logger.info("✅ Login submitted")
+        logger.info("Login submitted")
         return True
     except Exception as e:
-        logger.error(f"❌ Error submitting login: {e}")
+        logger.error(f"Error submitting login: {e}")
         import traceback
         logger.debug(traceback.format_exc())
         return False
@@ -298,23 +298,23 @@ def run_test(driver):
     wait = WebDriverWait(driver, 10)
     
     try:
-        logger.info("🚀 Starting account registration test...")
+        logger.info("Starting account registration test...")
         
         if not click_login_button(driver):
-            logger.warning("⚠️ Failed to click login button")
+            logger.warning("Warning: Failed to click login button")
             return {"status": "failed", "reason": "Could not click login button"}
         
         # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[data-testid='login-page-register-link']")))
         
         if not click_register_link(driver):
-            logger.warning("⚠️ Failed to click register link")
+            logger.warning("Warning: Failed to click register link")
             return {"status": "failed", "reason": "Could not click register link"}
         
         # wait.until(EC.presence_of_element_located((By.ID, "field-firstname")))
         
         gender_id = random.choice([1, 2])
         if not select_gender(driver, gender_id):
-            logger.warning("⚠️ Failed to select gender")
+            logger.warning("Warning: Failed to select gender")
             return {"status": "failed", "reason": "Could not select gender"}
         
         # Generate random name and surname
@@ -331,8 +331,8 @@ def run_test(driver):
         day = random.randint(1, 28)
         birthdate = f"{year:04d}-{month:02d}-{day:02d}"
         
-        logger.info(f"📋 Registration details: {firstname} {lastname}, {email}")
-        logger.info(f"🔐 Password: {password}")  # Display password for debugging
+        logger.info(f"Registration details: {firstname} {lastname}, {email}")
+        logger.info(f"Password: {password}")  # Display password for debugging
         
         # Fill form fields
         if not fill_firstname(driver, firstname):
@@ -360,7 +360,7 @@ def run_test(driver):
         
         try:
             top_right_spans = driver.find_elements(By.XPATH, "//span[@class='hidden-sm-down']")
-            logger.info(f"📍 Top right corner spans found: {len(top_right_spans)}")
+            logger.info(f"Top right corner spans found: {len(top_right_spans)}")
             for idx, span in enumerate(top_right_spans):
                 span_text = span.text.strip()
                 logger.info(f"   Span {idx}: '{span_text}'")
@@ -377,5 +377,5 @@ def run_test(driver):
         }
         
     except Exception as e:
-        logger.error(f"❌ Test failed with error: {e}")
+        logger.error(f"Test failed with error: {e}")
         return {"status": "failed", "reason": str(e)}

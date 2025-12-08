@@ -4,7 +4,8 @@
     <div class="header">
       <a rel="nofollow" class="btn-base group btn-light w-fit"
         aria-label="{l s='Shopping cart link containing %nbProducts% product(s)' sprintf=['%nbProducts%' => $cart.products_count] d='Shop.Theme.Checkout'}"
-        href="{$cart_url}">
+        href="{$cart_url}"
+        data-testid='shopping-cart'>
         <span class="btn-content-icon">
           <svg aria-hidden="true" data-testid="ShoppingCart" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
             fill="none" viewBox="0 0 24 24">

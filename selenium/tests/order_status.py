@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 def navigate_to_order_history(driver):
     try:
-        logger.info("📜 Navigating to order history page...")
+        logger.info("Navigating to order history page...")
         
         wait = WebDriverWait(driver, 10)
         
@@ -19,10 +19,10 @@ def navigate_to_order_history(driver):
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='header-login-button']"))
             )
             driver.execute_script("arguments[0].click();", user_menu)
-            logger.info("👤 User menu clicked")
+            logger.info("User menu clicked")
             wait_for_page_load(driver, timeout=2)
         except TimeoutException:
-            logger.error("❌ Could not find user menu button")
+            logger.error("Could not find user menu button")
             return False
         
         try:
@@ -30,10 +30,10 @@ def navigate_to_order_history(driver):
                 EC.element_to_be_clickable((By.ID, "history-link"))
             )
             driver.execute_script("arguments[0].click();", order_history_link)
-            logger.info("📋 Order history link clicked")
+            logger.info("Order history link clicked")
             wait_for_page_load(driver)
         except TimeoutException:
-            logger.error("❌ Could not find order history link in menu")
+            logger.error("Could not find order history link in menu")
             return False
         
         
@@ -51,7 +51,7 @@ def navigate_to_order_history(driver):
         
         return True
     except Exception as e:
-        logger.error(f"❌ Error navigating to order history: {e}")
+        logger.error(f"Error navigating to order history: {e}")
         import traceback
         logger.error(f"Traceback: {traceback.format_exc()}")
         return False
@@ -69,11 +69,11 @@ def click_order_details_button(driver):
         driver.execute_script("arguments[0].scrollIntoView(true);", details_button)
         wait_for_page_load(driver, timeout=2)
         driver.execute_script("arguments[0].click();", details_button)
-        logger.info("🔍 Order details of the last checkout")
+        logger.info("Order details of the last checkout")
         return True
         
     except Exception as e:
-        logger.error(f"❌ Error clicking order details button: {e}")
+        logger.error(f"Error clicking order details button: {e}")
         import traceback
         logger.error(f"Traceback: {traceback.format_exc()}")
         return False
@@ -87,10 +87,10 @@ def click_download_invoice(driver):
         )
         driver.execute_script("arguments[0].scrollIntoView(true);", invoice_link)
         driver.execute_script("arguments[0].click();", invoice_link)
-        logger.info("📄 Download invoice clicked")
+        logger.info("Download invoice clicked")
         return True
     except Exception as e:
-        logger.error(f"❌ Error clicking download invoice: {e}")
+        logger.error(f"Error clicking download invoice: {e}")
         return False
 
 
@@ -107,10 +107,10 @@ def get_order_status(driver):
         if not status_text:
             status_text = driver.execute_script("return arguments[0].innerText;", status_label).strip()
         
-        logger.info(f"📊 Order status: {status_text}")
+        logger.info(f"Order status: {status_text}")
         return status_text
     except Exception as e:
-        logger.error(f"❌ Error getting order status: {e}")
+        logger.error(f"Error getting order status: {e}")
         import traceback
         logger.error(f"Traceback: {traceback.format_exc()}")
         return None
@@ -119,7 +119,7 @@ def get_order_status(driver):
 
 def run_test(driver):
     try:
-        logger.info("🚀 Starting order status check...")
+        logger.info("Starting order status check...")
         
         if not navigate_to_order_history(driver):
             return {"status": "failed", "reason": "Could not navigate to order history"}
@@ -146,7 +146,7 @@ def run_test(driver):
         }
         
     except Exception as e:
-        logger.error(f"❌ Order status check failed with error: {e}")
+        logger.error(f"Order status check failed with error: {e}")
         import traceback
         logger.error(f"Traceback: {traceback.format_exc()}")
         return {"status": "failed", "reason": str(e)}

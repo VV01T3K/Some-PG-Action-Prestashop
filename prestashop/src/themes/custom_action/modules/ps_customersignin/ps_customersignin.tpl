@@ -1,7 +1,7 @@
 <div class="relative max-w-[244px]">
   {if $logged}
     <a class="text-dark-blue-500 flex items-center gap-1 rounded-md p-2 font-medium outline-offset-2 hover:bg-neutral-50"
-      href="{$urls.pages.my_account}" rel="nofollow" aria-label="{l s='Sign out' d='Shop.Theme.Actions'}">
+      href="{$urls.pages.my_account}" rel="nofollow" aria-label="{l s='Sign out' d='Shop.Theme.Actions'}" data-testid='header-login-button'>
       <svg aria-hidden="true" data-testid="User01" class="shrink-0" xmlns="http://www.w3.org/2000/svg" width="24"
         height="24" fill="none" viewBox="0 0 24 24">
         <path fill="#001489"
@@ -17,7 +17,8 @@
   {else}
     <a class="text-dark-blue-500 flex items-center gap-1 rounded-md p-2 font-medium outline-offset-2 hover:bg-neutral-50"
       href="{$urls.pages.my_account}" rel="nofollow"
-      aria-label="{l s='Log in to your customer account' d='Shop.Theme.Customeraccount'}">
+      aria-label="{l s='Log in to your customer account' d='Shop.Theme.Customeraccount'}"
+      data-testid='header-login-button'>
       <svg aria-hidden="true" data-testid="User01" class="shrink-0" xmlns="http://www.w3.org/2000/svg" width="24"
         height="24" fill="none" viewBox="0 0 24 24">
         <path fill="#001489"

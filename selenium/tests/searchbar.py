@@ -26,7 +26,7 @@ def search_product(driver, product_name):
     wait = WebDriverWait(driver, 10)
     
     try:
-        logger.info(f"🔍 Searching for product: {product_name}")
+        logger.info(f"Searching for product: {product_name}")
         
         search_input = wait.until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "input[data-testid='search-bar']"))
@@ -40,17 +40,17 @@ def search_product(driver, product_name):
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-testid='product-card']"))
         )
         
-        logger.info(f"✅ Found {len(products)} products")
+        logger.info(f"Found {len(products)} products")
         return products
         
     except Exception as e:
-        logger.error(f"❌ Error searching for product: {e}")
+        logger.error(f"Error searching for product: {e}")
         return None
 
 
 def select_random_product(products):
     if not products:
-        logger.warning("⚠️  No products to select from")
+        logger.warning("Warning: No products to select from")
         return None
     
     selected = random.choice(products)
@@ -92,11 +92,11 @@ def get_product_info(product_element):
         if not price:
             price = "N/A"
         
-        logger.info(f"📦 Selected Product: {title} - Price: {price}")
+        logger.info(f"Selected Product: {title} - Price: {price}")
         return {"title": title, "price": price}
         
     except Exception as e:
-        logger.error(f"⚠️  Could not get full product info: {e}")
+        logger.error(f"Could not get full product info: {e}")
         return {"title": "Unknown", "price": "N/A"}
 
 
@@ -120,9 +120,9 @@ def add_to_cart(driver, product_element):
             driver.execute_script("arguments[0].scrollIntoView(true);", product_element)
             product_element.click()
         except:
-            logger.info("ℹ️  Standard click failed, trying JavaScript click...")
+            logger.info("Standard click failed, trying JavaScript click...")
             driver.execute_script("arguments[0].click();", product_element)
-            logger.info("✅ Clicked with JavaScript")
+            logger.info("Clicked with JavaScript")
         
         wait.until(EC.presence_of_element_located((By.NAME, "qty")))
 
@@ -134,9 +134,9 @@ def add_to_cart(driver, product_element):
             stock_attr = stock_el.get_attribute("data-stock")
             if stock_attr and stock_attr.isdigit():
                 stock_available = int(stock_attr)
-                logger.info(f"📦 Stock available: {stock_available}")
+                logger.info(f"Stock available: {stock_available}")
         except Exception as e:
-            logger.debug(f"ℹ️  Could not read stock info: {e}")
+            logger.debug(f"Could not read stock info: {e}")
             stock_available = None
 
         if stock_available < 1:
@@ -145,7 +145,7 @@ def add_to_cart(driver, product_element):
         quantity = random.randint(1, min(5,stock_available))
 
        
-        logger.info(f"📦 Selected quantity: {quantity}")
+        logger.info(f"Selected quantity: {quantity}")
         
         try:
             quantity_input = wait.until(
@@ -158,7 +158,7 @@ def add_to_cart(driver, product_element):
                 quantity_input.send_keys(Keys.DELETE)
                 quantity_input.send_keys(str(quantity))
         except Exception as e:
-            logger.warning(f"⚠️  Could not set quantity: {e}, using default 1")
+            logger.warning(f"Warning: Could not set quantity: {e}, using default 1")
             quantity = 1
         
         try:
@@ -166,7 +166,7 @@ def add_to_cart(driver, product_element):
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='add-to-cart']"))
             )
         except:
-            logger.error("❌ Could not find add to cart button")
+            logger.error("Could not find add to cart button")
             return False, 0
         
         driver.execute_script("arguments[0].scrollIntoView(true);", button)
@@ -174,15 +174,15 @@ def add_to_cart(driver, product_element):
         try:
             button.click()
         except:
-            logger.info("ℹ️  Standard click failed, using JavaScript...")
+            logger.info("Standard click failed, using JavaScript...")
             driver.execute_script("arguments[0].click();", button)
-            logger.info("✅ Clicked with JavaScript")
+            logger.info("Clicked with JavaScript")
         
-        logger.info(f"✅ Added {quantity} product(s) to cart successfully!")
+        logger.info(f"Added {quantity} product(s) to cart successfully!")
         return True, quantity
         
     except Exception as e:
-        logger.error(f"❌ Error adding to cart: {e}")
+        logger.error(f"Error adding to cart: {e}")
         import traceback
         logger.error(traceback.format_exc())
         return False, 0
@@ -194,7 +194,7 @@ def run_test(driver):
     logger.info("="*70)
     
     initial_cart_count = get_cart_count(driver)
-    logger.info(f"🛒 Initial cart count: {initial_cart_count}")
+    logger.info(f"Initial cart count: {initial_cart_count}")
     
     search_keyword = random.choice(SEARCH_KEYWORDS)
     logger.info(f"🔑 Selected search keyword: '{search_keyword}'")
@@ -202,7 +202,7 @@ def run_test(driver):
     products = search_product(driver, search_keyword)
     
     if not products:
-        logger.error("❌ No products found")
+        logger.error("No products found")
         return {
             "status": "FAILED",
             "reason": "No products found",
@@ -213,7 +213,7 @@ def run_test(driver):
     
     selected_product = select_random_product(products)
     if not selected_product:
-        logger.error("❌ Could not select product")
+        logger.error("Could not select product")
         return {
             "status": "FAILED",
             "reason": "Could not select product",
@@ -227,7 +227,7 @@ def run_test(driver):
     success, quantity_added = add_to_cart(driver, selected_product)
     
     if not success:
-        logger.warning("⚠️  Could not add product to cart")
+        logger.warning("Warning: Could not add product to cart")
         return {
             "status": "FAILED",
             "reason": "Could not add to cart",
@@ -251,17 +251,17 @@ def run_test(driver):
                 return False
         
         wait.until(cart_count_increased)
-        logger.debug("✅ Cart count increased")
+        logger.debug("Cart count increased")
     except:
         logger.debug("⏱️  Cart count did not increase within timeout")
     
     updated_cart_count = get_cart_count(driver)
-    logger.info(f"🛒 Updated cart count: {updated_cart_count}")
+    logger.info(f"Updated cart count: {updated_cart_count}")
     
     expected_count = initial_cart_count + quantity_added
     
     if updated_cart_count >= expected_count:
-        logger.info(f"✨ SUCCESS! Cart updated correctly!")
+        logger.info(f"SUCCESS! Cart updated correctly!")
         logger.info(f"   - Product: {product_info['title']}")
         logger.info(f"   - Added: {quantity_added} product(s)")
         logger.info(f"   - Cart before: {initial_cart_count}")
@@ -275,7 +275,7 @@ def run_test(driver):
             "final_cart": updated_cart_count
         }
     else:
-        logger.warning(f"⚠️  Cart count mismatch!")
+        logger.warning(f"Warning: Cart count mismatch!")
         logger.warning(f"   - Expected at least: {expected_count}")
         logger.warning(f"   - Actual: {updated_cart_count}")
         

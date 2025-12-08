@@ -10,4 +10,4 @@ def wait_for_page_load(driver, timeout=10):
             lambda d: d.execute_script("return document.readyState") == "complete"
         )
     except Exception as e:
-        logger.debug(f"⚠️ Page load wait timed out: {e}")
+        logger.debug(f"Page load wait timed out: {e}")
