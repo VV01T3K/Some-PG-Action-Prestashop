@@ -96,6 +96,9 @@ def main():
         
         
         
+    except KeyboardInterrupt:
+        logger.info("Test interrupted by user (Ctrl+C)")
+        
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
         import traceback
