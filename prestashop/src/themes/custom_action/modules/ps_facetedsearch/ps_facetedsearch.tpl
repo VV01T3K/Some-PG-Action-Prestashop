@@ -23,7 +23,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
 {if isset($listing.rendered_facets)}
-<div id="search_filters_wrapper" class="hidden-sm-down">
+<div id="search_filters_wrapper" class="hidden-sm-down pb-6">
   <div id="search_filter_controls" class="hidden-md-up">
       <span id="_mobile_search_filters_clear_all"></span>
       <h3 class="text-body-large text-dark-blue-500 mb-2 flex items-center font-bold" data-testid="grid-filters-group-title">Filtry</h3> 
