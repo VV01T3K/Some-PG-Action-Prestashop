@@ -40,7 +40,7 @@ def click_cart_button(driver):
         cart_button = wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='shopping-cart']"))
         )
-        driver.execute_script("arguments[0].click();", cart_button)
+        cart_button.click()
         
         return True
     except Exception as e:
@@ -72,7 +72,7 @@ def click_checkout_button(driver):
         checkout_button = wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='checkout-button']"))
         )
-        driver.execute_script("arguments[0].click();", checkout_button)
+        checkout_button.click()
         
         return True
     except Exception as e:
@@ -133,9 +133,9 @@ def click_address_confirm_button(driver):
         wait = WebDriverWait(driver, 10)
         
         confirm_button = wait.until(
-            EC.element_to_be_clickable((By.XPATH, "//button[@name='confirm-addresses' and @type='submit']"))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='confirm-addresses']"))
         )
-        driver.execute_script("arguments[0].click();", confirm_button)
+        confirm_button.click()
         
         return True
     except Exception as e:
@@ -148,7 +148,7 @@ def click_shipping_confirm_button(driver):
         wait = WebDriverWait(driver, 10)
         
         shipping_button = wait.until(
-            EC.element_to_be_clickable((By.XPATH, "//button[@name='confirmDeliveryOption' and @type='submit']"))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='confirm-delivery-option']"))
         )
         driver.execute_script("arguments[0].click();", shipping_button)
         
@@ -163,7 +163,7 @@ def select_shipping_method(driver):
         wait = WebDriverWait(driver, 10)
         
         shipping_options = wait.until(
-            EC.presence_of_all_elements_located((By.XPATH, "//input[@type='radio' and @name and contains(@name, 'delivery_option')]"))
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "input[type='radio'][name*='delivery_option']"))
         )
         
         if len(shipping_options) > 0:
@@ -190,7 +190,7 @@ def select_payment_method(driver, payment_module="ps_cashondelivery"):
             wait.until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='payment-option']"))
             )
-        except:
+        except Exception:
             try:
                 payment_radios = driver.find_elements(By.CSS_SELECTOR, "input[name='payment-option']")
                 if payment_radios:
@@ -216,7 +216,7 @@ def select_payment_method(driver, payment_module="ps_cashondelivery"):
             
             logger.info(f"Payment: {payment_module}")
             return payment_module
-        except Exception as specific_e:
+        except Exception:
             try:
                 payment_radios = driver.find_elements(By.CSS_SELECTOR, "input[name='payment-option']")
                 if payment_radios:
@@ -243,7 +243,7 @@ def click_payment_confirm_button(driver):
         wait_for_page_load(driver, timeout=2)
         
         try:
-            terms_checkbox = driver.find_element(By.XPATH, "//input[@id and contains(@id, 'conditions')]")
+            terms_checkbox = driver.find_element(By.CSS_SELECTOR, "input[id*='conditions']")
             if not terms_checkbox.is_selected():
                 driver.execute_script("arguments[0].click();", terms_checkbox)
                 logger.info("Terms and conditions checked")
@@ -253,7 +253,7 @@ def click_payment_confirm_button(driver):
         
         try:
             order_button = wait.until(
-                EC.presence_of_element_located((By.XPATH, "//button[contains(@class, 'btn-primary') and contains(translate(text(), 'ZŁÓŻ', 'złóż'), 'zamówienie')]"))
+                EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='place-order']"))
             )
             
             button_class = order_button.get_attribute('class')
@@ -271,7 +271,7 @@ def click_payment_confirm_button(driver):
             pass
         
         try:
-            confirm_buttons = driver.find_elements(By.XPATH, "//button[@type='submit']")
+            confirm_buttons = driver.find_elements(By.CSS_SELECTOR, "button[type='submit']")
             if confirm_buttons:
                 last_button = confirm_buttons[-1]
                 driver.execute_script("arguments[0].scrollIntoView(true);", last_button)

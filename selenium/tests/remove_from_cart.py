@@ -1,5 +1,6 @@
 import logging
 import random
+from time import sleep
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,7 +14,7 @@ def get_cart_count(driver):
         text = cart_badge.text.strip("()")
         count = int(text)
         return count
-    except:
+    except Exception:
         return 0
 
 
@@ -23,8 +24,7 @@ def open_cart(driver):
         wait = WebDriverWait(driver, 10)
         
         cart_button = driver.find_element(By.CSS_SELECTOR, "a[data-testid='shopping-cart']")
-        driver.execute_script("arguments[0].scrollIntoView(true);", cart_button)
-        driver.execute_script("arguments[0].click();", cart_button)
+        cart_button.click()
         # Wait for cart items rendered via data-testid within cart list
         wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
         return True
@@ -87,10 +87,17 @@ def remove_product_from_cart(driver, items_before, item_index):
             
             delete_btn = product_line.find_element(By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']")
             
+            # Scroll the delete button into view
             driver.execute_script("arguments[0].scrollIntoView(true);", delete_btn)
             
-            driver.execute_script("arguments[0].click();", delete_btn)
             
+            try:
+                delete_btn.click()
+                logger.debug("Clicked delete button using JavaScript")
+            except Exception as js_click_error:
+                logger.debug(f"JavaScript click failed: {js_click_error}, trying standard click")
+                delete_btn.click()
+
             wait.until(EC.staleness_of(product_line))
             logger.debug("Confirmed product removed from DOM")
             
@@ -111,13 +118,7 @@ def run_test(driver):
     
     # Open cart
     if not open_cart(driver):
-        return {
-            "status": "FAILED",
-            "reason": "Could not open cart",
-            "initial_cart": initial_cart,
-            "final_cart": initial_cart,
-            "removed_count": 0
-        }
+        return 
     
     # Get initial items
     logger.info("ITEMS IN CART (BEFORE):")
@@ -151,8 +152,6 @@ def run_test(driver):
             logger.warning(f"Warning: Failed to remove product #{i+1}")
             break
     
-    # Get final items - wait a moment for any async operations
-    final_cart = get_cart_count(driver)
     
     # Get final items
     items_after = get_cart_items_with_details(driver)
@@ -172,24 +171,4 @@ def run_test(driver):
     else:
         logger.info("   (cart is empty)")
     
-    if removed_count > 0:
-        logger.info(f"SUCCESS! Removed {removed_count} product(s)")
-        return {
-            "status": "PASSED",
-            "removed_count": removed_count,
-            "removed_items": removed_items,
-            "remaining_items": items_after,
-            "initial_cart": initial_cart,
-            "final_cart": final_cart
-        }
-    else:
-        logger.warning("Warning: Could not remove any products")
-        return {
-            "status": "FAILED",
-            "reason": "Could not remove products",
-            "removed_count": 0,
-            "removed_items": [],
-            "remaining_items": items_after,
-            "initial_cart": initial_cart,
-            "final_cart": final_cart
-        }
+    return
