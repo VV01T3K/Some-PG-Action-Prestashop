@@ -87,7 +87,7 @@
   <main id="layout-page-content" class="relative flex flex-1 flex-col">
     <div class="px-4 lg:px-8"></div>
     <div class="px-4 md:hidden" data-testid="mobile-search"></div>
-    <div class="bg-sky-blue-300 h-full w-full">
+    <div class="bg-sky-blue-300 h-full w-full" style="min-height: 75vh;">
       <div class="relative flex flex-col lg:px-8 lg:py-0 xl:container xl:mx-auto xl:px-0">
         <div class="flex min-h-14 items-center gap-4 px-4 py-4 lg:px-0 lg:py-6">
           <div class="Skeleton_default__fyGN4">
