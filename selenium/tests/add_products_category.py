@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from utils import wait_for_page_load
+from utils import wait_for_page_load, wait_for_products_to_load, wait_for_filter_to_apply
 import random
 import logging
 
@@ -57,7 +57,9 @@ def get_category_products(driver, category_element):
             # Continue without filter
 
         wait_for_page_load(driver, timeout=5)
-        time.sleep(1)  # Wait for products to load after clicking category
+
+        wait_for_filter_to_apply(driver, timeout=10)  # Wait for products to finish loading
+        
         wait = WebDriverWait(driver, 10)
         products = wait.until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-testid='product-card-link']"))
@@ -284,10 +286,9 @@ def run_test(driver):
                                 EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='available-products']"))
                             )
                     available_checkbox.click()
-                    time.sleep(0.2)  # Wait for products to load after clicking filter
+                    wait_for_filter_to_apply(driver, timeout=5)  # Wait for filter to apply and products to load
                 except Exception as e:
                     logger.warning(f"Warning: Could not apply 'Available products' filter: {e}")
-            wait_for_page_load(driver, timeout=5)
             try:
                 product_element = wait.until(
                         EC.presence_of_element_located((By.CSS_SELECTOR, f"a[href='{product_data['href']}']"))

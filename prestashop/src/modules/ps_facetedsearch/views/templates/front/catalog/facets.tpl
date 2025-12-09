@@ -91,7 +91,8 @@
                               <input id="facet_input_{$_expand_id}_{$filter_key}" data-search-url="{$filter.nextEncodedFacetsURL}"
                                 type="{if $facet.multipleSelectionAllowed}checkbox{else}radio{/if}"
                                 {if !$facet.multipleSelectionAllowed}name="filter_{$facet.label}" {/if}
-                                class="absolute opacity-0 w-full h-full cursor-pointer" {if $filter.active}checked{/if}>
+                                class="absolute opacity-0 w-full h-full cursor-pointer" {if $filter.active}checked{/if}
+                                {if $filter.label == 'W magazynie'}data-testid="available-products"{/if}>
                               {if $filter.active}
                                 <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>

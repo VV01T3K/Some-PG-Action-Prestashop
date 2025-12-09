@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from utils import wait_for_page_load
+from utils import wait_for_page_load, wait_for_filter_to_apply
 import random
 import logging
 
@@ -36,6 +36,14 @@ def search_product(driver, product_name):
         
         search_input.send_keys(Keys.RETURN)
         wait_for_page_load(driver)
+        try:
+            available_checkbox = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='available-products']"))
+                    )
+            available_checkbox.click()
+        except Exception as e:
+            logger.warning(f"Warning: Could not apply 'Available products' filter: {e}")
+        wait_for_filter_to_apply(driver)
         products = wait.until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-testid='product-card']"))
         )
@@ -152,7 +160,7 @@ def run_test(driver):
     logger.info(f"Initial cart count: {initial_cart_count}")
     
     search_keyword = random.choice(SEARCH_KEYWORDS)
-    logger.info(f"🔑 Selected search keyword: '{search_keyword}'")
+    logger.info(f" Selected search keyword: '{search_keyword}'")
     
     products = search_product(driver, search_keyword)
     

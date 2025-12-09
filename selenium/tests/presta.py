@@ -110,10 +110,6 @@ def main():
             order_status.run_test(driver)
         else:
             logger.warning("Warning: Cart is empty - skipping TEST 4 (Checkout) and TEST 5 (Order Status)")
-
-        
-        
-        
     except KeyboardInterrupt:
         logger.info("Test interrupted by user (Ctrl+C)")
         
