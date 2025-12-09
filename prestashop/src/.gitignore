@@ -31,6 +31,3 @@ themes/*/assets/css/compiled/
 *.tmp
 .DS_Store
 Thumbs.db
-
-img/p
-img/c
