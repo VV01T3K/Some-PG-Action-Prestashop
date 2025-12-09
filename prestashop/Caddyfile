@@ -67,10 +67,19 @@
 
 	@apiHasQuery expression {query} != ""
 
+	@staticFiles path /static/*
+
 	@static {
 		path *.css *.js *.jpg *.jpeg *.png *.gif *.ico *.svg *.webp *.avif
 		path *.woff *.woff2 *.ttf *.eot *.pdf *.txt *.xml *.json *.map
 		path *.mp4 *.webm *.ogg *.ogv *.zip
+	}
+
+	handle @staticFiles {
+		root * /static
+		uri strip_prefix /static
+		file_server
+		header Cache-Control "public, max-age=31536000, immutable"
 	}
 
 	handle @static {

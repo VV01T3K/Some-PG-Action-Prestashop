@@ -304,6 +304,7 @@ class Ps_CategoryTree extends Module implements WidgetInterface
 
         return [
             'categories' => $this->getCategories($rootCategory),
+            'allCategories' => $this->getCategories($this->getHomeCategory()), // Always include full tree from home
             'currentCategory' => $rootCategory->id,
             'carousel' => isset($configuration['carousel']) ? $configuration['carousel'] : false,
         ];

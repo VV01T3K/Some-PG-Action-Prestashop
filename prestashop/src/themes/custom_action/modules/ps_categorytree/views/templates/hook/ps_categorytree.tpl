@@ -70,7 +70,7 @@
     <button
       class="text-body-normal text-dark-blue-500 flex flex-row pt-3 pb-4 font-medium group-hover/submenu:shadow-[inset_0_-2px_0]"
       aria-expanded="false" onclick="toggleCategoryMenu(this, event)">
-{if $categories.name == "Strona główna"}Produkty{else}{$categories.name}{/if}
+{if $allCategories.name == "Strona główna"}Produkty{else}{$allCategories.name}{/if}
       <svg aria-hidden="true" data-testid="CaretDownMd" class="transition-transform duration-300"
         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path fill="#001489"
@@ -92,7 +92,7 @@
       {* Left column - Top level categories *}
       <div
         class="absolute top-0 left-0 w-[320px] flex flex-col pt-2 pb-4 transition-all duration-300 ease-in-out opacity-100 translate-y-0">
-        {foreach from=$categories.children item=category name=categoryLoop}
+        {foreach from=$allCategories.children item=category name=categoryLoop}
           <div>
             <button
               class="text-body-small text-dark-blue-500 flex w-full items-center gap-3 px-6 py-1 text-left hover:bg-neutral-50 {if $smarty.foreach.categoryLoop.first}bg-neutral-50{/if}"

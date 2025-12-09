@@ -54,15 +54,8 @@ $(document).ready(function () {
             // Assemble link
             $link.append($imageContainer).append($detailsContainer);
             
-            // Add wishlist button
-            var $wishlistBtn = $('<div>').addClass('product-wishlist');
-            var $heartBtn = $('<button>').attr('type', 'button').addClass('wishlist-btn').attr('aria-label', 'Dodaj do ulubionych');
-            var heartSvg = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="#8593a3" d="M12 21a1 1 0 0 1-.486-.126C11.126 20.658 2 15.514 2 9c0-3.665 2.218-5.425 4.293-5.849 2.171-.44 4.328.402 5.707 2.113 1.38-1.712 3.537-2.552 5.707-2.113C19.782 3.575 22 5.335 22 9.001c0 6.513-9.126 11.657-9.515 11.873A1 1 0 0 1 12 21M7.4 5.041q-.368 0-.707.07C5.007 5.456 4 6.91 4 9.001c0 4.584 6.197 8.728 8 9.836 1.804-1.108 8-5.252 8-9.837 0-2.09-1.007-3.544-2.693-3.889-1.482-.3-3.479.346-4.387 2.475a1 1 0 0 1-1.84 0C10.31 5.78 8.755 5.04 7.4 5.04"></path></svg>';
-            $heartBtn.html(heartSvg);
-            $wishlistBtn.append($heartBtn);
-            
             // Assemble product row
-            $productRow.append($link).append($wishlistBtn);
+            $productRow.append($link);
             
             $li.append($productRow);
             

@@ -39,7 +39,7 @@
               <div style="margin-bottom: 1.5rem;">
                 <h1 class="heading-2xl" style="color: #001489; margin-bottom: 0.5rem; padding: 0; font-size: 2rem; font-weight: 700;">{l s='Shopping Cart' d='Shop.Theme.Checkout'}</h1>
                 <p class="text-body-normal" style="padding: 0; color: #1a202c; font-size: 0.95rem;">
-                  {count($cart.products)} {if count($cart.products) == 1}{l s='Product' d='Shop.Theme.Checkout'}{else}{l s='Products' d='Shop.Theme.Checkout'}{/if}
+                  {count($cart.products)} {if count($cart.products) == 1}{l s='produkt' d='Shop.Theme.Checkout'}{else}{l s='produkty' d='Shop.Theme.Checkout'}{/if}
                 </p>
               </div>
               {block name='cart_overview'}

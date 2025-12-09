@@ -28,11 +28,11 @@
     <h2 class="text-2xl font-bold text-dark-blue-500" data-testid="grid-title">{$listing.label}</h2>
     <p class="text-base text-neutral-700" data-testid="product-grid-number-of-items">
       {if $listing.pagination.total_items > 1}
-        {$listing.pagination.total_items} {l s='products' d='Shop.Theme.Catalog'}
+        {$listing.pagination.total_items} produkty
       {elseif $listing.pagination.total_items == 1}
-        1 {l s='product' d='Shop.Theme.Catalog'}
+        1 produkt
       {else}
-        0 {l s='products' d='Shop.Theme.Catalog'}
+        0 produktów
       {/if}
     </p>
   </div>

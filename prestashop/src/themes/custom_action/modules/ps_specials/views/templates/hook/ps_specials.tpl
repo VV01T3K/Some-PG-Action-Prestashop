@@ -41,11 +41,9 @@
                           class="object-contain PromotionCard_floatingImage__5_Vnr h-full w-full"
                           style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                           sizes="(min-width: 1280px) calc(1280px / 5), (min-width: 1024px) calc(100vw / 4), (min-width: 768px) calc(100vw / 3), (min-width: 640px) calc(100vw / 3), calc(100vw / 2)"
-                          srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Folder_Icon_PL_tpa5jd.webp 128w, https://asset.action.com/image/upload/t_digital_square/w_256/Folder_Icon_PL_tpa5jd.webp 256w, https://asset.action.com/image/upload/t_digital_square/w_640/Folder_Icon_PL_tpa5jd.webp 640w, https://asset.action.com/image/upload/t_digital_square/w_1080/Folder_Icon_PL_tpa5jd.webp 1080w, https://asset.action.com/image/upload/t_digital_square/w_1920/Folder_Icon_PL_tpa5jd.webp 1920w"
-                          src="https://asset.action.com/image/upload/t_digital_square/w_1920/Folder_Icon_PL_tpa5jd.webp"></span><span
+src="/static/Folder_Icon_PL_tpa5jd.webp"></span><span
                         id="_R_1l4jinpfivjap5snpfivb_"
-                        class="text-dark-blue-500 xs:text-[16px] xs:leading-5 grow text-sm leading-[18px] font-bold break-words">Sprawdź
-                        oferty tygodnia</span><span
+                        class="text-dark-blue-500 xs:text-[16px] xs:leading-5 grow text-sm leading-[18px] font-bold break-words">Sprawdź oferty promocyjne</span><span
                         class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral mt-2 hidden shrink-0 md:block lg:mt-4"><span
                           class="truncate px-1">Zobacz więcej</span></span><button type="button"
                         class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-2.5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral block md:hidden"

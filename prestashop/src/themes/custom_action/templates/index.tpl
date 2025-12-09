@@ -21,7 +21,7 @@
                   <div class="w-4 shrink-0 lg:w-0 pointer-fine:w-0"></div>
                   <div class="grid grid-flow-col grid-rows-[repeat(var(--rows),minmax(0,auto))] gap-(--itemSpacing)">
                     <div class="w-(--itemWidth)"><a class="relative h-full group"
-                        href="/pl-pl/moment/najwspanialsze-upominki/" aria-label="Zobacz wszystko"
+href="/2-strona-glowna" aria-label="Zobacz wszystko"
                         data-testid="content-card">
                         <div
                           class="lg:min-w-none relative flex h-full min-h-[300px] w-full flex-col overflow-hidden rounded-md md:max-w-none InspirationContentCard_contentCard__YE4xI md:min-h-[500px] min-h-[340px]">
@@ -30,8 +30,7 @@
                               class="bg-neutral-10 object-cover object-center transition-all duration-300 group-hover:scale-105 transition-transform duration-250 hover:scale-105 h-full w-full"
                               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                               sizes="(min-width: 1280px) calc(1280px / 3), (min-width: 1024px) calc(100vw / 3), (min-width: 768px) calc(100vw / 2), (min-width: 640px) calc(100vw / 1), calc(100vw / 1)"
-                              srcset="https://asset.action.com/image/upload/t_digital_content_card_small/w_128/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.webp 128w, https://asset.action.com/image/upload/t_digital_content_card_small/w_256/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.webp 256w, https://asset.action.com/image/upload/t_digital_content_card_small/w_640/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.webp 640w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1080/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.webp 1080w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.webp 1920w"
-                              src="https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.webp">
+                              src="/static/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.avif">
                           </div>
                           <div class="relative w-full p-4 InspirationContentCard_titleContainer__TmDDF"
                             style="background-color:#4e769c">
@@ -50,7 +49,7 @@
                         </div>
                       </a></div>
                     <div class="w-(--itemWidth)"><a class="relative h-full group"
-                        href="/pl-pl/moment/boze-narodzenie/swiateczne-dekoracje/" aria-label="Zobacz wszystko"
+                        href="/2-strona-glowna" aria-label="Zobacz wszystko"
                         data-testid="content-card">
                         <div
                           class="lg:min-w-none relative flex h-full min-h-[300px] w-full flex-col overflow-hidden rounded-md md:max-w-none InspirationContentCard_contentCard__YE4xI md:min-h-[500px] min-h-[340px]">
@@ -59,8 +58,7 @@
                               class="bg-neutral-10 object-cover object-center transition-all duration-300 group-hover:scale-105 transition-transform duration-250 hover:scale-105 h-full w-full"
                               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                               sizes="(min-width: 1280px) calc(1280px / 3), (min-width: 1024px) calc(100vw / 3), (min-width: 768px) calc(100vw / 2), (min-width: 640px) calc(100vw / 1), calc(100vw / 1)"
-                              srcset="https://asset.action.com/image/upload/t_digital_content_card_small/w_128/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.webp 128w, https://asset.action.com/image/upload/t_digital_content_card_small/w_256/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.webp 256w, https://asset.action.com/image/upload/t_digital_content_card_small/w_640/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.webp 640w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1080/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.webp 1080w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.webp 1920w"
-                              src="https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.webp">
+                              src="/static/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.avif">
                           </div>
                           <div class="relative w-full p-4 InspirationContentCard_titleContainer__TmDDF"
                             style="background-color:#e2273a">
@@ -79,7 +77,7 @@
                         </div>
                       </a></div>
                     <div class="w-(--itemWidth)"><a class="relative h-full group"
-                        href="/pl-pl/moment/przygotowania-do-zimy/" aria-label="Zobacz wszystko"
+                        href="/2-strona-glowna" aria-label="Zobacz wszystko"
                         data-testid="content-card">
                         <div
                           class="lg:min-w-none relative flex h-full min-h-[300px] w-full flex-col overflow-hidden rounded-md md:max-w-none InspirationContentCard_contentCard__YE4xI md:min-h-[500px] min-h-[340px]">
@@ -88,8 +86,7 @@
                               class="bg-neutral-10 object-cover object-center transition-all duration-300 group-hover:scale-105 transition-transform duration-250 hover:scale-105 h-full w-full"
                               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                               sizes="(min-width: 1280px) calc(1280px / 3), (min-width: 1024px) calc(100vw / 3), (min-width: 768px) calc(100vw / 2), (min-width: 640px) calc(100vw / 1), calc(100vw / 1)"
-                              srcset="https://asset.action.com/image/upload/t_digital_content_card_small/w_128/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.webp 128w, https://asset.action.com/image/upload/t_digital_content_card_small/w_256/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.webp 256w, https://asset.action.com/image/upload/t_digital_content_card_small/w_640/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.webp 640w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1080/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.webp 1080w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.webp 1920w"
-                              src="https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.webp">
+                              src="/static/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.avif">
                           </div>
                           <div class="relative w-full p-4 InspirationContentCard_titleContainer__TmDDF"
                             style="background-color:#4e769c">
@@ -120,41 +117,6 @@
 
 {hook h='displayDiscountedProducts'}
 
-  <section class="bg-neutral-50 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="Gazetka prezentowa z mnóstwem prezentów!"
-    data-testid="cms-split-teaser">
-    <div class="relative flex w-full flex-col px-4 lg:px-8">
-      <div class="mx-auto w-full max-w-7xl">
-        <div data-testid="split-teaser" class="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-8">
-          <div data-testid="split-teaser-content" class="md:m-0 md:self-center">
-            <div class="flex flex-col sm:justify-center md:h-[300px]">
-              <h2 class="heading-xl pb-2" data-testid="split-teaser-content-title">Gazetka prezentowa z mnóstwem
-                prezentów!</h2>
-              <p class="text-body-normal whitespace-break-spaces text-neutral-900"
-                data-testid="split-teaser-content-description">Gazetka prezentowa Action powraca! Pełna najlepszych
-                zabawek i najpiękniejszych prezentów dla dzieci i dorosłych. W tym sezonie świątecznym zaskocz swoich
-                bliskich nie obciążając przy tym portfela.</p>
-              <div class="flex items-center justify-start md:items-start"><a
-                  class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral mt-4"
-                  href="/pl-pl/gazetkaprezentowa/" data-testid="split-teaser-cta"><span class="truncate px-1">Zobacz
-                    gazetkę</span></a></div>
-            </div>
-          </div>
-          <div data-testid="split-teaser-media" class="relative order-first md:order-0 md:mt-0 h-80 sm:min-h-[500px]">
-            <div data-testid="split-teaser-image"
-              class="relative h-80 overflow-hidden rounded-lg sm:h-[500px] object-cover object-center sm:min-h-[500px]">
-              <img alt="" loading="lazy" decoding="async" data-nimg="fill"
-                class="overflow-hidden rounded-lg object-cover object-center h-full w-full"
-                style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                sizes="(min-width: 768px) 50vw, 100vw"
-                srcset="https://asset.action.com/image/upload/w_128/Presents_Splitteaser_665x554_PL_2025_ldwltf.webp 128w, https://asset.action.com/image/upload/w_256/Presents_Splitteaser_665x554_PL_2025_ldwltf.webp 256w, https://asset.action.com/image/upload/w_640/Presents_Splitteaser_665x554_PL_2025_ldwltf.webp 640w, https://asset.action.com/image/upload/w_1080/Presents_Splitteaser_665x554_PL_2025_ldwltf.webp 1080w, https://asset.action.com/image/upload/w_1920/Presents_Splitteaser_665x554_PL_2025_ldwltf.webp 1920w"
-                src="https://asset.action.com/image/upload/w_1920/Presents_Splitteaser_665x554_PL_2025_ldwltf.webp">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
 {hook h='displayNewProducts'}
 
   <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="POWITAJ 100+ PROMOCJI!"
@@ -169,8 +131,7 @@
                 class="overflow-hidden rounded-lg object-cover object-center h-full w-full"
                 style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                 sizes="(min-width: 768px) 50vw, 100vw"
-                srcset="https://asset.action.com/image/upload/w_128/Hello_Digital_web_2025_PL_q2iekf.webp 128w, https://asset.action.com/image/upload/w_256/Hello_Digital_web_2025_PL_q2iekf.webp 256w, https://asset.action.com/image/upload/w_640/Hello_Digital_web_2025_PL_q2iekf.webp 640w, https://asset.action.com/image/upload/w_1080/Hello_Digital_web_2025_PL_q2iekf.webp 1080w, https://asset.action.com/image/upload/w_1920/Hello_Digital_web_2025_PL_q2iekf.webp 1920w"
-                src="https://asset.action.com/image/upload/w_1920/Hello_Digital_web_2025_PL_q2iekf.webp">
+                src="/static/Hello_Digital_web_2025_PL_q2iekf.avif">
             </div>
           </div>
           <div data-testid="split-teaser-content" class="md:m-0 md:self-center">
@@ -182,8 +143,7 @@
                 A co najlepsze… już teraz możesz podejrzeć oferty na przyszły tydzień!</p>
               <div class="flex items-center justify-start md:items-start"><a
                   class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral mt-4"
-                  href="/pl-pl/aplikacja/" data-testid="split-teaser-cta"><span class="truncate px-1">Pobierz aplikację i
-                    nie przegap żadnej okazji!</span></a></div>
+href="/content/6-aplikacja" data-testid="split-teaser-cta"><span class="truncate px-1">Pobierz aplikację i nie przegap żadnej okazji!</span></a></div>
             </div>
           </div>
         </div>

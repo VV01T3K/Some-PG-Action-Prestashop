@@ -21,7 +21,7 @@
         {/block}
     </header>
 
-    <main class="relative flex flex-1 flex-col">
+    <main class="relative flex flex-1 flex-col" style="min-height: 75vh; min-height: 75dvh;">
         {block name="content"}
             <p>Hello world! This is HTML5 Boilerplate.</p>
         {/block}

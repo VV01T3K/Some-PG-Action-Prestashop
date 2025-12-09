@@ -1,10 +1,28 @@
 #!/bin/bash
 
-# Simple PrestaShop Database Backup & Restore
+# Simple PrestaShop Database Backup & Restore with Encryption
 # Usage: ./db.sh [--silent] backup   or   ./db.sh [--silent] restore <file>   or   ./db.sh [--silent] clean
 # Use --silent flag to only output errors
 
 set -e
+
+# Load environment variables
+if [ -f "../../.env" ]; then
+  source "../../.env"
+elif [ -f "../.env" ]; then
+  source "../.env"
+elif [ -f ".env" ]; then
+  source ".env"
+else
+  echo "Error: .env file not found"
+  exit 1
+fi
+
+# Check for encryption key
+if [ -z "$DB_BACKUP_KEY" ]; then
+  echo "Error: DB_BACKUP_KEY not set in .env file"
+  exit 1
+fi
 
 CONTAINER="db"
 DB="prestashop"
@@ -27,14 +45,14 @@ log() {
 case "$1" in
   backup)
     log "Backing up database..."
-    FILE="$BACKUP_DIR/backup_$(date +%Y%m%d_%H%M%S).sql.gz"
-    docker exec "$CONTAINER" mariadb-dump -uroot -pdev "$DB" | gzip > "$FILE"
-    log "Backup saved: $FILE"
+    FILE="$BACKUP_DIR/backup_$(date +%Y%m%d_%H%M%S).sql.gz.enc"
+    docker exec "$CONTAINER" mariadb-dump -uroot -pdev "$DB" | gzip | openssl enc -aes-256-cbc -salt -pbkdf2 -pass pass:"$DB_BACKUP_KEY" > "$FILE"
+    log "Encrypted backup saved: $FILE"
     ;;
   
   restore)
     if [ -z "$2" ]; then
-      FILE=$(ls -t "$BACKUP_DIR"/*.sql.gz 2>/dev/null | head -1)
+      FILE=$(ls -t "$BACKUP_DIR"/*.sql.gz.enc 2>/dev/null | head -1)
       if [ -z "$FILE" ]; then
         echo "No backup files found"
         exit 1
@@ -64,7 +82,7 @@ case "$1" in
       sleep 1
     done
     
-    gunzip -c "$FILE" | docker exec -i "$CONTAINER" mariadb -uroot -pdev "$DB"
+    openssl enc -d -aes-256-cbc -pbkdf2 -pass pass:"$DB_BACKUP_KEY" -in "$FILE" | gunzip | docker exec -i "$CONTAINER" mariadb -uroot -pdev "$DB"
     log "Database restored"
     ;;
   
@@ -75,17 +93,17 @@ case "$1" in
   
   clean)
     log "Cleaning up backups, keeping only the newest..."
-    BACKUP_COUNT=$(ls -1 "$BACKUP_DIR"/*.sql.gz 2>/dev/null | wc -l)
+    BACKUP_COUNT=$(ls -1 "$BACKUP_DIR"/*.sql.gz.enc 2>/dev/null | wc -l)
     
     if [ "$BACKUP_COUNT" -le 1 ]; then
       log "Only one or fewer backups found, nothing to clean"
       exit 0
     fi
     
-    NEWEST=$(ls -t "$BACKUP_DIR"/*.sql.gz 2>/dev/null | head -1)
+    NEWEST=$(ls -t "$BACKUP_DIR"/*.sql.gz.enc 2>/dev/null | head -1)
     log "Keeping: $(basename "$NEWEST")"
     
-    ls -t "$BACKUP_DIR"/*.sql.gz 2>/dev/null | tail -n +2 | while read -r file; do
+    ls -t "$BACKUP_DIR"/*.sql.gz.enc 2>/dev/null | tail -n +2 | while read -r file; do
       log "Removing: $(basename "$file")"
       rm "$file"
     done

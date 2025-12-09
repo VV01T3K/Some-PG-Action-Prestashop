@@ -75,7 +75,7 @@
           {elseif $product.availability == 'last_remaining_items'}
             <span class="text-dark-blue-600 text-lg font-semibold">{$product.availability_message}</span>
           {else}
-            <span class="text-dark-blue-700">{$product.availability_message}</span>
+            <span class="text-dark-blue-700 text-lg font-bold">{$product.availability_message}</span>
           {/if}
         {/if}
       </span>

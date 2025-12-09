@@ -91,7 +91,7 @@
       <div class="relative flex flex-col lg:px-8 lg:py-0 xl:container xl:mx-auto xl:px-0">
         <div class="flex min-h-14 items-center gap-4 px-4 py-4 lg:px-0 lg:py-6">
           <div class="Skeleton_default__fyGN4">
-            <h2 class="heading-lg" data-testid="my-action-welcome-message">Witamy, f</h2>
+            <h2 class="heading-lg" data-testid="my-action-welcome-message">Witamy, {$customer.firstname} {$customer.lastname}</h2>
           </div><button aria-label="Używaj swojej karty klienta w aplikacji"><svg viewBox="0 0 57 37" fill="none"
               width="54" height="32">
               <rect width="57" height="37" rx="4" fill="#001489"></rect>

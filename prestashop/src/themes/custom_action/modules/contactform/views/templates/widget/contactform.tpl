@@ -8,20 +8,12 @@
           <h1 class="heading-2xl text-dark-blue-500">Kontakt</h1>
         </div>
       </div>
-    </section>
+    </div>
   </div>
   <div class="-mt-3 sm:-mt-0">
     <div class="relative flex w-full flex-col px-4 lg:px-8">
       <div class="mx-auto w-full max-w-7xl">
         <div class="mb-10 max-w-[600px]">
-          <div class="mb-4 **:text-sm **:text-neutral-700 sm:**:text-base" data-testid="contact-form-description">
-            <div class="flex max-w-[800px] flex-col gap-3">
-              <p class="text-body-normal text-neutral-900" data-testid="markdown-paragraph">Robimy, co w naszej mocy,
-                aby jak najszybciej odpowiadać na wszystkie pytania⁠.</p>
-              <p class="text-body-normal text-neutral-900" data-testid="markdown-paragraph">Wypełnij poniższy formularz,
-                a my postaramy się odpowiedzieć tak szybko, jak to tylko możliwe⁠.</p>
-            </div>
-          </div>
 
           <form action="{$urls.pages.contact}" method="post"
             {if $contact.allow_file_upload}enctype="multipart/form-data" {/if} novalidate="">
@@ -51,11 +43,8 @@
               <div class="mb-4 max-w-[600px]">
                 <div class="mb-4 *:text-sm *:text-neutral-700 sm:*:text-base" data-testid="contact-form-description">
                   <div class="flex max-w-[800px] flex-col gap-3">
-                    <p class="text-body-normal text-neutral-900">
-                      {l s='We do our best to respond to all questions as quickly as possible.' d='Shop.Theme.Global'}</p>
-                    <p class="text-body-normal text-neutral-900">
-                      {l s='Fill out the form below and we will try to respond as soon as possible.' d='Shop.Theme.Global'}
-                    </p>
+                    <p class="text-body-normal text-neutral-900">Robimy, co w naszej mocy, aby jak najszybciej odpowiadać na wszystkie pytania⁠.</p>
+                    <p class="text-body-normal text-neutral-900">Wypełnij poniższy formularz, a my postaramy się odpowiedzieć tak szybko, jak to tylko możliwe⁠.</p>
                   </div>
                 </div>
               </div>

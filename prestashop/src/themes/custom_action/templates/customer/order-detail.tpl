@@ -29,9 +29,9 @@
   <link rel="stylesheet" href="{$urls.theme_assets}css/order-detail.css">
 {/block}
 
-{block name='page_title'}
+{* {block name='page_title'}
   {l s='Order details' d='Shop.Theme.Customeraccount'}
-{/block}
+{/block} *}
 
 {block name='page_content'}
   {assign var='currentStatus' value=$order.details.current_state|default:''}
