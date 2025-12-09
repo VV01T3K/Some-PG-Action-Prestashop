@@ -9,16 +9,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 SEARCH_KEYWORDS = [
-    "jeans",
-    "shirt",
-    "pants",
-    "jacket",
-    "shoes",
-    "dress",
-    "sweater",
-    "coat",
-    "shorts",
-    "blouse"
+    "Świąteczny",
+    "papier",
+    "kubek",
+    "lampa",
+    "mikrofibry",
+    "glow",
+    "drewniane"
 ]
 
 
