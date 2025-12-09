@@ -252,7 +252,10 @@ def run_test(driver):
             continue
         
         # Select up to 5 random products
-        selected_products = select_random_products(products, count=5)
+        if cat_idx == 0:
+            count=random.randint(6, 9)
+        selected_products = select_random_products(products, count)
+        count=10-len(selected_products)
         
         if not selected_products:
             logger.warning("   Warning: Could not select products in this category")
