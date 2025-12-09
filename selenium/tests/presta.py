@@ -87,8 +87,8 @@ def main():
         register_account.run_test(driver)
         
 
-        # TEST 2: Search and Add to Cart (run 5 times)
-        logger.info("TEST 2: Search and Add to Cart (5 iterations)")
+        # TEST 2: Search and Add to Cart 
+        logger.info("TEST 2: Search and Add to Cart")
         logger.info("-"*70)
         driver.refresh() # Refresh the page before each iteration (to be fixed)
         searchbar.run_test(driver)

@@ -38,7 +38,7 @@
   {else}
     <form>
       <div class="address-form-actions">
-        <button type="submit" class="continue btn btn-primary" name="confirm-addresses" value="1">
+        <button type="submit" class="continue btn btn-primary" name="confirm-addresses" value="1" data-testid="confirm-addresses">
             {l s='Continue' d='Shop.Theme.Actions'}
         </button>
       {if $customer.addresses|count > 0}

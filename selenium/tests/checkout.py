@@ -133,7 +133,7 @@ def click_address_confirm_button(driver):
         wait = WebDriverWait(driver, 10)
         
         confirm_button = wait.until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='confirm-addresses']"))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-testid='confirm-addresses']"))
         )
         confirm_button.click()
         
@@ -170,7 +170,7 @@ def select_shipping_method(driver):
             selected_option = random.choice(shipping_options)
             option_id = selected_option.get_attribute("id")
             
-            driver.execute_script("arguments[0].click();", selected_option)
+            selected_option.click()
             
             logger.info(f"Shipping: {option_id}")
             return option_id
@@ -182,7 +182,7 @@ def select_shipping_method(driver):
         return None
 
 
-def select_payment_method(driver, payment_module="ps_cashondelivery"):
+def select_payment_method(driver, payment_module):
     try:
         wait = WebDriverWait(driver, 10)
         
@@ -191,11 +191,12 @@ def select_payment_method(driver, payment_module="ps_cashondelivery"):
                 EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='payment-option']"))
             )
         except Exception:
+            logger.info("No payment options found yet, waiting a bit longer")
             try:
                 payment_radios = driver.find_elements(By.CSS_SELECTOR, "input[name='payment-option']")
                 if payment_radios:
                     selected_payment = payment_radios[0].get_attribute("data-module-name")
-                    driver.execute_script("arguments[0].click();", payment_radios[0])
+                    payment_radios[0].click()
                     logger.info(f"Payment: {selected_payment}")
                     return selected_payment
                 else:
@@ -211,9 +212,7 @@ def select_payment_method(driver, payment_module="ps_cashondelivery"):
                 EC.presence_of_element_located((By.CSS_SELECTOR, f"input[name='payment-option'][data-module-name='{payment_module}']"))
             )
             
-            #wait_for_page_load(driver, timeout=2)
-            driver.execute_script("arguments[0].click();", payment_radio)
-            
+            payment_radio.click()
             logger.info(f"Payment: {payment_module}")
             return payment_module
         except Exception:
@@ -221,7 +220,7 @@ def select_payment_method(driver, payment_module="ps_cashondelivery"):
                 payment_radios = driver.find_elements(By.CSS_SELECTOR, "input[name='payment-option']")
                 if payment_radios:
                     selected_payment = payment_radios[0].get_attribute("data-module-name")
-                    driver.execute_script("arguments[0].click();", payment_radios[0])
+                    payment_radios[0].click()
                     logger.info(f"Payment: {selected_payment}")
                     return selected_payment
                 else:
@@ -245,7 +244,7 @@ def click_payment_confirm_button(driver):
         try:
             terms_checkbox = driver.find_element(By.CSS_SELECTOR, "input[id*='conditions']")
             if not terms_checkbox.is_selected():
-                driver.execute_script("arguments[0].click();", terms_checkbox)
+                terms_checkbox.click()
                 logger.info("Terms and conditions checked")
             wait_for_page_load(driver, timeout=2)
         except Exception as terms_e:
@@ -262,20 +261,17 @@ def click_payment_confirm_button(driver):
                     lambda d: 'disabled' not in order_button.get_attribute('class')
                 )
             
-            driver.execute_script("arguments[0].scrollIntoView(true);", order_button)
-            wait_for_page_load(driver, timeout=2)
-            driver.execute_script("arguments[0].click();", order_button)
+            order_button.click()
             
             return True
-        except Exception as order_button_e:
+        except Exception:
             pass
         
         try:
             confirm_buttons = driver.find_elements(By.CSS_SELECTOR, "button[type='submit']")
             if confirm_buttons:
                 last_button = confirm_buttons[-1]
-                driver.execute_script("arguments[0].scrollIntoView(true);", last_button)
-                driver.execute_script("arguments[0].click();", last_button)
+                last_button.click()
                 return True
         except Exception as fallback_e:
             logger.error(f"Error: Fallback button click failed: {fallback_e}")
@@ -287,18 +283,54 @@ def click_payment_confirm_button(driver):
         return False
 
 
+def display_order_confirmation(driver):
+    try:
+        wait = WebDriverWait(driver, 10)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".order-line")))
+        
+        # Get all order lines
+        order_lines = driver.find_elements(By.CSS_SELECTOR, ".order-line")
+        
+        logger.info("=== Order Confirmation ===")
+        
+        for order_line in order_lines:
+            try:
+                product_name = order_line.find_element(By.CSS_SELECTOR, ".details span").text
+                qty_div = order_line.find_element(By.CSS_SELECTOR, ".qty .row")
+                cols = qty_div.find_elements(By.CSS_SELECTOR, ".col-xs-4, .col-md-2")
+                
+                if len(cols) >= 3:
+                    unit_price = cols[0].text.strip()
+                    quantity = cols[1].text.strip()
+                    total_price = cols[2].text.strip()
+                    
+                    logger.info(f"Product: {product_name}")
+                    logger.info(f"  Unit Price: {unit_price}")
+                    logger.info(f"  Quantity: {quantity}")
+                    logger.info(f"  Total: {total_price}")
+                    
+            except Exception as line_e:
+                logger.debug(f"Error extracting order line details: {line_e}")
+                continue
+        
+        return True
+    except Exception as e:
+        logger.error(f"Error displaying order confirmation: {e}")
+        return False
+
+
 def run_test(driver):
     try:
         
         if not click_cart_button(driver):
-            return {"status": "failed", "reason": "Could not click cart button"}
+            return 
         
         wait = WebDriverWait(driver, 10)
         
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[data-testid='checkout-button']")))
         
         if not click_checkout_button(driver):
-            return {"status": "failed", "reason": "Could not click checkout button"}
+            return
         
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='address1-input'] input[data-testid='input']"))) 
         
@@ -309,37 +341,33 @@ def run_test(driver):
         logger.info(f"Address: {address}, {postcode} {city}")
         
         if not fill_address(driver, address):
-            return {"status": "failed", "reason": "Could not fill address"}
+            return 
         
         if not fill_postcode(driver, postcode):
-            return {"status": "failed", "reason": "Could not fill postcode"}
+            return 
         
         if not fill_city(driver, city):
-            return {"status": "failed", "reason": "Could not fill city"}
+            return 
         
         if not click_address_confirm_button(driver):
-            return {"status": "failed", "reason": "Could not confirm address"}
+            return 
         
         wait_for_page_load(driver)
-        shipping_method = select_shipping_method(driver)
+        select_shipping_method(driver)
         click_shipping_confirm_button(driver)
         
         wait_for_page_load(driver)
-        payment_method = select_payment_method(driver, "ps_cashondelivery")
+        select_payment_method(driver, "ps_cashondelivery")
         wait_for_page_load(driver, timeout=2)
         click_payment_confirm_button(driver)
         
         logger.info("Checkout completed!")
         
-        return {
-            "status": "success",
-            "address": address,
-            "postcode": postcode,
-            "city": city,
-            "shipping_method": shipping_method,
-            "payment_method": payment_method,
-        }
+        # Display order confirmation details
+        wait_for_page_load(driver, timeout=2)
+        display_order_confirmation(driver)
         
+        return   
     except Exception as e:
         logger.error(f"Checkout test failed: {e}")
-        return {"status": "failed", "reason": str(e)}
+        return 

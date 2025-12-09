@@ -1,10 +1,9 @@
 import logging
-import os
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException
 from utils import wait_for_page_load
 
 logger = logging.getLogger(__name__)
@@ -21,8 +20,6 @@ def navigate_to_order_history(driver):
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='header-login-button']"))
             )
             user_menu.click()
-            logger.info("User menu clicked")
-            wait_for_page_load(driver, timeout=2)
         except TimeoutException:
             logger.error("Could not find user menu button")
             return False
@@ -32,8 +29,6 @@ def navigate_to_order_history(driver):
                 EC.element_to_be_clickable((By.ID, "history-link"))
             )
             order_history_link.click()
-            logger.info("Order history link clicked")
-            wait_for_page_load(driver)
         except TimeoutException:
             logger.error("Could not find order history link in menu")
             return False
@@ -54,17 +49,11 @@ def click_order_details_button(driver):
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a[data-link-action='view-order-details']"))
         )
         details_button = detail_links[0]
-        
-        driver.execute_script("arguments[0].scrollIntoView(true);", details_button)
-        wait_for_page_load(driver, timeout=2)
-        driver.execute_script("arguments[0].click();", details_button)
-        logger.info("Order details of the last checkout")
+        details_button.click()
         return True
         
-    except Exception as e:
-        logger.error(f"Error clicking order details button: {e}")
-        import traceback
-        logger.error(f"Traceback: {traceback.format_exc()}")
+    except Exception:
+        logger.error("Error clicking order details button")
         return False
 
 
@@ -81,8 +70,8 @@ def click_download_invoice(driver):
         logger.info("Waiting 10 seconds for download to complete")
         time.sleep(10)
         return True
-    except Exception as e:
-        logger.error(f"Error clicking download invoice: {e}")
+    except Exception:
+        logger.error("Error clicking download invoice")
         return False
 
 

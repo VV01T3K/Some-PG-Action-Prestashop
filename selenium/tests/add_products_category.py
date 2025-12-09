@@ -1,5 +1,3 @@
-from time import sleep
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -122,6 +120,7 @@ def get_product_info(product_element):
 def add_to_cart(driver, product_element):
     wait = WebDriverWait(driver, 10)
     try:
+        driver.execute_script("arguments[0].scrollIntoView(true);", product_element)
         product_element.click()
     except Exception:
         logger.info("Standard click failed")
@@ -170,7 +169,7 @@ def add_to_cart(driver, product_element):
         logger.error("Could not find add to cart button")
         return False, 0
     
-    #driver.execute_script("arguments[0].scrollIntoView(true);", button)
+    driver.execute_script("arguments[0].scrollIntoView(true);", button)
     
     try:
         button.click()
@@ -223,7 +222,7 @@ def run_test(driver):
                 back_button = WebDriverWait(driver, 10).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='header-logo']"))
                 )
-                #driver.execute_script("arguments[0].scrollIntoView(true);", back_button)
+                driver.execute_script("arguments[0].scrollIntoView(true);", back_button)
                 back_button.click()
                 
                 
