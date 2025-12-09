@@ -1,3 +1,4 @@
+import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -46,7 +47,17 @@ def get_category_products(driver, category_element):
     try:
         # driver.execute_script("arguments[0].scrollIntoView(true);", category_element)
         category_element.click()
-        
+        try:
+            available_checkbox = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='available-products']"))
+                    )
+            available_checkbox.click()
+        except Exception as e:
+            logger.warning(f"Warning: Could not apply 'Available products' filter: {e}")
+            # Continue without filter
+
+        wait_for_page_load(driver, timeout=5)
+        time.sleep(1)  # Wait for products to load after clicking category
         wait = WebDriverWait(driver, 10)
         products = wait.until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-testid='product-card-link']"))
@@ -203,11 +214,9 @@ def run_test(driver):
     if not categories:
         logger.error("No categories found")
         return
-    # Step 2: Select 2 random categories
-    selected_categories = select_random_categories(categories, count=2)
-    if not selected_categories:
-        logger.error("Could not select categories")
-        return
+    # Step 2: Select hardcoded categories
+    selected_categories = ["Hobby", "Zrób to sam"]
+    logger.info(f"Using hardcoded categories: {selected_categories}")
     
     total_products_added = 0
     products_details = []
@@ -245,8 +254,14 @@ def run_test(driver):
                 logger.error(f"Could not find category element for '{category_title}'")
                 continue
         
-        products = get_category_products(driver, fresh_category)
         
+
+        wait_for_page_load(driver, timeout=5)
+        
+
+        products = get_category_products(driver, fresh_category)
+
+       
         if not products:
             logger.warning("   Warning: No products found in this category")
             continue
@@ -263,7 +278,16 @@ def run_test(driver):
         
         # Add selected products to cart
         for prod_idx, product_data in enumerate(selected_products):
-            # Re-find the element to avoid stale references
+            if prod_idx > 0:
+                try:
+                    available_checkbox = WebDriverWait(driver, 10).until(
+                                EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='available-products']"))
+                            )
+                    available_checkbox.click()
+                    time.sleep(0.2)  # Wait for products to load after clicking filter
+                except Exception as e:
+                    logger.warning(f"Warning: Could not apply 'Available products' filter: {e}")
+            wait_for_page_load(driver, timeout=5)
             try:
                 product_element = wait.until(
                         EC.presence_of_element_located((By.CSS_SELECTOR, f"a[href='{product_data['href']}']"))
