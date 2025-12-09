@@ -217,22 +217,17 @@ def run_test(driver):
         logger.info(f"Processing category {cat_idx + 1}/{len(selected_categories)}: {category_title}")
         
         if cat_idx > 0:
-            wait_for_page_load(driver, timeout=10)
             try:
                 back_button = WebDriverWait(driver, 10).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='header-logo']"))
                 )
                 driver.execute_script("arguments[0].scrollIntoView(true);", back_button)
                 back_button.click()
-                
-                
-                current_url = driver.current_url
-                logger.info(f"Current URL after back: {current_url}")
+
             except Exception as e:
                 logger.warning(f"Warning: Could not navigate back: {e}")
-        logger.info(f"   Navigated to category: {category_title}")
-        # Find the fresh category element by title
         wait = WebDriverWait(driver, 10)
+        wait_for_page_load(driver, timeout=10)
         all_categories = wait.until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-testid='category-card']"))
         )
@@ -258,6 +253,7 @@ def run_test(driver):
         
         # Select up to 5 random products
         selected_products = select_random_products(products, count=5)
+        
         if not selected_products:
             logger.warning("   Warning: Could not select products in this category")
             continue
@@ -271,8 +267,8 @@ def run_test(driver):
                     )
                 product_info = get_product_info(product_element)
                 product_info["category"] = category_title
-            except Exception as e:
-                logger.warning(f"Warning: Could not get product info href: {e}")
+            except Exception:
+                logger.warning(f"Warning: Could not get product info href: {product_data['href']}")
                 product_info = {"title": "Unknown", "price": "N/A", "category": category_title}
             
             logger.info(f"   Adding product {prod_idx + 1}/{len(selected_products)}: {product_info['title']}")  
@@ -293,9 +289,6 @@ def run_test(driver):
                 logger.warning("   Failed to add product to cart")
             
             # Go back to category view for next product using breadcrumb
-            wait_for_page_load(driver, timeout=10)
-            logger.info("  go back to category view ")
-            logger.info(f"Current URL before back: {driver.current_url}")
             try:
                 back_button = WebDriverWait(driver, 10).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='breadcrumb-link']"))
@@ -303,9 +296,6 @@ def run_test(driver):
                 driver.execute_script("arguments[0].scrollIntoView(true);", back_button)
                 back_button.click()
                 
-                # Check if we're back in the category view
-                wait_for_page_load(driver, timeout=10)
-                logger.info(f"Current URL after back click: {driver.current_url}")
                 
             except Exception as e:
                 logger.warning(f"Warning: Could not click breadcrumb back button: {e}")
