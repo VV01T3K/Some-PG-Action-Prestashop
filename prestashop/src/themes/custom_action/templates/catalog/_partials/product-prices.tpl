@@ -78,7 +78,7 @@
                 </span>
                 <span class="border border-neutral-700 px-1 text-xs" data-testid="product-card-price-discount-percentage">
                   {if $product.discount_type == 'percentage'}
-                    -{$product.discount_percentage_absolute}%
+                    -{$product.discount_percentage_absolute}
                   {else}
                     -{$product.discount_to_display}
                   {/if}
@@ -86,9 +86,13 @@
               </span>
             {/if}
           </div>
-
         </div>
-
+         {* Netto price display *}
+          <div class="mt-2 flex justify-left">
+            <span class="rounded-md bg-blue-50 border border-blue-200 px-2 py-1 text-sm font-medium text-blue-800 shadow-sm">
+              {$product.price_tax_exc} zł netto
+            </span>
+          </div>
         {block name='product_unit_price'}
           {* Unit price now displayed in the main price container *}
         {/block}
