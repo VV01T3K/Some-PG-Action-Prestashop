@@ -68,7 +68,7 @@ def click_download_invoice(driver):
         invoice_link.click()
         logger.info("Download invoice clicked")
         logger.info("Waiting 10 seconds for download to complete")
-        time.sleep(10)
+        time.sleep(3)
         return True
     except Exception:
         logger.error("Error clicking download invoice")

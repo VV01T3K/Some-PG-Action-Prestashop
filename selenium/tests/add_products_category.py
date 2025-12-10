@@ -5,9 +5,35 @@ from selenium.webdriver.common.keys import Keys
 from utils import wait_for_page_load, wait_for_filter_to_apply
 import random
 import logging
+import json
+import os
 
 
 logger = logging.getLogger(__name__)
+
+
+def load_blacklist():
+    blacklist_path = os.path.join(
+        os.path.dirname(__file__), 
+        '..', 
+        'config', 
+        'blacklist.json'
+    )
+    
+    if os.path.exists(blacklist_path):
+        with open(blacklist_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            blacklist_names = {
+                product['name'] 
+                for product in config.get('blacklist', {}).get('products', [])
+            }
+            logger.info(f"Loaded blacklist with {len(blacklist_names)} products")
+            return blacklist_names
+    
+    logger.warning(f"Blacklist file not found at {blacklist_path}")
+    return set()
+
+BLACKLIST_NAMES = load_blacklist()
 
 
 def get_all_categories(driver):
@@ -44,7 +70,6 @@ def select_random_categories(categories, count=2):
 
 def get_category_products(driver, category_element):
     try:
-        # driver.execute_script("arguments[0].scrollIntoView(true);", category_element)
         category_element.click()
         try:
             available_checkbox = WebDriverWait(driver, 10).until(
@@ -53,11 +78,10 @@ def get_category_products(driver, category_element):
             available_checkbox.click()
         except Exception as e:
             logger.warning(f"Warning: Could not apply 'Available products' filter: {e}")
-            # Continue without filter
 
         wait_for_page_load(driver, timeout=5)
 
-        wait_for_filter_to_apply(driver, timeout=10)  # Wait for products to finish loading
+        wait_for_filter_to_apply(driver, timeout=10)  
         
         wait = WebDriverWait(driver, 10)
         products = wait.until(
@@ -76,27 +100,38 @@ def select_random_products(products, count=5):
         logger.warning("Warning: No products available to select")
         return []
     
-    select_count = min(count, len(products))
-    selected = random.sample(products, select_count)
+    available_products = []
+    for product in products:
+        
+        try:
+            product_info = get_product_info(product)
+            product_name = product_info.get('title', '')
+            
+            if product_name and product_name not in BLACKLIST_NAMES:
+                available_products.append(product)
+        except Exception:
+            available_products.append(product)   
+    if not available_products:
+        logger.warning("Warning: No products available to select")
+        return []
     
-    # Store product identifiers instead of WebElements to avoid staleness
+    select_count = min(count, len(available_products))
+    selected = random.sample(available_products, select_count)
+    
     selected_products_data = []
     for product in selected:
         info = get_product_info(product)
         logger.info(f"      {len(selected_products_data) + 1}. {info['title']} - {info['price']}")
         try:
-            # Try to get a unique identifier for the product
             product_link = product.get_attribute("href")
             if product_link:
                 selected_products_data.append({"href": product_link, "title": info['title'], "price": info['price']})
             else:
-                # Fallback: store index in the products list
-                selected_products_data.append({"index": products.index(product), "title": info['title'], "price": info['price']})
+                selected_products_data.append({"index": available_products.index(product), "title": info['title'], "price": info['price']})
         except Exception:
-            # Last resort: store the WebElement itself (will become stale)
             selected_products_data.append({"element": product, "title": info['title'], "price": info['price']})
     
-    logger.info(f"Selected {select_count} random products from {len(products)} available")
+    logger.info(f"Selected {select_count} random products from {len(products)}")
     return selected_products_data
 
 
@@ -115,7 +150,6 @@ def get_product_info(product_element):
             title="Unknown Product"
 
         
-        # Try to get price (single selector is sufficient)
         try:
             price = product_element.find_element(By.CSS_SELECTOR, ".price").text.strip()
         except Exception:
@@ -139,7 +173,6 @@ def add_to_cart(driver, product_element):
     
     wait.until(EC.presence_of_element_located((By.NAME, "qty")))
 
-    # Check magazine capacity (stock available)
     magazine_capacity = None
     try:
         stock_el = wait.until(
@@ -152,24 +185,19 @@ def add_to_cart(driver, product_element):
         logger.debug(f"Could not read magazine capacity: {e}")
         magazine_capacity = None
 
-    # Check if product is out of stock
     if magazine_capacity is not None and magazine_capacity < 1:
         logger.warning("Warning: Product out of stock (magazine capacity < 1)")
         return False, 0
     
-    # Generate random quantity (1-5)
     random_quantity = random.randint(1, 5)
     logger.info(f"Random quantity generated: {random_quantity}")
     
-    # Calculate actual quantity: min(magazine_capacity, random_quantity)
     if magazine_capacity is not None:
         quantity = min(random_quantity, magazine_capacity)
         
-        # If magazine has less than what we wanted, log a note
         if quantity < random_quantity:
             logger.info(f"Magazine capacity ({magazine_capacity}) is less than random quantity ({random_quantity}), using {quantity}")
     else:
-        # Fallback if we couldn't read magazine capacity
         quantity = random_quantity
         logger.info(f"Could not read magazine capacity, using random quantity: {quantity}")
     
@@ -284,7 +312,6 @@ def run_test(driver):
             logger.warning("   Warning: No products found in this category")
             continue
         
-        # Select up to 5 random products
         if cat_idx == 0:
             count=random.randint(6, 9)
         selected_products = select_random_products(products, count)
@@ -294,7 +321,6 @@ def run_test(driver):
             logger.warning("   Warning: Could not select products in this category")
             continue
         
-        # Add selected products to cart
         for prod_idx, product_data in enumerate(selected_products):
             if prod_idx > 0:
                 try:
@@ -302,7 +328,7 @@ def run_test(driver):
                                 EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='available-products']"))
                             )
                     available_checkbox.click()
-                    wait_for_filter_to_apply(driver, timeout=5)  # Wait for filter to apply and products to load
+                    wait_for_filter_to_apply(driver, timeout=5)
                 except Exception as e:
                     logger.warning(f"Warning: Could not apply 'Available products' filter: {e}")
             try:
@@ -323,33 +349,15 @@ def run_test(driver):
                 product_info["quantity_added"] = quantity
                 products_details.append(product_info)
                 
-                # Small wait for cart to update
                 wait = WebDriverWait(driver, 3)
                 try:
                     wait.until(lambda d: get_cart_count(d) > initial_cart_count + total_products_added - 1)
                 except Exception:
                     pass
             else:
-                # Find a replacement product not already in selected_products
-                existing_hrefs = {p.get('href') for p in selected_products}
-                replacement_candidates = []
-                for prod in products:
-                    try:
-                        prod_href = prod.get_attribute("href")
-                        if prod_href and prod_href not in existing_hrefs:
-                            replacement_candidates.append(prod)
-                    except Exception:
-                        continue
-                
-                if replacement_candidates:
-                    replacement = select_random_products(replacement_candidates, 1)
-                    selected_products += replacement
-                    logger.warning("   Failed to add product to cart, added replacement to list")
-                else:
-                    logger.warning("   Failed to add product to cart, no replacement products available")
+                logger.warning("   Failed to add product to cart")
 
             
-            # Go back to category view for next product using breadcrumb
             try:
                 back_button = WebDriverWait(driver, 10).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='breadcrumb-link']"))
