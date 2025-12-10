@@ -1,9 +1,8 @@
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from utils import wait_for_page_load, wait_for_products_to_load, wait_for_filter_to_apply
+from utils import wait_for_page_load, wait_for_filter_to_apply
 import random
 import logging
 
@@ -140,26 +139,39 @@ def add_to_cart(driver, product_element):
     
     wait.until(EC.presence_of_element_located((By.NAME, "qty")))
 
-    # Check stock availability
-    stock_available = None
+    # Check magazine capacity (stock available)
+    magazine_capacity = None
     try:
         stock_el = wait.until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "[data-stock]"))
         )
         stock_attr = stock_el.get_attribute("data-stock")
         if stock_attr and stock_attr.isdigit():
-            stock_available = int(stock_attr)
-            logger.info(f"Stock available: {stock_available}")
+            magazine_capacity = int(stock_attr)
     except Exception as e:
-        logger.debug(f"Could not read stock info: {e}")
-        stock_available = None
+        logger.debug(f"Could not read magazine capacity: {e}")
+        magazine_capacity = None
 
-    if stock_available and stock_available < 1:
-        logger.warning("Warning: Product out of stock")
+    # Check if product is out of stock
+    if magazine_capacity is not None and magazine_capacity < 1:
+        logger.warning("Warning: Product out of stock (magazine capacity < 1)")
         return False, 0
     
-    quantity = random.randint(1, min(5, stock_available if stock_available else 5))
-    logger.info(f"Selected quantity: {quantity}")
+    # Generate random quantity (1-5)
+    random_quantity = random.randint(1, 5)
+    logger.info(f"Random quantity generated: {random_quantity}")
+    
+    # Calculate actual quantity: min(magazine_capacity, random_quantity)
+    if magazine_capacity is not None:
+        quantity = min(random_quantity, magazine_capacity)
+        
+        # If magazine has less than what we wanted, log a note
+        if quantity < random_quantity:
+            logger.info(f"Magazine capacity ({magazine_capacity}) is less than random quantity ({random_quantity}), using {quantity}")
+    else:
+        # Fallback if we couldn't read magazine capacity
+        quantity = random_quantity
+        logger.info(f"Could not read magazine capacity, using random quantity: {quantity}")
     
     try:
         quantity_input = wait.until(
@@ -170,6 +182,10 @@ def add_to_cart(driver, product_element):
             quantity_input.send_keys(Keys.CONTROL, "a")
             quantity_input.send_keys(Keys.DELETE)
             quantity_input.send_keys(str(quantity))
+            logger.info(f"Set quantity to: {quantity}")
+        else:
+            logger.warning(f"Warning: Calculated quantity {quantity} is invalid, cannot add product")
+            return False, 0
     except Exception as e:
         logger.warning(f"Warning: Could not set quantity: {e}, using default 1")
         quantity = 1
@@ -314,7 +330,24 @@ def run_test(driver):
                 except Exception:
                     pass
             else:
-                logger.warning("   Failed to add product to cart")
+                # Find a replacement product not already in selected_products
+                existing_hrefs = {p.get('href') for p in selected_products}
+                replacement_candidates = []
+                for prod in products:
+                    try:
+                        prod_href = prod.get_attribute("href")
+                        if prod_href and prod_href not in existing_hrefs:
+                            replacement_candidates.append(prod)
+                    except Exception:
+                        continue
+                
+                if replacement_candidates:
+                    replacement = select_random_products(replacement_candidates, 1)
+                    selected_products += replacement
+                    logger.warning("   Failed to add product to cart, added replacement to list")
+                else:
+                    logger.warning("   Failed to add product to cart, no replacement products available")
+
             
             # Go back to category view for next product using breadcrumb
             try:

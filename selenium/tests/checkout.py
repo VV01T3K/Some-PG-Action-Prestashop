@@ -304,10 +304,7 @@ def display_order_confirmation(driver):
                     quantity = cols[1].text.strip()
                     total_price = cols[2].text.strip()
                     
-                    logger.info(f"Product: {product_name}")
-                    logger.info(f"  Unit Price: {unit_price}")
-                    logger.info(f"  Quantity: {quantity}")
-                    logger.info(f"  Total: {total_price}")
+                    logger.info(f"Product: {product_name}, Unit Price: {unit_price}, Quantity: {quantity}, Total: {total_price}")
                     
             except Exception as line_e:
                 logger.debug(f"Error extracting order line details: {line_e}")

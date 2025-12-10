@@ -95,8 +95,8 @@ def remove_product_from_cart(driver, items_before, item_index):
             logger.debug("Confirmed product removed from DOM")
             
             return True, removed_item
-        except Exception as e:
-            logger.error(f"Error finding delete button: {e}")
+        except Exception:
+            logger.error(f"Error finding delete button: {item_index}")
             return False, removed_item
         
     except Exception as e:
@@ -135,8 +135,7 @@ def run_test(driver):
         if success:
             removed_count += 1
             removed_items.append(removed_item)
-            items_remaining.pop(random_index)
-            items_remaining = get_cart_items_with_details(driver)
+            items_remaining.pop(random_index)  
         else:
             logger.warning(f"Warning: Failed to remove product #{i+1}")
             break

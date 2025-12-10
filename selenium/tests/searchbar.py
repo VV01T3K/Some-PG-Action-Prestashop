@@ -19,7 +19,7 @@ SEARCH_KEYWORDS = [
 ]
 
 
-def search_product(driver, product_name):
+def search_product(driver, product_name, retry_keywords=None):
     wait = WebDriverWait(driver, 10)
     
     try:
@@ -33,13 +33,34 @@ def search_product(driver, product_name):
         
         search_input.send_keys(Keys.RETURN)
         wait_for_page_load(driver)
+        
+        # Try to apply 'Available products' filter
+        filter_found = False
         try:
             available_checkbox = WebDriverWait(driver, 10).until(
                         EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='available-products']"))
                     )
             available_checkbox.click()
+            filter_found = True
+            logger.info("Applied 'Available products' filter successfully")
         except Exception as e:
-            logger.warning(f"Warning: Could not apply 'Available products' filter: {e}")
+            logger.warning(f"Warning: Could not find 'Available products' filter for '{product_name}': {e}")
+            filter_found = False
+        
+        # If filter button not found, try a different product
+        if not filter_found:
+            if retry_keywords is None:
+                retry_keywords = [kw for kw in SEARCH_KEYWORDS if kw != product_name]
+            
+            if retry_keywords:
+                next_keyword = random.choice(retry_keywords)
+                logger.info(f"Filter button not found, retrying with different keyword: '{next_keyword}'")
+                retry_keywords.remove(next_keyword)
+                return search_product(driver, next_keyword, retry_keywords)
+            else:
+                logger.error("No more keywords to retry")
+                return None
+        
         wait_for_filter_to_apply(driver)
         products = wait.until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-testid='product-card']"))
