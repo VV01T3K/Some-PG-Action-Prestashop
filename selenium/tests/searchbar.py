@@ -127,10 +127,16 @@ def add_to_cart(driver, product_element):
             logger.debug(f"Could not read stock info: {e}")
             stock_available = None
 
-        if stock_available < 1:
-            run_test(driver)
+        if stock_available is not None and stock_available < 1:
+            logger.warning(f"Product '{product_name}' is out of stock, returning to try another product")
+            driver.back()
+            wait_for_page_load(driver)
             return False, 0
-        quantity = random.randint(1, min(5,stock_available))
+        
+        if stock_available is not None:
+            quantity = random.randint(1, min(5, stock_available))
+        else:
+            quantity = random.randint(1, 5)
 
        
         logger.info(f"Selected quantity: {quantity}")
@@ -186,17 +192,24 @@ def run_test(driver):
         logger.error("No products found")
         return 
     
-    selected_product = select_random_product(products)
-    if not selected_product:
-        logger.error("Could not select product")
-        return
-    
-    
-    success, quantity_added = add_to_cart(driver, selected_product)
-    
-    if not success:
-        logger.warning("Warning: Could not add product to cart")
-        return
+    max_attempts = min(5, len(products))
+    for attempt in range(max_attempts):
+        selected_product = select_random_product(products)
+        if not selected_product:
+            logger.error("Could not select product")
+            return
+        
+        success, quantity_added = add_to_cart(driver, selected_product)
+        
+        if success:
+            break
+        else:
+            logger.warning(f"Attempt {attempt + 1}/{max_attempts}: Could not add product to cart, trying another product")
+            if attempt < max_attempts - 1:
+                continue
+            else:
+                logger.error("Failed to add any product after multiple attempts")
+                return
     
     wait = WebDriverWait(driver, 5)
     

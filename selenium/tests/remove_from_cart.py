@@ -20,11 +20,21 @@ def get_cart_count(driver):
 def open_cart(driver):
     try:
         wait = WebDriverWait(driver, 10)
+        max_retries = 3
         
-        cart_button = driver.find_element(By.CSS_SELECTOR, "a[data-testid='shopping-cart']")
-        cart_button.click()
-        # Wait for cart items rendered via data-testid within cart list
-        wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
+        for attempt in range(max_retries):
+            try:
+                cart_button = driver.find_element(By.CSS_SELECTOR, "a[data-testid='shopping-cart']")
+                cart_button.click()
+                # Wait for cart items rendered via data-testid within cart list
+                wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
+                return True
+            except Exception as e:
+                if "stale element" in str(e).lower() and attempt < max_retries - 1:
+                    logger.debug(f"Stale element on attempt {attempt + 1}, retrying...")
+                    continue
+                raise
+        
         return True
     except Exception as e:
         logger.error(f"Error opening cart: {e}")

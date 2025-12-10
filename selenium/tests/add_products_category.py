@@ -187,6 +187,8 @@ def add_to_cart(driver, product_element):
 
     if magazine_capacity is not None and magazine_capacity < 1:
         logger.warning("Warning: Product out of stock (magazine capacity < 1)")
+        driver.back()
+        wait_for_page_load(driver)
         return False, 0
     
     random_quantity = random.randint(1, 5)
@@ -321,8 +323,14 @@ def run_test(driver):
             logger.warning("   Warning: Could not select products in this category")
             continue
         
-        for prod_idx, product_data in enumerate(selected_products):
-            if prod_idx > 0:
+        products_to_try = list(selected_products)
+        products_added_count = 0
+        target_products = len(selected_products)
+        
+        while products_to_try and products_added_count < target_products:
+            product_data = products_to_try.pop(0)
+            
+            if products_added_count > 0:
                 try:
                     available_checkbox = WebDriverWait(driver, 10).until(
                                 EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='available-products']"))
@@ -331,6 +339,7 @@ def run_test(driver):
                     wait_for_filter_to_apply(driver, timeout=5)
                 except Exception as e:
                     logger.warning(f"Warning: Could not apply 'Available products' filter: {e}")
+            
             try:
                 product_element = wait.until(
                         EC.presence_of_element_located((By.CSS_SELECTOR, f"a[href='{product_data['href']}']"))
@@ -339,13 +348,14 @@ def run_test(driver):
                 product_info["category"] = category_title
             except Exception:
                 logger.warning(f"Warning: Could not get product info href: {product_data['href']}")
-                product_info = {"title": "Unknown", "price": "N/A", "category": category_title}
+                continue
             
-            logger.info(f"   Adding product {prod_idx + 1}/{len(selected_products)}: {product_info['title']}")  
+            logger.info(f"   Attempting product {products_added_count + 1}/{target_products}: {product_info['title']}")  
             success, quantity = add_to_cart(driver, product_element)
             
             if success:
                 total_products_added += quantity
+                products_added_count += 1
                 product_info["quantity_added"] = quantity
                 products_details.append(product_info)
                 
@@ -355,7 +365,20 @@ def run_test(driver):
                 except Exception:
                     pass
             else:
-                logger.warning("   Failed to add product to cart")
+                logger.warning(f"   Failed to add product to cart, will try another if available")
+                # If we have more products in the category, fetch another one
+                if not products_to_try:
+                    logger.info(f"   No more backup products, trying to find another from category")
+                    try:
+                        all_products = driver.find_elements(By.CSS_SELECTOR, "[data-testid='product-card-link']")
+                        available_hrefs = [p.get_attribute('href') for p in all_products]
+                        tried_hrefs = [p['href'] for p in selected_products]
+                        new_hrefs = [h for h in available_hrefs if h not in tried_hrefs]
+                        if new_hrefs:
+                            products_to_try.append({"href": random.choice(new_hrefs)})
+                            logger.info(f"   Found additional product to try")
+                    except Exception as e:
+                        logger.warning(f"   Could not find additional products: {e}")
 
             
             try:

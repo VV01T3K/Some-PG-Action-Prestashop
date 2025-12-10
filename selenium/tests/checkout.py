@@ -36,11 +36,20 @@ POSTCODES = [
 def click_cart_button(driver):
     try:
         wait = WebDriverWait(driver, 10)
+        max_retries = 3
         
-        cart_button = wait.until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='shopping-cart']"))
-        )
-        cart_button.click()
+        for attempt in range(max_retries):
+            try:
+                cart_button = wait.until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "a[data-testid='shopping-cart']"))
+                )
+                cart_button.click()
+                return True
+            except Exception as e:
+                if "stale element" in str(e).lower() and attempt < max_retries - 1:
+                    logger.debug(f"Stale element on attempt {attempt + 1}, retrying...")
+                    continue
+                raise
         
         return True
     except Exception as e:
