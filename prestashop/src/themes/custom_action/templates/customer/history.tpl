@@ -74,7 +74,7 @@
                   {if $order.details.invoice_url}
                     <a href="{$order.details.invoice_url}" 
                        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-500 hover:bg-orange-500 hover:text-neutral-0 transition-colors"
-                       title="{l s='Download invoice' d='Shop.Theme.Customeraccount'}"
+                       title="{l s='Pobierz fakturę' d='Shop.Theme.Customeraccount'}"
                        data-testid='download-invoice'>
                       <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
@@ -182,7 +182,7 @@
               {if $order.details.invoice_url}
                 <a href="{$order.details.invoice_url}" 
                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-500 hover:bg-orange-500 hover:text-neutral-0 transition-colors"
-                   title="{l s='Download invoice' d='Shop.Theme.Customeraccount'}"
+                   title="{l s='Pobierz fakturę' d='Shop.Theme.Customeraccount'}"
                    data-testid='download-invoice'>
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
