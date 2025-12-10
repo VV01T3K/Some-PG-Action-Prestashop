@@ -2,54 +2,37 @@
   "blacklist": {
     "products": [
       {
-        "id": "55-40",
-        "name": "Torba prezentowa",
-        "url": "https://shop.pg.wojtecs.com/Hobby/55-40-torba-prezentowa-1451692993245.html"
+        "name": "Torba prezentowa"
       },
       {
-        "id": "64-43",
-        "name": "Torba prezentowa metaliczna",
-        "url": "https://shop.pg.wojtecs.com/Hobby/64-43-torba-prezentowa-metaliczna-0499121883478.html"
+        "name": "Torba prezentowa metaliczna"
       },
       {
-        "id": "71-68",
-        "name": "Torba prezentowa Avec",
-        "url": "https://shop.pg.wojtecs.com/Hobby/71-68-torba-prezentowa-avec-3346466952352.html"
+        "name": "Torba prezentowa Avec"
       },
       {
-        "id": "95-73",
-        "name": "Torba prezentowa",
-        "url": "https://shop.pg.wojtecs.com/Hobby/95-73-torba-prezentowa-6145132137874.html"
+        "name": "Torba prezentowa"
       },
       {
-        "id": "96-66",
-        "name": "Torba prezentowa",
-        "url": "https://shop.pg.wojtecs.com/Hobby/96-66-torba-prezentowa-4480265623163.html"
+        "name": "Torba prezentowa"
       },
       {
-        "id": "959-54",
-        "name": "Zestaw kluczy nasadowych Werckmann",
-        "url": "https://shop.pg.wojtecs.com/zrob-to-sam/959-54-zestaw-kluczy-nasadowych-werckmann-1665019966014.html"
+        "name": "Zestaw kluczy nasadowych Werckmann"
       },
       {
-        "id": "824-57",
-        "name": "Klucz nasadowy uniwersalny z grzechotką Werckmann",
-        "url": "https://shop.pg.wojtecs.com/zrob-to-sam/824-57-klucz-nasadowy-uniwersalny-z-grzechotka-werckmann-9910137733188.html"
+        "name": "Klucz nasadowy uniwersalny z grzechotką Werckmann"
       },
       {
-        "id": "985-61",
-        "name": "Zestaw kluczy oczkowych z grzechotką Werckmann",
-        "url": "https://shop.pg.wojtecs.com/zrob-to-sam/985-61-zestaw-kluczy-oczkowych-z-grzechotka-werckmann-9235829614645.html"
+        "name": "Zestaw kluczy oczkowych z grzechotką Werckmann"
       },
       {
-        "id": "1021-52",
-        "name": "Zestaw kluczy nasadowych Werckmann",
-        "url": "https://shop.pg.wojtecs.com/zrob-to-sam/1021-52-zestaw-kluczy-nasadowych-werckmann-6865515731665.html"
+        "name": "Zestaw kluczy nasadowych Werckmann"
       },
       {
-        "id": "1061-50",
-        "name": "Zestaw kluczy nasadowych z grzechotką Werckmann",
-        "url": "https://shop.pg.wojtecs.com/zrob-to-sam/1061-50-zestaw-kluczy-nasadowych-z-grzechotka-werckmann-8495525950398.html"
+        "name": "Zestaw kluczy nasadowych z grzechotką Werckmann"
+      },
+      {
+        "name": "Torba prezentowa z papieru kraft"
       }
     ]
   }
