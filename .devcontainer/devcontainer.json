@@ -12,7 +12,11 @@
 	// "customizations": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
-		443
+		443, // caddy
+		8025,// mailhog
+		4444,// selenium-hub/grid
+		7900,// chrome vnc
+		7901 // firefox vnc
 	],
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
