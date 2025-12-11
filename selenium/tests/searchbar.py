@@ -103,12 +103,24 @@ def add_to_cart(driver, product_element):
     try:
         try:
             product_element.click()
-        except Exception:
-            logger.info("click failed")
+        except Exception as e:
+            logger.warning(f"Click failed: {e}")
+            return False, 0
         
-        product_name_element = wait.until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "h1.heading-2xl.mb-1"))
-        )
+        try:
+            product_name_element = wait.until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "h1.heading-2xl.mb-1"))
+            )
+        except Exception as e:
+            logger.warning(f"Failed to navigate to product page: {e}")
+            # Try to go back to search results
+            try:
+                driver.back()
+                wait_for_page_load(driver)
+            except Exception:
+                pass
+            return False, 0
+        
         product_name = product_name_element.text
         logger.info(f"Adding product: {product_name}")
         
@@ -193,7 +205,18 @@ def run_test(driver):
         return 
     
     max_attempts = min(5, len(products))
+    quantity_added = 0
+    
     for attempt in range(max_attempts):
+        try:
+            wait = WebDriverWait(driver, 5)
+            products = wait.until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-testid='product-card']"))
+            )
+            logger.debug(f"Refreshed product list, found {len(products)} products")
+        except Exception as e:
+            logger.warning(f"Could not refresh product list: {e}")
+        
         selected_product = select_random_product(products)
         if not selected_product:
             logger.error("Could not select product")
@@ -206,6 +229,10 @@ def run_test(driver):
         else:
             logger.warning(f"Attempt {attempt + 1}/{max_attempts}: Could not add product to cart, trying another product")
             if attempt < max_attempts - 1:
+                try:
+                    products.remove(selected_product)
+                except ValueError:
+                    pass
                 continue
             else:
                 logger.error("Failed to add any product after multiple attempts")
