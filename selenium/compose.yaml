@@ -28,6 +28,7 @@ services:
       <<: *node-env
     volumes:
       - /dev/shm:/dev/shm
+      - ./tests/downloads:/home/seluser/Downloads
     shm_size: 2gb
     ports:
       - "7900:7900"

@@ -146,7 +146,7 @@ else
 fi
 
 cp /tmp/Prestashop.gitignore /var/www/html/.gitignore
-chmod -R 777 /var/www/html
+find /var/www/html -path "/var/www/html/img" -prune -o -exec chmod -R 777 {} \;
 echo "Running in development mode"
 
 umask 000

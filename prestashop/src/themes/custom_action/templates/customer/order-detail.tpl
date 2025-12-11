@@ -45,11 +45,11 @@
         <div class="order-detail-overview__header">
           <div>
             <h3 class="h1 card-title">
-              {l s='Order %reference%' d='Shop.Theme.Customeraccount' sprintf=['%reference%' => $order.details.reference]}
+{l s='Zamówienie %reference%' d='Shop.Theme.Customeraccount' sprintf=['%reference%' => $order.details.reference]}
             </h3>
             <p>
               {l
-                s='Placed on %date%'
+s='Złożono dnia %date%'
                 d='Shop.Theme.Customeraccount'
                 sprintf=['%date%' => $order.details.order_date]
               }
@@ -78,7 +78,7 @@
             </div>
           {/if}
           <div class="overview-item">
-            <span class="label">{l s='Reference' d='Shop.Theme.Customeraccount'}</span>
+<span class="label">{l s='Zamówienie' d='Shop.Theme.Customeraccount'}</span>
             <span class="value">{$order.details.reference}</span>
           </div>
         </div>
@@ -147,7 +147,7 @@
               {if $order.details.invoice_url}
                 <li>
                   <a href="{$order.details.invoice_url}" class="order-detail-summary__link">
-                    {l s='Download invoice' d='Shop.Theme.Customeraccount'}
+                    {l s='Pobierz fakturę' d='Shop.Theme.Customeraccount'}
                   </a>
                 </li>
               {/if}
@@ -200,7 +200,7 @@
     {if $order.shipping}
       <section class="card order-detail-shipping">
         <div class="card-block">
-          <h3>{l s='Shipping history' d='Shop.Theme.Customeraccount'}</h3>
+          <h3>{l s='Historia wysyłki' d='Shop.Theme.Customeraccount'}</h3>
           <table class="table table-striped hidden-sm-down">
             <thead>
               <tr>

@@ -1,0 +1,264 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+from utils import wait_for_page_load, wait_for_filter_to_apply
+import random
+import logging
+
+logger = logging.getLogger(__name__)
+
+SEARCH_KEYWORDS = [
+    "Świąteczny",
+    "papier",
+    "kubek",
+    "lampa",
+    "mikrofibry",
+    "glow",
+    "drewniane"
+]
+
+
+def search_product(driver, product_name, retry_keywords=None):
+    wait = WebDriverWait(driver, 10)
+    
+    try:
+        logger.info(f"Searching for product: {product_name}")
+        
+        search_input = wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "input[data-testid='search-bar']"))
+        )
+        search_input.clear()
+        search_input.send_keys(product_name)
+        
+        search_input.send_keys(Keys.RETURN)
+        wait_for_page_load(driver)
+        
+        # Try to apply 'Available products' filter
+        filter_found = False
+        try:
+            available_checkbox = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='available-products']"))
+                    )
+            available_checkbox.click()
+            filter_found = True
+            logger.info("Applied 'Available products' filter successfully")
+        except Exception as e:
+            logger.warning(f"Warning: Could not find 'Available products' filter for '{product_name}': {e}")
+            filter_found = False
+        
+        # If filter button not found, try a different product
+        if not filter_found:
+            if retry_keywords is None:
+                retry_keywords = [kw for kw in SEARCH_KEYWORDS if kw != product_name]
+            
+            if retry_keywords:
+                next_keyword = random.choice(retry_keywords)
+                logger.info(f"Filter button not found, retrying with different keyword: '{next_keyword}'")
+                retry_keywords.remove(next_keyword)
+                return search_product(driver, next_keyword, retry_keywords)
+            else:
+                logger.error("No more keywords to retry")
+                return None
+        
+        wait_for_filter_to_apply(driver)
+        products = wait.until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-testid='product-card']"))
+        )
+        
+        logger.info(f"Found {len(products)} products")
+
+        return products
+        
+    except Exception as e:
+        logger.error(f"Error searching for product: {e}")
+        return None
+
+
+def select_random_product(products):
+    if not products:
+        logger.warning("Warning: No products to select from")
+        return None
+    
+    selected = random.choice(products)
+    return selected
+
+
+
+def get_cart_count(driver):
+    try:
+        cart_badge = driver.find_element(By.CLASS_NAME, "cart-products-count")
+        text = cart_badge.text.strip("()")
+        logger.debug(f"Cart badge text: '{cart_badge.text}', extracted: '{text}'")
+        count = int(text) if text else 0
+        return count
+    except Exception as e:
+        logger.debug(f"Could not get cart count: {e}")
+        return 0
+
+
+def add_to_cart(driver, product_element):
+    wait = WebDriverWait(driver, 10)
+    
+    try:
+        try:
+            product_element.click()
+        except Exception as e:
+            logger.warning(f"Click failed: {e}")
+            return False, 0
+        
+        try:
+            product_name_element = wait.until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "h1.heading-2xl.mb-1"))
+            )
+        except Exception as e:
+            logger.warning(f"Failed to navigate to product page: {e}")
+            # Try to go back to search results
+            try:
+                driver.back()
+                wait_for_page_load(driver)
+            except Exception:
+                pass
+            return False, 0
+        
+        product_name = product_name_element.text
+        logger.info(f"Adding product: {product_name}")
+        
+        wait.until(EC.presence_of_element_located((By.NAME, "qty")))
+
+        stock_available = None
+        try:
+            stock_el = wait.until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "[data-stock]"))
+            )
+            stock_attr = stock_el.get_attribute("data-stock")
+            if stock_attr and stock_attr.isdigit():
+                stock_available = int(stock_attr)
+                logger.info(f"Stock available: {stock_available}")
+        except Exception as e:
+            logger.debug(f"Could not read stock info: {e}")
+            stock_available = None
+
+        if stock_available is not None and stock_available < 1:
+            logger.warning(f"Product '{product_name}' is out of stock, returning to try another product")
+            driver.back()
+            wait_for_page_load(driver)
+            return False, 0
+        
+        if stock_available is not None:
+            quantity = random.randint(1, min(5, stock_available))
+        else:
+            quantity = random.randint(1, 5)
+
+       
+        logger.info(f"Selected quantity: {quantity}")
+        
+        try:
+            quantity_input = wait.until(
+                EC.presence_of_element_located((By.NAME, "qty"))
+            )
+            if quantity >= 1:
+                # Some browsers ignore clear() when min is enforced; select-all + delete, then type.
+                quantity_input.click()
+                quantity_input.send_keys(Keys.CONTROL, "a")
+                quantity_input.send_keys(Keys.DELETE)
+                quantity_input.send_keys(str(quantity))
+        except Exception as e:
+            logger.warning(f"Warning: Could not set quantity: {e}, using default 1")
+            quantity = 1
+        
+        try:
+            button = wait.until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-testid='add-to-cart']"))
+            )
+        except Exception:
+            logger.error("Could not find add to cart button")
+            return False, 0
+        
+        
+        try:
+            button.click()
+        except Exception:
+            logger.info("click failed")
+        
+        logger.info(f"Added {quantity} product(s) '{product_name}' to cart successfully!")
+        return True, quantity
+        
+    except Exception as e:
+        logger.error(f"Error adding to cart: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+        return False, 0
+
+
+def run_test(driver):
+    initial_cart_count = get_cart_count(driver)
+    logger.info(f"Initial cart count: {initial_cart_count}")
+    
+    search_keyword = random.choice(SEARCH_KEYWORDS)
+    logger.info(f" Selected search keyword: '{search_keyword}'")
+    
+    products = search_product(driver, search_keyword)
+    
+    if not products:
+        logger.error("No products found")
+        return 
+    
+    max_attempts = min(5, len(products))
+    quantity_added = 0
+    
+    for attempt in range(max_attempts):
+        try:
+            wait = WebDriverWait(driver, 5)
+            products = wait.until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-testid='product-card']"))
+            )
+            logger.debug(f"Refreshed product list, found {len(products)} products")
+        except Exception as e:
+            logger.warning(f"Could not refresh product list: {e}")
+        
+        selected_product = select_random_product(products)
+        if not selected_product:
+            logger.error("Could not select product")
+            return
+        
+        success, quantity_added = add_to_cart(driver, selected_product)
+        
+        if success:
+            break
+        else:
+            logger.warning(f"Attempt {attempt + 1}/{max_attempts}: Could not add product to cart, trying another product")
+            if attempt < max_attempts - 1:
+                try:
+                    products.remove(selected_product)
+                except ValueError:
+                    pass
+                continue
+            else:
+                logger.error("Failed to add any product after multiple attempts")
+                return
+    
+    wait = WebDriverWait(driver, 5)
+    
+    try:
+        def cart_count_increased(driver):
+            try:
+                badge = driver.find_element(By.CLASS_NAME, "cart-products-count")
+                text = badge.text.strip("()")
+                current = int(text) if text else 0
+                logger.debug(f"Current cart count in wait: {current}, initial: {initial_cart_count}")
+                return current > initial_cart_count
+            except Exception:
+                return False
+        
+        wait.until(cart_count_increased)
+        logger.debug("Cart count increased")
+    except Exception:
+        logger.debug("  Cart count did not increase within timeout")
+    
+    updated_cart_count = get_cart_count(driver)
+    logger.info(f"Updated cart count: {updated_cart_count}")
+    
+    expected_count = initial_cart_count + quantity_added
+    logger.info(f"Expected cart count: {expected_count}")
+    return

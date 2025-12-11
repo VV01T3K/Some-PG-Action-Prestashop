@@ -1,14 +1,35 @@
+#!/usr/bin/env python3
+
+
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import os
-from time import sleep
+import logging
+import sys
+
+# Add current directory to path for imports
+sys.path.insert(0, os.path.dirname(__file__))
+
+# Import test modules
+import searchbar
+import remove_from_cart
+import register_account
+import checkout
+import order_status
+import add_products_category
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 
 def main():
     prestashop_domain = os.getenv("SHOP_DOMAIN", "shop.pg.wojtecs.com")
     prestashop_url = f"https://{prestashop_domain}"
+
+    host_downloads_dir = os.path.join(os.path.dirname(__file__), "downloads")
+    os.makedirs(host_downloads_dir, exist_ok=True)
+
+    container_downloads_dir = "/home/seluser/Downloads"
 
     options = webdriver.ChromeOptions()
     options.add_argument("--no-sandbox")
@@ -16,31 +37,90 @@ def main():
     options.add_argument("--ignore-certificate-errors")
     options.add_argument("--ignore-ssl-errors")
     options.add_argument("--start-maximized")
+    options.add_argument("--disable-popup-blocking")
+    options.add_experimental_option(
+        "prefs",
+        {
+            "download.default_directory": container_downloads_dir,
+            "savefile.default_directory": container_downloads_dir,
+            "download.prompt_for_download": False,
+            "download.directory_upgrade": True,
+            "plugins.always_open_pdf_externally": True,
+            "profile.default_content_settings.popups": 0,
+            "profile.content_settings.exceptions.automatic_downloads.*.setting": 1,
+            "safebrowsing.enabled": True,
+            "safebrowsing.disable_download_protection": True,
+        },
+    )
 
     driver = webdriver.Remote(command_executor="http://localhost:4444", options=options)
+    
+    # Force download behavior using CDP
+    try:
+        driver.execute_cdp_cmd("Page.setDownloadBehavior", {
+            "behavior": "allow",
+            "downloadPath": container_downloads_dir
+        })
+        logger.info("Set CDP download behavior to allow")
+    except Exception as e:
+        logger.warning(f"Could not set CDP download behavior: {e}")
+    
 
     try:
-        print(f"Opening PrestaShop at {prestashop_url}...")
+        logger.info(f"Opening PrestaShop at {prestashop_url}...")
         driver.get(prestashop_url)
+        logger.info("Page loaded successfully")
+        logger.info(f"Page title: {driver.title}")
 
-        print("Page loaded successfully")
-        print(f"Page title: {driver.title}")
+        logger.info("="*70)
+        logger.info("STARTING AUTOMATED TESTS")
+        logger.info("="*70)
 
-        try:
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "search"))
-            )
-            print("Found PrestaShop element")
-        except Exception:
-            print("Could not find search element, but page loaded")
+        # TEST 0: Add 10 products from 2 categories
+        logger.info("TEST 0: Add 10 products from 2 categories")
+        logger.info("-"*70)
+        add_products_category.run_test(driver)
 
-        print("Waiting for 5 seconds to test the page in VNC...")
-        sleep(5)
-        print("\nSelenium can access your PrestaShop instance!")
+        # TEST 1: Register Account
+        logger.info("TEST 1: Account Registration")
+        logger.info("-"*70)
+        register_account.run_test(driver)
+        
 
+        # TEST 2: Search and Add to Cart 
+        logger.info("TEST 2: Search and Add to Cart")
+        logger.info("-"*70)
+        driver.refresh() # Refresh the page before each iteration (to be fixed)
+        searchbar.run_test(driver)
+
+        #TEST 3: Remove from Cart
+        logger.info("TEST 3: Remove from Cart")
+        logger.info("-"*70)
+        remove_from_cart.run_test(driver)
+        
+        cart_is_empty = checkout.is_cart_empty(driver)
+        
+        if not cart_is_empty:
+            logger.info("TEST 4: Checkout")
+            logger.info("-"*70)
+            checkout.run_test(driver)
+            
+            logger.info("TEST 5: Check Order Status")
+            logger.info("-"*70)
+            order_status.run_test(driver)
+        else:
+            logger.warning("Warning: Cart is empty - skipping TEST 4 (Checkout) and TEST 5 (Order Status)")
+    except KeyboardInterrupt:
+        logger.info("Test interrupted by user (Ctrl+C)")
+        
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+        
     finally:
         driver.quit()
-        print("Browser closed")
+        logger.info("Browser closed")
 
 
 if __name__ == "__main__":

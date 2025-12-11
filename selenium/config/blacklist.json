@@ -1,0 +1,39 @@
+{
+  "blacklist": {
+    "products": [
+      {
+        "name": "Torba prezentowa"
+      },
+      {
+        "name": "Torba prezentowa metaliczna"
+      },
+      {
+        "name": "Torba prezentowa Avec"
+      },
+      {
+        "name": "Torba prezentowa"
+      },
+      {
+        "name": "Torba prezentowa"
+      },
+      {
+        "name": "Zestaw kluczy nasadowych Werckmann"
+      },
+      {
+        "name": "Klucz nasadowy uniwersalny z grzechotką Werckmann"
+      },
+      {
+        "name": "Zestaw kluczy oczkowych z grzechotką Werckmann"
+      },
+      {
+        "name": "Zestaw kluczy nasadowych Werckmann"
+      },
+      {
+        "name": "Zestaw kluczy nasadowych z grzechotką Werckmann"
+      },
+      {
+        "name": "Torba prezentowa z papieru kraft"
+      }
+    ]
+  }
+}

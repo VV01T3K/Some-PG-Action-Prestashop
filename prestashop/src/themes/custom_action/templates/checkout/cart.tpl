@@ -27,6 +27,10 @@
 
 {block name='content'}
 
+  {block name='cart_notifications'}
+    {include file='_partials/notifications.tpl'}
+  {/block}
+
   <section id="main" style="background-color: #ffffff; padding: 2rem 0;">
     <!-- Centered container matching Action.com structure -->
     <div style="display: flex; width: 100%; flex-direction: column; padding-left: 1rem; padding-right: 1rem;">

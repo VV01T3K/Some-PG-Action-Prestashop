@@ -49,7 +49,6 @@
 
           {* Quantities *}
           {block name='product_quantities'}
-            {if $product.show_quantities}
               <tr class="border-neutral-150 border-b border-dashed" style="border-bottom: 1px dashed #e0e0e0;">
                 <td class="p-2 align-top font-medium break-words lg:w-1/4" style="padding: 8px; vertical-align: top; font-weight: 500; width: 25%;">
                   {l s='In stock' d='Shop.Theme.Catalog'}
@@ -58,7 +57,6 @@
                   {$product.quantity} {$product.quantity_label}
                 </td>
               </tr>
-            {/if}
           {/block}
 
           {* Availability Date *}

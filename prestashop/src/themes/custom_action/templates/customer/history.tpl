@@ -65,7 +65,8 @@
                 </td>
                 <td class="py-4 px-6">
                   <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
-                        style="background-color:{$order.history.current.color}; color:{if $order.history.current.contrast == 'dark'}#1a1a1a{else}#fff{/if}">
+                        style="background-color:{$order.history.current.color}; color:{if $order.history.current.contrast == 'dark'}#1a1a1a{else}#fff{/if}"
+                        data-testid='order-status'>
                     {$order.history.current.ostate_name}
                   </span>
                 </td>
@@ -73,7 +74,8 @@
                   {if $order.details.invoice_url}
                     <a href="{$order.details.invoice_url}" 
                        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-500 hover:bg-orange-500 hover:text-neutral-0 transition-colors"
-                       title="{l s='Download invoice' d='Shop.Theme.Customeraccount'}">
+                       title="{l s='Pobierz fakturę' d='Shop.Theme.Customeraccount'}"
+                       data-testid='download-invoice'>
                       <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
                       </svg>
@@ -130,7 +132,8 @@
                 </a>
               </div>
               <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ml-2"
-                    style="background-color:{$order.history.current.color}; color:{if $order.history.current.contrast == 'dark'}#1a1a1a{else}#fff{/if}">
+                    style="background-color:{$order.history.current.color}; color:{if $order.history.current.contrast == 'dark'}#1a1a1a{else}#fff{/if}"
+                    data-testid='order-status'>
                 {$order.history.current.ostate_name}
               </span>
             </div>
@@ -179,7 +182,8 @@
               {if $order.details.invoice_url}
                 <a href="{$order.details.invoice_url}" 
                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-500 hover:bg-orange-500 hover:text-neutral-0 transition-colors"
-                   title="{l s='Download invoice' d='Shop.Theme.Customeraccount'}">
+                   title="{l s='Pobierz fakturę' d='Shop.Theme.Customeraccount'}"
+                   data-testid='download-invoice'>
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
                   </svg>

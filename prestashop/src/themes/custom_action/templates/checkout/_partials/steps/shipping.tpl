@@ -108,7 +108,7 @@
           </div>
         </div>
         <div class="clearfix">
-          <button type="submit" class="btn btn-primary continue float-xs-right" name="confirmDeliveryOption" value="1">
+          <button type="submit" class="btn btn-primary continue float-xs-right" name="confirmDeliveryOption" value="1" data-testid="confirm-delivery-option">
             {l s='Continue' d='Shop.Theme.Actions'}
           </button>
         </div>
