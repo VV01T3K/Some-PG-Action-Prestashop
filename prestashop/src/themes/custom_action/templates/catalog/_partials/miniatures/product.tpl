@@ -13,32 +13,32 @@
               {if $product.cover}
                 <img data-testid="product-card-image"
                   alt="{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name}{/if}"
+                  fetchpriority="low"
                   loading="lazy"
                   decoding="async"
                   class="object-contain object-center py-2 transition-transform duration-250 group-hover:scale-105 md:py-4 h-full w-full"
+                  style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                   src="{$product.cover.bySize.home_default.url}"
                   data-full-size-image-url="{$product.cover.large.url}"
                   width="{$product.cover.bySize.home_default.width}"
-                  height="{$product.cover.bySize.home_default.height}"
-                  style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;" />
+                  height="{$product.cover.bySize.home_default.height}" />
               {else}
                 <img data-testid="product-card-image"
                   alt="{$product.name}"
+                  fetchpriority="low"
                   loading="lazy"
                   decoding="async"
                   class="object-contain object-center py-2 transition-transform duration-250 group-hover:scale-105 md:py-4 h-full w-full"
+                  style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                   src="{$urls.no_picture_image.bySize.home_default.url}"
                   width="{$urls.no_picture_image.bySize.home_default.width}"
-                  height="{$urls.no_picture_image.bySize.home_default.height}"
-                  style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;" />
+                  height="{$urls.no_picture_image.bySize.home_default.height}" />
               {/if}
               
               {* Product Flags/Badges at bottom of image *}
               <span class="absolute bottom-0 flex flex-col gap-2"></span>
             </span>
-          {/block}
-
-          {* Product Title and Description *}
+          {/block}          {* Product Title and Description *}
           {block name='product_name'}
             <span class="mt-2 mb-3 flex grow flex-col gap-1 leading-tight sm:mb-4">
               <span class="xs:text-[16px] xs:leading-5 text-sm leading-[18px] font-medium text-dark-blue-500 line-clamp-2 break-words" data-testid="product-card-title">
@@ -73,22 +73,30 @@
 
                 {* Main Price Display - Orange for promoted items *}
                 <span class="flex items-start {if $product.has_discount}text-orange-500{else}text-dark-blue-500{/if}">
-                  <span class="price font-bold text-[40px] leading-[28px] md:text-[48px] md:leading-[33px]" aria-label="{l s='Price' d='Shop.Theme.Catalog'}">
-                    {$product.price}
+                  {assign var="price_clean" value=$product.price|regex_replace:'/[^\d,]/':''}
+                  {assign var="price_parts" value=','|explode:$price_clean}
+                  <span data-testid="product-card-price-whole" class="font-bold tracking-[1px] text-[40px] leading-[28px] md:text-[48px] md:leading-[33px]">
+                    {if isset($price_parts[0])}{$price_parts[0]}{/if}
                   </span>
+                  {if isset($price_parts[1])}
+                  <span class="inline-flex items-baseline">
+                    <span data-testid="product-card-price-fractional" class="font-bold tracking-[1px] text-[20px] leading-[14px] md:text-[28px] md:leading-[19px]">
+                      {$price_parts[1]|regex_replace:'/[^\d]/':''}
+                    </span>
+                  </span>
+                  {/if}
                 </span>
               </span>
               {* Discount Information - Show below price *}
               {if $product.has_discount}
-                <span style="height:.5rem;"></span>
-                <span class="flex leading-none text-neutral-700 mt-2 flex-row items-baseline self-baseline flex-wrap gap-2" data-testid="product-card-price-discount">
+                <span class="flex leading-none text-neutral-700 mt-1 flex-row items-baseline self-baseline" data-testid="product-card-price-discount">
                   <span class="flex items-center" data-testid="product-card-price-original-amount">
                     <span class="text-center text-[12px] font-normal line-through">
                       {$product.regular_price}
                     </span>
                     <span class="pl-0.5 text-xs">*</span>
                   </span>
-                  <span class="rounded border border-neutral-700 px-1.5 py-0.5 text-xs leading-[12px] font-medium" data-testid="product-card-price-discount-percentage">
+                  <span class="ml-1 rounded border border-neutral-700 px-[2px] py-px text-xs leading-[12px] font-medium" data-testid="product-card-price-discount-percentage">
                     {if $product.discount_type == 'percentage'}
                       {$product.discount_percentage}
                     {else}
@@ -104,43 +112,43 @@
             {/if}
           {/block}
 
-          {* Promotion Badge - Top Left *}
-          <span class="absolute top-0 left-0 flex flex-col gap-0.5">
-            {if $product.new}
-              <span class="flex overflow-hidden h-[22px] sm:h-[26px] text-neutral-0 text-[12px] leading-[14px] font-bold sm:text-sm sm:leading-[18px]" data-testid="product-tag">
-                <span class="flex w-fit items-center pr-1 pl-1.5 sm:pr-1.5 sm:pl-2 bg-cyan-500">
-                  <span>{l s='Nowości' d='Shop.Theme.Catalog'}</span>
-                </span>
-                <span class="w-[8px]">
-                  <span class="-mr-px block h-full -translate-x-px bg-cyan-500" style="clip-path:polygon(0 0, 100% 0, 1px 100%, 0 100%)"></span>
-                </span>
+        {* Promotion Badge - Top Left *}
+        <span class="absolute top-0 left-0 flex flex-col gap-0.5">
+          {if $product.new}
+            <span class="flex overflow-hidden h-[22px] sm:h-[26px] text-neutral-0 text-[12px] leading-[14px] font-bold sm:text-sm sm:leading-[18px]" data-testid="product-tag">
+              <span class="flex w-fit items-center pr-1 pl-1.5 sm:pr-1.5 sm:pl-2 bg-cyan-500">
+                <span>{l s='Nowości' d='Shop.Theme.Catalog'}</span>
               </span>
-            {/if}
-            {if $product.has_discount}
-              <span class="flex overflow-hidden h-[22px] sm:h-[26px] text-neutral-0 text-[12px] leading-[14px] font-bold sm:text-sm sm:leading-[18px]" data-testid="product-tag">
-                <span class="flex w-fit items-center pr-1 pl-1.5 sm:pr-1.5 sm:pl-2 bg-orange-500">
-                  <span>{l s='Promocja' d='Shop.Theme.Catalog'}</span>
-                </span>
-                <span class="w-[8px]">
-                  <span class="-mr-px block h-full -translate-x-px bg-orange-500" style="clip-path:polygon(0 0, 100% 0, 1px 100%, 0 100%)"></span>
-                </span>
+              <span class="w-[8px]">
+                <span class="-mr-px block h-full -translate-x-px bg-cyan-500" style="clip-path:polygon(0 0, 100% 0, 1px 100%, 0 100%)"></span>
               </span>
-            {/if}
-            {* Product flags - hide discount flags as we show them custom *}
-            <div class="product-flags-container" style="display: none;">
-              {include file='catalog/_partials/product-flags.tpl'}
-            </div>
-          </span>
+            </span>
+          {/if}
+          {if $product.has_discount}
+            <span class="flex overflow-hidden h-[22px] sm:h-[26px] text-neutral-0 text-[12px] leading-[14px] font-bold sm:text-sm sm:leading-[18px]" data-testid="product-tag">
+              <span class="flex w-fit items-center pr-1 pl-1.5 sm:pr-1.5 sm:pl-2 bg-orange-500">
+                <span>{l s='Promocja tygodnia' d='Shop.Theme.Catalog'}</span>
+              </span>
+              <span class="w-[8px]">
+                <span class="-mr-px block h-full -translate-x-px bg-orange-500" style="clip-path:polygon(0 0, 100% 0, 1px 100%, 0 100%)"></span>
+              </span>
+            </span>
+          {/if}
+          {* Product flags - hide discount flags as we show them custom *}
+          <div class="product-flags-container" style="display: none;">
+            {include file='catalog/_partials/product-flags.tpl'}
+          </div>
+        </span>
         </a>
 
         {* Favorite/Wishlist Button *}
-        {* {block name='product_favorite'}
-          <button type="button" data-testid="favorite-button" class="absolute top-0 right-0 p-2" aria-label="{l s='Add to favorites' d='Shop.Theme.Actions'}">
+        {block name='product_favorite'}
+          <button type="button" data-testid="favorite-button" class="absolute top-0 right-0 p-2" aria-label="{l s='Dodaj do ulubionych' d='Shop.Theme.Actions'}">
             <svg aria-hidden="true" data-testid="Heart01" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path fill="#8593a3" d="M12 21a1 1 0 0 1-.486-.126C11.126 20.658 2 15.514 2 9c0-3.665 2.218-5.425 4.293-5.849 2.171-.44 4.328.402 5.707 2.113 1.38-1.712 3.537-2.552 5.707-2.113C19.782 3.575 22 5.335 22 9.001c0 6.513-9.126 11.657-9.515 11.873A1 1 0 0 1 12 21M7.4 5.041q-.368 0-.707.07C5.007 5.456 4 6.91 4 9.001c0 4.584 6.197 8.728 8 9.836 1.804-1.108 8-5.252 8-9.837 0-2.09-1.007-3.544-2.693-3.889-1.482-.3-3.479.346-4.387 2.475a1 1 0 0 1-1.84 0C10.31 5.78 8.755 5.04 7.4 5.04"></path>
             </svg>
           </button>
-        {/block} *}
+        {/block}
 
     </div>
   </div>

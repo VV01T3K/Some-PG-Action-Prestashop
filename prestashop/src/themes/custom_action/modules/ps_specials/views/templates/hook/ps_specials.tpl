@@ -1,4 +1,4 @@
-<section class="bg-neutral-50 mt-6 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="{l s='On sale' d='Shop.Theme.Catalog'}"
+<section class="bg-neutral-50 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="{l s='On sale' d='Shop.Theme.Catalog'}"
   data-testid="cms-weekdeals-product-carousel">
   <div class="relative flex w-full flex-col px-4 lg:px-8">
     <div class="mx-auto w-full max-w-7xl">
