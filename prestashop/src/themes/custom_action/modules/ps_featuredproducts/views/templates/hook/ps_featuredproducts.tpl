@@ -8,17 +8,33 @@
   </a>
 </section> *}
 
-<section class="bg-neutral-50 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="{l s='Popular Products' d='Shop.Theme.Catalog'}"
-  data-testid="cms-weekdeals-product-carousel">
+{* Check if this is category mode (single category) or featured mode (default) *}
+{if isset($isCategoryMode) && $isCategoryMode}
+  {* Category Mode: Just display products without "Popular Products" branding *}
+  <section class="bg-neutral-50 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="{l s='Products' d='Shop.Theme.Catalog'}"
+    data-testid="cms-category-product-carousel">
+{else}
+  {* Featured Mode: Display with "Popular Products" title *}
+  <section class="bg-neutral-50 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="{l s='Popular Products' d='Shop.Theme.Catalog'}"
+    data-testid="cms-weekdeals-product-carousel">
+{/if}
   <div class="relative flex w-full flex-col px-4 lg:px-8">
     <div class="mx-auto w-full max-w-7xl">
       <div class="flex flex-col gap-4 md:gap-6"
         style="--rowsXl:1;--columnsXl:5;--rowsLg:1;--columnsLg:4;--rowsMd:1;--columnsMd:3;--rowsSm:1;--columnsSm:3;--rowsDefault:1;--columnsDefault:2">
         <div class="flex justify-between">
           <div class="flex flex-col gap-1">
-            <h2
-              class="line-clamp-2 text-dark-blue-500 font-bold tracking-[-1px] text-[22px] leading-[30px] md:text-[28px] md:leading-[36px]"
-              data-testid="title-view-title">{l s='Popular Products' d='Shop.Theme.Catalog'}</h2>
+            {if isset($isCategoryMode) && $isCategoryMode}
+              {* Category Mode: Display the category name *}
+              <h2
+                class="line-clamp-2 text-dark-blue-500 font-bold tracking-[-1px] text-[22px] leading-[30px] md:text-[28px] md:leading-[36px]"
+                data-testid="title-view-title">{$categoryName}</h2>
+            {else}
+              {* Featured Mode: Show "Popular Products" *}
+              <h2
+                class="line-clamp-2 text-dark-blue-500 font-bold tracking-[-1px] text-[22px] leading-[30px] md:text-[28px] md:leading-[36px]"
+                data-testid="title-view-title">{l s='Popular Products' d='Shop.Theme.Catalog'}</h2>
+            {/if}
             {* <p class="line-clamp-5 text-base leading-5 font-normal text-neutral-700" data-testid="title-view-subtitle">
               05.11 – 11.11</p> *}
           </div>
@@ -66,7 +82,7 @@
             focus:bg-dark-blue-300
             focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150
 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"
-            href="{$allProductsLink}" data-testid="carousel-cta-link"><span class="truncate px-1">{l s='All products' d='Shop.Theme.Catalog'}</span></a></div>
+            href="{$allProductsLink}" data-testid="carousel-cta-link"><span class="truncate px-1">{if isset($isCategoryMode) && $isCategoryMode}{l s='Zobacz więcej' d='Shop.Theme.Catalog'}{else}{l s='All products' d='Shop.Theme.Catalog'}{/if}</span></a></div>
       </div>
     </div>
 </section>
