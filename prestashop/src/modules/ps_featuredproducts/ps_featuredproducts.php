@@ -241,6 +241,9 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
         if (!empty($configuration['category_id'])) {
             $cacheId .= '_cat_' . (int)$configuration['category_id'];
         }
+        if (!empty($configuration['compact'])) {
+            $cacheId .= '_compact';
+        }
         
         if (!$this->isCached($this->templateFile, $cacheId)) {
             $variables = $this->getWidgetVariables($hookName, $configuration);
@@ -270,6 +273,7 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
                 'isCategoryMode' => !empty($categoryId),
                 'categoryId' => $categoryId,
                 'categoryName' => $category->name,
+                'isCompact' => !empty($configuration['compact']),
             ];
         }
 
