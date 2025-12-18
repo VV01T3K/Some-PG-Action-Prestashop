@@ -98,7 +98,7 @@
                 </span>
                 {* Discount Footnote *}
                 <span class="mt-2 flex text-xs font-normal text-neutral-700" data-testid="product-card-price-discount-footnote">
-                  <span class="italic">* {l s='Najniższa cena z 30 dni przed rabatem' d='Shop.Theme.Catalog'}</span>
+                  <span class="italic">* {l s='Najniższa cena z 30 dni przed obniżką' d='Shop.Theme.Catalog'}</span>
                 </span>
               {/if}
             {/if}

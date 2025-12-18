@@ -8,8 +8,9 @@
           <div class="flex flex-col gap-1">
             <h2
               class="line-clamp-2 text-dark-blue-500 font-bold tracking-[-1px] text-[22px] leading-[30px] md:text-[28px] md:leading-[36px]"
-              data-testid="title-view-title">{l s='New products' d='Shop.Theme.Catalog'}</h2>
-
+              data-testid="title-view-title">{l s='Nowości' d='Shop.Theme.Catalog'}</h2>
+<p class="line-clamp-5 text-base leading-5 font-normal text-neutral-700" data-testid="title-view-subtitle">Co tydzień
+150 nowych produktów</p>
           </div>
         </div>
         <div class="@container relative" style="--numberOfPages: 2.25; --currentPage: 0;">
@@ -50,9 +51,12 @@
 </div>
 </div>
 <div class="flex justify-center"><a
-    class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-orange-500 text-neutral-0 hover:bg-orange-700 active:bg-orange-900 focus:bg-orange-700 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"
+    class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium
+    py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300
+    focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150
+disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"
 href="{$allNewProductsLink}" data-testid="carousel-cta-link"><span class="truncate px-1">
-{l s='All new products' d='Shop.Theme.Catalog'}</span></a></div>
+{l s='Zobacz więcej' d='Shop.Theme.Catalog'}</span></a></div>
 </div>
 </div>
 </section>

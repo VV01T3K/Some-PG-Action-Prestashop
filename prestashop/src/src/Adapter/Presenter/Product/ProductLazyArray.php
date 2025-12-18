@@ -776,7 +776,7 @@ class ProductLazyArray extends AbstractLazyArray
         if (isset($product['unit_price']) && $product['unit_price']) {
             $this->product['unit_price'] = $this->priceFormatter->format($product['unit_price']);
             $this->product['unit_price_full'] = $this->priceFormatter->format($product['unit_price'])
-                . ' ' . $product['unity'];
+                . '/' . $product['unity'];
         } else {
             $this->product['unit_price'] = $this->product['unit_price_full'] = '';
         }

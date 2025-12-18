@@ -60,7 +60,12 @@
           </div>
         </div>
         <div class="flex justify-center"><a
-            class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-orange-500 text-neutral-0 hover:bg-orange-700 active:bg-orange-900 focus:bg-orange-700 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"
+            class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base
+            font-medium
+            py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700
+            focus:bg-dark-blue-300
+            focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150
+disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"
             href="{$allProductsLink}" data-testid="carousel-cta-link"><span class="truncate px-1">{l s='All products' d='Shop.Theme.Catalog'}</span></a></div>
       </div>
     </div>

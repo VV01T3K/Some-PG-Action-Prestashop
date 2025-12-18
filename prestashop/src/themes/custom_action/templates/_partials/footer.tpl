@@ -110,6 +110,28 @@ class="btn-content-label btn-shadow-dark-blue">{l s='Formy płatności'}</span><
             </nav>
           </div>
         </div>
+        <div class="flex flex-col items-start justify-end gap-y-14 pb-14 md:flex-row md:items-end md:py-6"
+          data-testid="footer-bottom">
+          <div class="flex flex-row flex-wrap items-center gap-x-10 gap-y-4">
+            <section aria-label="Kraj i język"><button tabindex="0" onclick="alert('Dostępny jest jedynie język polski.')"
+                class="border-neutral-0 text-neutral-0 hover:border-dark-blue-700 hover:bg-dark-blue-700 cursor-pointer rounded-lg border p-3"
+                aria-labelledby="_R_rk5ciubsnpfivb_" data-testid="locale-picker-button"><span id="_R_rk5ciubsnpfivb_"
+                  class="flex gap-2"><span style="display:block;width:32px;height:24px"><svg aria-hidden="true"
+                      data-testid="FlagPlBorder" xmlns="http://www.w3.org/2000/svg" width="32" height="24" fill="none"
+                      viewBox="0 0 32 24">
+                      <path fill="#DC143C" fill-rule="evenodd" d="M28 18a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-6h24z"
+                        clip-rule="evenodd"></path>
+                      <path fill="white" fill-rule="evenodd" d="M28 12H4V6a3 3 0 0 1 3-3h18a3 3 0 0 1 3 3z"
+                        clip-rule="evenodd"></path>
+                      <rect width="25" height="19" x="3.5" y="2.5" stroke="#6672B8" rx="3.5"></rect>
+                    </svg></span>Polski<svg aria-hidden="true" data-testid="ChevronDown"
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path fill="#ffffff"
+                      d="M12 17a1 1 0 0 1-.707-.293l-7-7a1 1 0 1 1 1.414-1.414L12 14.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7A1 1 0 0 1 12 17">
+                    </path>
+                  </svg></span></button></section>
+          </div>
+</div>
       </div>
     </div>
   </div>
