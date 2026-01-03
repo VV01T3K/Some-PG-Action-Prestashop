@@ -76,6 +76,7 @@
                 {* Product Title *}
                 {block name='page_header_container'}
                   {block name='page_header'}
+                    <section>
                     <h1 class="heading-2xl mb-1">{block name='page_title'}{$product.name}{/block}</h1>
                     {* Quick product features *}
                     {if isset($product.description_short) && $product.description_short}
@@ -93,6 +94,7 @@ data-testid="product-card-description">
                         &nbsp;
                       </p>
 {/if}
+<section>
                   {/block}
                 {/block}
 

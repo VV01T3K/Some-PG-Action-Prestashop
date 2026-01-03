@@ -264,18 +264,26 @@ ul.searchbar-autocomplete li.search-result-item.ui-state-focus {
     margin: 0;
 }
 
-/* Dim page when search dropdown open */
-body.search-dropdown-open {
+/* Always have main positioned for overlay */
+main {
     position: relative;
 }
 
-body.search-dropdown-open::before {
+/* Overlay always present but invisible */
+main::before {
     content: "";
-    position: fixed;
+    position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    /* below header/logo adjustments if needed */
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Show overlay when search dropdown or category menu open */
+body.search-dropdown-open main::before {
+    opacity: 1;
 }
 
 /* Keep search dropdown and search widget above the overlay */

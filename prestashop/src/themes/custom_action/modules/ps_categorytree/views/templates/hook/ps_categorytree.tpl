@@ -165,6 +165,7 @@
               dropdown.style.opacity = '0';
               dropdown.style.pointerEvents = 'none';
             }
+            document.body.classList.remove('category-menu-open');
           } else {
             // Open menu
             button.setAttribute('aria-expanded', 'true');
@@ -188,6 +189,7 @@
               dropdown.style.opacity = '1';
               dropdown.style.pointerEvents = 'auto';
             }
+            document.body.classList.add('category-menu-open');
           }
         };
 
@@ -253,6 +255,7 @@
                 dropdown.style.pointerEvents = 'none';
               }
             });
+            document.body.classList.remove('category-menu-open');
           }
         }, false);
       })();
@@ -262,6 +265,28 @@
   <style>
     .shadow-bottom-border {
       box-shadow: inset 0 -1px 0 currentColor;
+    }
+
+    /* Always have main positioned for overlay */
+    main {
+      position: relative;
+    }
+
+    /* Overlay always present but invisible */
+    main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    /* Show overlay when category menu open */
+    body.category-menu-open main::before {
+      opacity: 1;
     }
   </style>
 {/if}
