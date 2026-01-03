@@ -42,7 +42,7 @@
           </section>
 
           <section class="checkout-summary-section">
-            <h3 class="checkout-summary-title">{l s='Order summary' d='Shop.Theme.Checkout'}</h3>
+            <h3 class="checkout-summary-title">{l s='Podsumowanie zamówienia' d='Shop.Theme.Checkout'}</h3>
             {block name='cart_summary'}
               {include file='checkout/_partials/cart-summary.tpl' cart=$cart}
             {/block}
