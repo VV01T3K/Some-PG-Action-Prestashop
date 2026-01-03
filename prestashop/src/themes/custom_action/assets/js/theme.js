@@ -156,3 +156,77 @@ function carouselButtonVisibility(next, prev, total, current) {
 		}
 	}
 }
+
+/* ================================================
+   Favorite Button Functionality
+   ================================================ */
+(function() {
+	// Prevent multiple initializations
+	if (window.favoriteButtonsInitialized) return;
+	window.favoriteButtonsInitialized = true;
+
+	// Load favorites from localStorage
+	const getFavorites = () => {
+		try {
+			return JSON.parse(localStorage.getItem('favorites') || '[]');
+		} catch (e) {
+			return [];
+		}
+	};
+
+	const saveFavorites = (favorites) => {
+		localStorage.setItem('favorites', JSON.stringify(favorites));
+	};
+
+	// Initialize all favorite buttons
+	const initFavoriteButtons = () => {
+		const favorites = getFavorites();
+		document.querySelectorAll('.favorite-btn').forEach(btn => {
+			const productId = btn.dataset.productId;
+			if (productId && favorites.includes(productId)) {
+				btn.classList.add('is-favorited');
+				btn.setAttribute('aria-pressed', 'true');
+			}
+		});
+	};
+
+	// Handle click on favorite button
+	const handleFavoriteClick = (e) => {
+		const btn = e.target.closest('.favorite-btn');
+		if (!btn) return;
+
+		e.preventDefault();
+		e.stopPropagation();
+
+		const productId = btn.dataset.productId;
+		if (!productId) return;
+
+		let favorites = getFavorites();
+
+		if (btn.classList.contains('is-favorited')) {
+			// Remove from favorites
+			favorites = favorites.filter(id => id !== productId);
+			btn.classList.remove('is-favorited');
+			btn.setAttribute('aria-pressed', 'false');
+		} else {
+			// Add to favorites
+			if (!favorites.includes(productId)) {
+				favorites.push(productId);
+			}
+			btn.classList.add('is-favorited');
+			btn.setAttribute('aria-pressed', 'true');
+		}
+
+		saveFavorites(favorites);
+	};
+
+	// Use event delegation on document body
+	document.body.addEventListener('click', handleFavoriteClick);
+
+	// Initialize on DOM ready or immediately if already loaded
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initFavoriteButtons);
+	} else {
+		initFavoriteButtons();
+	}
+})();

@@ -127,3 +127,19 @@
 .shrink-0 {
   flex-shrink: 0;
 }
+
+/* ================================================
+   Favorite Button Styles
+   ================================================ */
+
+/* Hover state - show filled gray heart when not favorited */
+.favorite-btn:not(.is-favorited):hover .heart-outline { display: none; }
+.favorite-btn:not(.is-favorited):hover .heart-hover { display: block; }
+
+/* Favorited state - always show orange filled heart */
+.favorite-btn.is-favorited .heart-outline { display: none !important; }
+.favorite-btn.is-favorited .heart-hover { display: none !important; }
+.favorite-btn.is-favorited .heart-filled { display: block !important; }
+
+/* Ensure SVGs don't capture pointer events */
+.favorite-btn svg { pointer-events: none; }

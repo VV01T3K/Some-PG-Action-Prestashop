@@ -143,11 +143,114 @@
 
         {* Favorite/Wishlist Button *}
         {block name='product_favorite'}
-          <button type="button" data-testid="favorite-button" class="absolute top-0 right-0 p-2" aria-label="{l s='Dodaj do ulubionych' d='Shop.Theme.Actions'}">
-            <svg aria-hidden="true" data-testid="Heart01" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <button type="button" 
+                  data-testid="favorite-button" 
+                  data-product-id="{$product.id_product}"
+                  class="favorite-btn absolute top-0 right-0 p-2 cursor-pointer transition-transform duration-150 hover:scale-110" 
+                  aria-label="{l s='Dodaj do ulubionych' d='Shop.Theme.Actions'}"
+                  aria-pressed="false">
+            {* unticked - shown by default when not favorited *}
+            <svg class="heart-outline block" aria-hidden="true" data-testid="Heart01" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path fill="#8593a3" d="M12 21a1 1 0 0 1-.486-.126C11.126 20.658 2 15.514 2 9c0-3.665 2.218-5.425 4.293-5.849 2.171-.44 4.328.402 5.707 2.113 1.38-1.712 3.537-2.552 5.707-2.113C19.782 3.575 22 5.335 22 9.001c0 6.513-9.126 11.657-9.515 11.873A1 1 0 0 1 12 21M7.4 5.041q-.368 0-.707.07C5.007 5.456 4 6.91 4 9.001c0 4.584 6.197 8.728 8 9.836 1.804-1.108 8-5.252 8-9.837 0-2.09-1.007-3.544-2.693-3.889-1.482-.3-3.479.346-4.387 2.475a1 1 0 0 1-1.84 0C10.31 5.78 8.755 5.04 7.4 5.04"></path>
             </svg>
+            {* hovered - shown on hover when not favorited *}
+            <svg class="heart-hover hidden" aria-hidden="true" data-testid="Heart01Filled" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path fill="#8593a3" d="M12 21a1 1 0 0 1-.486-.126C11.126 20.658 2 15.514 2 9c0-3.665 2.218-5.425 4.293-5.849 2.171-.44 4.328.402 5.707 2.113 1.38-1.712 3.537-2.552 5.707-2.113C19.782 3.575 22 5.335 22 9.001c0 6.513-9.126 11.657-9.515 11.873A1 1 0 0 1 12 21"></path>
+            </svg>
+            {* ticked - shown when favorited *}
+            <svg class="heart-filled hidden" aria-hidden="true" data-testid="Heart01FilledActive" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path fill="#ff8200" d="M12 21a1 1 0 0 1-.486-.126C11.126 20.658 2 15.514 2 9c0-3.665 2.218-5.425 4.293-5.849 2.171-.44 4.328.402 5.707 2.113 1.38-1.712 3.537-2.552 5.707-2.113C19.782 3.575 22 5.335 22 9.001c0 6.513-9.126 11.657-9.515 11.873A1 1 0 0 1 12 21"></path>
+            </svg>
           </button>
+          <style>
+            {literal}
+            /* Hover state - show filled gray heart when not favorited */
+            .favorite-btn:not(.is-favorited):hover .heart-outline { display: none; }
+            .favorite-btn:not(.is-favorited):hover .heart-hover { display: block; }
+            
+            /* Favorited state - always show orange filled heart */
+            .favorite-btn.is-favorited .heart-outline { display: none !important; }
+            .favorite-btn.is-favorited .heart-hover { display: none !important; }
+            .favorite-btn.is-favorited .heart-filled { display: block !important; }
+            
+            /* Ensure SVGs don't capture pointer events */
+            .favorite-btn svg { pointer-events: none; }
+            {/literal}
+          </style>
+          <script>
+            {literal}
+            (function() {
+              // Prevent multiple initializations
+              if (window.favoriteButtonsInitialized) return;
+              window.favoriteButtonsInitialized = true;
+              
+              // Load favorites from localStorage
+              const getFavorites = () => {
+                try {
+                  return JSON.parse(localStorage.getItem('favorites') || '[]');
+                } catch (e) {
+                  return [];
+                }
+              };
+              
+              const saveFavorites = (favorites) => {
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+              };
+              
+              // Initialize all favorite buttons
+              const initFavoriteButtons = () => {
+                const favorites = getFavorites();
+                document.querySelectorAll('.favorite-btn').forEach(btn => {
+                  const productId = btn.dataset.productId;
+                  if (productId && favorites.includes(productId)) {
+                    btn.classList.add('is-favorited');
+                    btn.setAttribute('aria-pressed', 'true');
+                  }
+                });
+              };
+              
+              // Handle click on favorite button
+              const handleFavoriteClick = (e) => {
+                const btn = e.target.closest('.favorite-btn');
+                if (!btn) return;
+                
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const productId = btn.dataset.productId;
+                if (!productId) return;
+                
+                let favorites = getFavorites();
+                
+                if (btn.classList.contains('is-favorited')) {
+                  // Remove from favorites
+                  favorites = favorites.filter(id => id !== productId);
+                  btn.classList.remove('is-favorited');
+                  btn.setAttribute('aria-pressed', 'false');
+                } else {
+                  // Add to favorites
+                  if (!favorites.includes(productId)) {
+                    favorites.push(productId);
+                  }
+                  btn.classList.add('is-favorited');
+                  btn.setAttribute('aria-pressed', 'true');
+                }
+                
+                saveFavorites(favorites);
+              };
+              
+              // Use event delegation on document body
+              document.body.addEventListener('click', handleFavoriteClick);
+              
+              // Initialize on DOM ready or immediately if already loaded
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initFavoriteButtons);
+              } else {
+                initFavoriteButtons();
+              }
+            })();
+            {/literal}
+          </script>
         {/block}
 
     </div>
