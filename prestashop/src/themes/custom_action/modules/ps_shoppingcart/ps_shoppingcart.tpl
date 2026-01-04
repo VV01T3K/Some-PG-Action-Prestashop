@@ -26,3 +26,20 @@
     </div>
   </div>
 </div>
+
+
+<script>
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      var psShoppingcartScript = document.createElement('script');
+      psShoppingcartScript.src = '{$smarty.const._MODULE_DIR_}ps_shoppingcart/ps_shoppingcart.js';
+      psShoppingcartScript.async = true;
+      document.body.appendChild(psShoppingcartScript);
+    });
+  } else {
+    var psShoppingcartScript = document.createElement('script');
+    psShoppingcartScript.src = '{$smarty.const._MODULE_DIR_}ps_shoppingcart/ps_shoppingcart.js';
+    psShoppingcartScript.async = true;
+    document.body.appendChild(psShoppingcartScript);
+  }
+</script>

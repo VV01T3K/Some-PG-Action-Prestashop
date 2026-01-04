@@ -193,6 +193,26 @@ document.addEventListener('click', (e) => {
     const newTotal = currentTotal + priceChange;
     cartTotalPriceElement.textContent = formatPrice(newTotal);
   }
+  
+  // Update cart badge and aria-label with new total quantity
+  const cartLink = document.querySelector('[data-testid="shopping-cart"]');
+  if (cartLink) {
+    const currentAriaLabel = cartLink.getAttribute('aria-label');
+    const match = currentAriaLabel.match(/zawierającego (\d+)/);
+    if (match) {
+      const oldTotalQty = parseInt(match[1], 10);
+      const newTotalQty = oldTotalQty + (newQuantity - currentQuantity);
+      const productWord = newTotalQty === 1 ? 'produkt' : 'produkt(ów)';
+      const newLabel = `Link do koszyka zawierającego ${newTotalQty} ${productWord}`;
+      cartLink.setAttribute('aria-label', newLabel);
+      
+      // Also update badge immediately with TOTAL QUANTITY
+      const badgeElements = document.querySelectorAll('[data-testid="cart-button-badge-text"], .cart-products-count');
+      badgeElements.forEach((element) => {
+        element.textContent = newTotalQty;
+      });
+    }
+  }
 
   // Send update to server
   // Calculate the difference between old and new quantity
@@ -474,18 +494,88 @@ function updateCartTotal() {
       }
     }
   })
-  .catch(error => {});
+  .catch(error => {
+  });
 }
 
-$(document).ready(function () {
+function updateCartProductCount() {
+  const cartProductCountElement = document.getElementById('cart-product-count');
+  
+  // Count the number of distinct products and sum total quantity
+  const cartOverview = document.querySelector('.cart-overview');
+  if (!cartOverview) {
+    console.warn('Cart overview not found');
+    return;
+  }
+  
+  const productRows = cartOverview.querySelectorAll('[data-testid="product-row"]');
+  const productCount = productRows.length;
+  
+  // Calculate total quantity by summing all product quantities
+  let totalQuantity = 0;
+  productRows.forEach((row) => {
+    const quantityDiv = row.querySelector('.js-cart-line-product-quantity');
+    if (quantityDiv) {
+      const quantityText = quantityDiv.textContent.trim().replace(/\s+/g, '');
+      const quantity = parseInt(quantityText, 10);
+      if (!isNaN(quantity)) {
+        totalQuantity += quantity;
+      }
+    }
+  });
+  
+  // Update all cart badge elements in header with TOTAL QUANTITY
+  const badgeElements = document.querySelectorAll('[data-testid="cart-button-badge-text"], .cart-products-count');
+  badgeElements.forEach((element) => {
+    const oldValue = element.textContent;
+    element.textContent = totalQuantity;
+  });
+  
+  // Update cart page count element with NUMBER OF DISTINCT PRODUCTS
+  if (cartProductCountElement) {
+    const productWord = productCount === 1 ? 'produkt' : 'produkty';
+    cartProductCountElement.textContent = `${productCount} ${productWord}`;
+  }
+}
+
+$(document).ready(function() {
   prestashop.blockcart = prestashop.blockcart || {};
 
   // Initialize decrement button appearance
   updateDecrementButtonAppearance();
   
+  // Watch for quantity changes using MutationObserver (backup mechanism)
+  const cartOverview = document.querySelector('.cart-overview');
+  if (cartOverview) {
+    const observer = new MutationObserver(function(mutations) {
+      let shouldUpdate = false;
+      
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'characterData' || 
+            (mutation.type === 'childList' && mutation.target.closest('[data-testid="product-row"]'))) {
+          shouldUpdate = true;
+        }
+      });
+      
+      if (shouldUpdate) {
+        setTimeout(() => {
+          updateCartTotal();
+          updateCartProductCount();
+        }, 100);
+      }
+    });
+    
+    observer.observe(cartOverview, {
+      subtree: true,
+      characterData: true,
+      childList: true
+    });
+  }
+  
   // Listen for cart quantity updates and update price
   document.addEventListener('cartQuantityUpdated', (e) => {
     updateCartTotal();
+    updateCartProductCount();
     ensureCartFooterVisible();
   });
 
