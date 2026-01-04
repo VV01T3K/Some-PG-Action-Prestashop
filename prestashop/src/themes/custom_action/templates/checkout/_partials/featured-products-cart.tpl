@@ -99,6 +99,14 @@ window.addToCartFeatured = function(event) {
 		document.dispatchEvent(new CustomEvent('cartQuantityUpdated', {
 			detail: { response: data }
 		}));
+
+
+		setTimeout(() => {
+			if (typeof updateCartProductCount === 'function') {
+				updateCartProductCount();
+			}
+		}, 500);
+
 		// Re-enable button
 		setTimeout(() => {
 			button.disabled = false;

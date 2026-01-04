@@ -182,6 +182,7 @@ document.addEventListener('click', (e) => {
   // Update the UI immediately
   quantityDiv.textContent = newQuantity;
   updateDecrementButtonAppearance();
+  updateCartProductCount();
 
   // Update price display with local calculation
   const cartTotalPriceElement = getCartTotalPriceElement();
