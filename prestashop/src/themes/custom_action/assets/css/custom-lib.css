@@ -264,6 +264,48 @@ ul.searchbar-autocomplete li.search-result-item.ui-state-focus {
     margin: 0;
 }
 
+/* Search cart heart button */
+ul.searchbar-autocomplete li.search-result-item .search-cart-heart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.2s ease;
+    flex-shrink: 0;
+}
+
+ul.searchbar-autocomplete li.search-result-item .search-cart-heart:hover {
+    transform: scale(1.1);
+}
+
+ul.searchbar-autocomplete li.search-result-item .search-cart-heart.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+ul.searchbar-autocomplete li.search-result-item .search-cart-heart svg {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+/* Heart states for search - default: show outline only */
+.search-cart-heart .heart-outline { display: block; }
+.search-cart-heart .heart-hover { display: none; }
+.search-cart-heart .heart-filled { display: none; }
+
+/* Hover state - show filled gray heart when not in cart */
+.search-cart-heart:not(.is-in-cart):hover .heart-outline { display: none; }
+.search-cart-heart:not(.is-in-cart):hover .heart-hover { display: block; }
+
+/* In cart state - always show orange filled heart */
+.search-cart-heart.is-in-cart .heart-outline { display: none !important; }
+.search-cart-heart.is-in-cart .heart-hover { display: none !important; }
+.search-cart-heart.is-in-cart .heart-filled { display: block !important; }
+
 /* Always have main positioned for overlay */
 main {
     position: relative;
