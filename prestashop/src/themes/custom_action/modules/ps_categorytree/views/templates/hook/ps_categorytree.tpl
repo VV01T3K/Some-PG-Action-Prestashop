@@ -1,4 +1,106 @@
-{if $carousel}
+{if $momenty}
+  {* Momenty dropdown variant - full width with featured cards and category pills *}
+  <div class="group/submenu">
+    <button class="text-body-normal text-dark-blue-500 flex flex-row pt-3 pb-4 font-medium group-hover/submenu:shadow-[inset_0_-2px_0]"
+      aria-expanded="false" onclick="toggleCategoryMenu(this, event)">
+      Momenty
+      <svg aria-hidden="true" data-testid="CaretDownMd" class="transition-transform duration-300"
+        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path fill="#001489"
+          d="M12 15a1 1 0 0 1-.707-.293l-4-4a1 1 0 1 1 1.414-1.414L12 12.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4A1 1 0 0 1 12 15">
+        </path>
+      </svg>
+    </button>
+
+    <div class="z-[80] overflow-hidden transition-all duration-300 ease-in-out momenty-dropdown"
+      style="opacity: 0; pointer-events: none; height: 0px;" data-menu-dropdown>
+      <div class="bg-neutral-0 rounded-b-md transition-all duration-300 ease-in-out">
+        <div class="relative flex w-full flex-col px-4 lg:px-8">
+          <div class="mx-auto w-full max-w-7xl">
+            <div class="flex flex-col gap-4 pt-4 pb-14">
+
+              {* Featured cards row - 4 hardcoded cards *}
+              <div class="flex justify-evenly gap-4">
+                {* Card 1: Sprzątanie i przechowywanie *}
+                <a class="group relative flex h-[280px] w-full lg:h-[360px] xl:h-[430px] overflow-hidden rounded-lg"
+                  href="#sprzatanie" data-testid="moment-menu-image-link">
+                  <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
+                    class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
+                    style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
+                    src="https://asset.action.com/image/upload/t_digital_menu_thema_mobile/w_640/Fresh_Fun_Teaser_carousel_Cleaning_2025_hsydj0.webp">
+                  <span style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
+                  <span class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl" style="z-index: 2;">
+                    Sprzątanie i przechowywanie
+                  </span>
+                </a>
+
+                {* Card 2: Wszędzie najniższe ceny *}
+                <a class="group relative flex h-[280px] w-full lg:h-[360px] xl:h-[430px] overflow-hidden rounded-lg"
+                  href="#najnizsze-ceny" data-testid="moment-menu-image-link">
+                  <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
+                    class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
+                    style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
+                    src="https://asset.action.com/image/upload/t_digital_menu_thema_mobile/w_640/Extreme_low_Prices_2025_PL_tbzpzg.webp">
+                  <span style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
+                  <span class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl" style="z-index: 2;">
+                    Wszędzie najniższe ceny
+                  </span>
+                </a>
+
+                {* Card 3: Sport *}
+                <a class="group relative flex h-[280px] w-full lg:h-[360px] xl:h-[430px] overflow-hidden rounded-lg"
+                  href="#sport" data-testid="moment-menu-image-link">
+                  <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
+                    class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
+                    style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
+                    src="https://asset.action.com/image/upload/t_digital_menu_thema_mobile/w_640/FreshFun_Health_HealthySnacks_SportArticles_2026_2_zjrssk.webp">
+                  <span style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
+                  <span class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl" style="z-index: 2;">
+                    Sport
+                  </span>
+                </a>
+
+                {* Card 4: Pudełka do przechowywania *}
+                <a class="group relative flex h-[280px] w-full lg:h-[360px] xl:h-[430px] overflow-hidden rounded-lg"
+                  href="#pudelka" data-testid="moment-menu-image-link">
+                  <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
+                    class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
+                    style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
+                    src="https://asset.action.com/image/upload/t_digital_menu_thema_mobile/w_640/FreshFun_Storage_Boxes_OrganizeStorage_2026_hmsavw.webp">
+                  <span style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
+                  <span class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl" style="z-index: 2;">
+                    Pudełka do przechowywania
+                  </span>
+                </a>
+              </div>
+
+              {* Pozostałe kategorie - dynamic from PrestaShop categories *}
+              <span class="text-dark-blue-500 flex basis-full font-bold">Pozostałe kategorie</span>
+              <div class="flex flex-wrap gap-4">
+                {foreach from=$allCategories.children item=category}
+                  <a class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"
+                    href="{$category.link}" data-testid="moment-menu-link">
+                    <span class="truncate px-1">{$category.name}</span>
+                  </a>
+                {/foreach}
+              </div>
+
+              {* Screen reader close button *}
+              <div class="sr-only focus-within:not-sr-only">
+                <button type="button"
+                  class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-neutral-0 text-dark-blue-500 outline outline-1 outline-dark-blue-500 hover:bg-dark-blue-50 hover:text-dark-blue-700 hover:outline-dark-blue-700 active:bg-dark-blue-500 active:text-neutral-0 active:outline-dark-blue-500 focus:bg-dark-blue-300 focus:text-neutral-0 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline-neutral w-full"
+                  onclick="closeCategoryMenu()">
+                  <span class="truncate px-1">Zamknij</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{elseif $carousel}
   {if !empty($categories.children)}
     <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8 lg:pt-0" aria-label="Kategorie"
       data-testid="cms-category-carousel">

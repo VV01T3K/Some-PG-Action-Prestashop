@@ -3,6 +3,38 @@
     display: none !important;
 }
 
+/* Momenty card gradient overlay */
+.momenty-card-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Ensure text is above gradient */
+[data-testid="moment-menu-image-link"] > span:last-child {
+    z-index: 2;
+}
+
+/* Momenty dropdown - full viewport width breaking out of container */
+.group\/submenu:has(.momenty-dropdown) {
+    position: static !important;
+}
+
+.momenty-dropdown {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    width: 100vw !important;
+    transform: translateX(-50%) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
 
 #search_widget,
 #search_widget search,
