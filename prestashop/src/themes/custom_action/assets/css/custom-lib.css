@@ -360,11 +360,49 @@ body.search-dropdown-open main::before {
     opacity: 1;
 }
 
+/* Hide old overlay when new search overlay is active */
+body.search-active main::before {
+    opacity: 0 !important;
+}
+
 /* Keep search dropdown and search widget above the overlay */
 #search_widget,
 ul.ui-autocomplete.searchbar-autocomplete {
     position: relative;
     z-index: 1000;
+}
+
+/* Full-page search overlay - covers entire viewport including header */
+.search-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Show search overlay when search is active */
+body.search-active .search-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Ensure header search area stays above the search overlay */
+body.search-active #search_widget {
+    position: relative;
+    z-index: 9999;
+}
+
+body.search-active ul.ui-autocomplete.searchbar-autocomplete {
+    z-index: 9999 !important;
+}
+
+/* Keep search container above overlay */
+body.search-active [data-testid="desktop-search"] {
+    position: relative;
+    z-index: 9999;
 }
 
 section.splide[aria-label="Simple Splide Carousel"] .splide__arrow--prev {

@@ -52,6 +52,41 @@ document.addEventListener('DOMContentLoaded', () => {
 		input.focus();
 	});
 
+
+	// Search overlay functionality - show overlay when search has value
+	const searchOverlay = document.querySelector('.search-overlay');
+	const updateSearchOverlay = (input) => {
+		if (!input) return;
+		const hasValue = input.value.trim().length > 0;
+		document.body.classList.toggle('search-active', hasValue);
+	};
+
+	// Handle input changes on search bar for overlay
+	document.addEventListener('input', (event) => {
+		if (!event.target.matches(searchInputSelector)) {
+			return;
+		}
+		updateSearchOverlay(event.target);
+	});
+
+	// Handle click on search overlay to close search
+	if (searchOverlay) {
+		searchOverlay.addEventListener('click', () => {
+			const searchInput = document.querySelector(searchInputSelector);
+			if (searchInput) {
+				searchInput.value = '';
+				searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+				searchInput.blur();
+				// Close autocomplete if jQuery UI is available
+				if (window.jQuery && jQuery(searchInput).autocomplete) {
+					jQuery(searchInput).autocomplete('close');
+				}
+			}
+			document.body.classList.remove('search-active');
+			document.body.classList.remove('search-dropdown-open');
+		});
+	}
+
 	const toggleAuthPane = (container, targetId) => {
 		if (!container || !targetId) {
 			return;

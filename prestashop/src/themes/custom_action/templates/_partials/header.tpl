@@ -1,4 +1,5 @@
 {block name='header'}
+  <div class="search-overlay" aria-hidden="true"></div>
   <header>
     <div id="skiptocontent" class="sr-only focus-within:not-sr-only">
       <div class="bg-orange-300 px-4 py-1"><a class="text-body-small text-dark-blue-500 font-medium underline"
@@ -135,8 +136,38 @@
       <div class="-mt-px h-px bg-neutral-50"></div>
     </div>
   </header>
-  {* <script>
-var urls = {$urls.pages|json_encode nofilter};
-    console.log(urls);
-  </script> *}
+  <script>
+  (function() {
+    var searchInput = document.querySelector('[data-testid="search-bar"]');
+    var searchOverlay = document.querySelector('.search-overlay');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        var hasValue = this.value.trim().length > 0;
+        document.body.classList.toggle('search-active', hasValue);
+      });
+
+      searchInput.addEventListener('focus', function() {
+        if (this.value.trim().length > 0) {
+          document.body.classList.add('search-active');
+        }
+      });
+    }
+
+    if (searchOverlay) {
+      searchOverlay.addEventListener('click', function() {
+        if (searchInput) {
+          searchInput.value = '';
+          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+          searchInput.blur();
+        }
+        document.body.classList.remove('search-active');
+        document.body.classList.remove('search-dropdown-open');
+        if (window.jQuery && jQuery(searchInput).autocomplete) {
+          jQuery(searchInput).autocomplete('close');
+        }
+      });
+    }
+  })();
+  </script>
 {/block}
