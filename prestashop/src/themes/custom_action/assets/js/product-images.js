@@ -1,6 +1,7 @@
 /**
  * Product Images Gallery - Action.com style
  * Handles mobile thumbnail navigation and carousel scrolling
+ * Handles modal gallery view
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -52,21 +53,75 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Desktop grid - click to view larger (optional lightbox functionality)
+  // Modal Gallery Functionality
+  const modalRoot = document.getElementById('modal-root');
+  const modalOverlay = document.getElementById('image-gallery-modal');
+  const modalContent = document.getElementById('modal-content');
+  const modalScrim = document.getElementById('modal-scrim');
+  const closeButton = document.getElementById('modal-close-button');
   const desktopImageButtons = document.querySelectorAll('.js-thumb-trigger');
 
+  // Function to open modal
+  function openModal() {
+    if (modalRoot && modalOverlay && modalContent) {
+      // Show modal
+      modalRoot.classList.remove('hidden');
+      modalRoot.style.display = 'block';
+
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+
+      // Trigger animations after a brief delay
+      setTimeout(() => {
+        modalOverlay.classList.remove('opacity-0');
+        modalOverlay.classList.add('opacity-100');
+        modalContent.classList.remove('translate-y-full', 'md:scale-95');
+        modalContent.classList.add('translate-y-0', 'md:scale-100');
+      }, 10);
+    }
+  }
+
+  // Function to close modal
+  function closeModal() {
+    if (modalRoot && modalOverlay && modalContent) {
+      // Animate out
+      modalOverlay.classList.remove('opacity-100');
+      modalOverlay.classList.add('opacity-0');
+      modalContent.classList.remove('translate-y-0', 'md:scale-100');
+      modalContent.classList.add('translate-y-full', 'md:scale-95');
+
+      // Hide after animation
+      setTimeout(() => {
+        modalRoot.classList.add('hidden');
+        modalRoot.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 200);
+    }
+  }
+
+  // Desktop grid - click to open modal
   if (desktopImageButtons.length > 0) {
     desktopImageButtons.forEach((button) => {
       button.addEventListener('click', function() {
-        const largeImageUrl = this.getAttribute('data-image-large-src');
-
-        // You can implement a lightbox/modal here if needed
-        // For now, just log the action
-        console.log('Image clicked:', largeImageUrl);
-
-        // Optional: Open image in new tab
-        // window.open(largeImageUrl, '_blank');
+        openModal();
       });
     });
   }
+
+  // Close button
+  if (closeButton) {
+    closeButton.addEventListener('click', closeModal);
+  }
+
+  // Close on scrim click
+  if (modalScrim) {
+    modalScrim.addEventListener('click', closeModal);
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && modalRoot && !modalRoot.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
 });

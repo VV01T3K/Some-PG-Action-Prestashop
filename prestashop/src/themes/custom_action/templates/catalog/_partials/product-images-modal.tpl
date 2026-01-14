@@ -22,66 +22,77 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-<div class="modal fade js-product-images-modal" id="product-modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        {assign var=imagesCount value=$product.images|count}
-        <figure>
-          {if $product.default_image}
-            <img
-              class="js-modal-product-cover product-cover-modal img-fluid"
-              width="{$product.default_image.bySize.large_default.width}"
-              src="{$product.default_image.bySize.large_default.url}"
-              {if !empty($product.default_image.legend)}
-                alt="{$product.default_image.legend}"
-                title="{$product.default_image.legend}"
-              {else}
-                alt="{$product.name}"
-              {/if}
-              height="{$product.default_image.bySize.large_default.height}"
-            >
-          {else}
-            <img src="{$urls.no_picture_image.bySize.large_default.url}" loading="lazy" width="{$urls.no_picture_image.bySize.large_default.width}" height="{$urls.no_picture_image.bySize.large_default.height}" />
-          {/if}
-          <figcaption class="image-caption">
-          {block name='product_description_short'}
-            <div id="product-description-short">{$product.description_short nofilter}</div>
-          {/block}
-        </figcaption>
-        </figure>
-        <aside id="thumbnails" class="thumbnails js-thumbnails text-sm-center">
-          {block name='product_images'}
-            <div class="js-modal-mask mask {if $imagesCount <= 5} nomargin {/if}">
-              <ul class="product-images js-modal-product-images">
-                {foreach from=$product.images item=image}
-                  <li class="thumb-container js-thumb-container">
-                    <img
-                      data-image-large-src="{$image.large.url}"
-                      class="thumb js-modal-thumb"
-                      src="{$image.medium.url}"
-                      {if !empty($image.legend)}
-                        alt="{$image.legend}"
-                        title="{$image.legend}"
-                      {else}
-                        alt="{$product.name}"
-                      {/if}
-                      width="{$image.medium.width}"
-                      height="148"
-                    >
-                  </li>
-                {/foreach}
-              </ul>
-            </div>
-          {/block}
-          {if $imagesCount > 5}
-            <div class="arrows js-modal-arrows">
-              <i class="material-icons arrow-up js-modal-arrow-up">&#xE5C7;</i>
-              <i class="material-icons arrow-down js-modal-arrow-down">&#xE5C5;</i>
-            </div>
-          {/if}
-        </aside>
+{* Action.com style image gallery modal *}
+<div id="modal-root" data-testid="modal-root" class="hidden" style="display: none; z-index: 9999;">
+  <div class="fixed top-0 left-0 flex w-full items-end justify-center md:items-center h-full transition-opacity duration-200 ease-in-out opacity-0"
+       aria-labelledby="image-gallery-modal-title"
+       data-testid="image-gallery-modal"
+       id="image-gallery-modal"
+       style="z-index: 9999;">
+
+    {* Modal content *}
+    <div class="bg-neutral-0 relative z-20 flex max-h-full w-full flex-col overflow-y-auto pb-6 md:w-[600px] pt-[72px] md:pt-[88px] md:w-[800px] transition-transform duration-200 ease-in-out translate-y-full md:translate-y-0 md:scale-95"
+         aria-modal="true"
+         id="modal-content"
+         style="background-color: white;">
+
+      {* Header *}
+      <div class="absolute top-0 left-0 flex w-full items-center px-4 py-4 md:px-8 md:py-6 justify-end">
+        <h2 tabindex="-1"
+            id="image-gallery-modal-title"
+            class="heading-xl focus-visible:outline-none pr-8"
+            data-testid="image-gallery-modal-title">
+        </h2>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+
+      {* Images grid *}
+      <div tabindex="-1" class="overflow-y-auto px-4 md:px-8 max-h-[80dvh] max-w-[800px] overflow-y-auto">
+        <ul class="grid grid-cols-2 place-items-center gap-4" aria-label="Images Modal">
+          {foreach from=$product.images item=image name=modalImageLoop}
+            <li class="col-span-2 flex h-full w-full justify-center gap-4 bg-neutral-50 object-cover p-6" style="background-color: #f5f5f5;">
+              <img
+                alt="{if !empty($image.legend)}{$image.legend}{else}{$product.name} {$smarty.foreach.modalImageLoop.iteration}{/if}"
+                loading="lazy"
+                width="750"
+                height="750"
+                decoding="async"
+                data-nimg="1"
+                class="h-full max-h-[750px] w-full max-w-[750px]"
+                srcset="{$image.bySize.large_default.url} 1x, {$image.bySize.large_default.url} 2x"
+                src="{$image.bySize.large_default.url}"
+                style="color: transparent;">
+            </li>
+          {/foreach}
+        </ul>
+      </div>
+
+      {* Close button *}
+      <div class="absolute top-0 right-0 pt-2 pr-4 md:pt-5 md:pr-6">
+        <button type="button"
+                data-testid="image-gallery-modal-close-button"
+                class="flex items-center justify-center"
+                id="modal-close-button"
+                aria-label="Zamknij"
+                style="width: 40px; height: 40px;">
+          <svg aria-hidden="true"
+               data-testid="CloseMd"
+               xmlns="http://www.w3.org/2000/svg"
+               width="32"
+               height="32"
+               fill="none"
+               viewBox="0 0 24 24">
+            <path fill="#001489"
+                  d="M18 19a1 1 0 0 1-.707-.293L12 13.414l-5.293 5.293a1 1 0 1 1-1.414-1.414L10.586 12 5.293 6.707a1 1 0 1 1 1.414-1.414L12 10.586l5.293-5.293a1 1 0 1 1 1.414 1.414L13.414 12l5.293 5.293A1 1 0 0 1 18 19"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    {* Background scrim *}
+    <div class="absolute z-10 h-full w-full bg-neutral-900/40"
+         data-testid="image-gallery-modal-scrim"
+         id="modal-scrim"
+         style="background-color: rgba(0, 0, 0, 0.4);">
+    </div>
+  </div>
+</div>

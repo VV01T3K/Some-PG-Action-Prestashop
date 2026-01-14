@@ -260,9 +260,9 @@ data-testid="product-card-description">
       {hook h='displayFooterProduct' product=$product category=$category}
     {/block} *}
 
-    {* {block name='product_images_modal'}
+    {block name='product_images_modal'}
       {include file='catalog/_partials/product-images-modal.tpl'}
-    {/block} *}
+    {/block}
 
     {hook h='displayFeaturedProducts'}
 
