@@ -221,12 +221,13 @@ data-testid="product-card-description">
           <section aria-labelledby="related-categories-title" class="mt-8 mb-8">
             <h2 id="related-categories-title" class="heading-lg mb-2" data-testid="related-categories">
               {l s='Powiązane kategorie' d='Shop.Theme.Catalog'}</h2>
-            <ul class="no-scrollbar -mx-4 flex flex-row gap-2 overflow-auto px-4 whitespace-nowrap lg:flex-wrap">
+            <ul class="no-scrollbar -mx-4 flex flex-row gap-2 overflow-auto px-4 whitespace-nowrap lg:flex-wrap lg:justify-center" style="list-style: none; display: flex; flex-direction: row; gap: 0.5rem; overflow: auto; padding-left: 1rem; padding-right: 1rem; margin-left: -1rem; margin-right: -1rem; white-space: nowrap; flex-wrap: wrap; justify-content: center;">
               {foreach from=$product_categories item=cat}
-                <li class="group border-orange bg-neutral-0 hover:bg-orange h-fit border px-3 py-2">
-                  <a href="{$cat.link|escape:'html':'UTF-8'}" data-testid="links-list-link">
-                    <p class="text-body-small group-hover:text-neutral-0 text-neutral-900">{$cat.name|escape:'html':'UTF-8'}
-                    </p>
+                <li class="group flex flex-wrap items-center gap-2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;">
+                  <a class="btn-base group btn-tertiary w-fit" href="{$cat.link|escape:'html':'UTF-8'}" data-testid="links-list-link" style="position: relative; box-sizing: border-box; display: flex; max-width: 100%; align-items: center; justify-content: center; gap: 0.25rem; border-radius: 9999px; font-size: 1rem; font-weight: 500; padding: 0.625rem 1.25rem; background-color: transparent; border: 1px solid #1a365d; text-decoration: none; transition: all 0.2s ease; width: fit-content;" onmouseover="this.style.backgroundColor='#1a365d'; this.querySelector('p').style.setProperty('color', '#ffffff', 'important');" onmouseout="this.style.backgroundColor='transparent'; this.querySelector('p').style.setProperty('color', '#ffffff', 'important');">
+                    <span class="btn-content-label btn-shadow-dark-blue" style="display: flex; align-items: center; justify-content: center;">
+                      <p class="text-body-small" style="font-size: 0.875rem; line-height: 1.25rem; margin: 0; color: #ffffff !important; transition: color 0.2s ease;">{$cat.name|escape:'html':'UTF-8'}</p>
+                    </span>
                   </a>
                 </li>
               {/foreach}
