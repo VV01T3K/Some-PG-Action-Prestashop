@@ -64,12 +64,18 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to open modal
   function openModal() {
     if (modalRoot && modalOverlay && modalContent) {
+      // Calculate scrollbar width before hiding it
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
       // Show modal
       modalRoot.classList.remove('hidden');
       modalRoot.style.display = 'block';
 
-      // Prevent body scroll
+      // Prevent body scroll and compensate for scrollbar
       document.body.style.overflow = 'hidden';
+      if (scrollbarWidth > 0) {
+        document.body.style.paddingRight = scrollbarWidth + 'px';
+      }
 
       // Trigger animations after a brief delay
       setTimeout(() => {
@@ -95,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
         modalRoot.classList.add('hidden');
         modalRoot.style.display = 'none';
         document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
       }, 200);
     }
   }
