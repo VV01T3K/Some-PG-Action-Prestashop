@@ -40,6 +40,7 @@
     <meta property="product:weight:units" content="{$product.weight_unit}">
   {/if}
   <link rel="stylesheet" href="{$urls.theme_assets}css/product.css">
+  <script type="text/javascript" src="{$urls.theme_assets}js/product-images.js" defer></script>
 {/block}
 
 {block name='head_microdata_special'}
