@@ -1,7 +1,8 @@
 {if $momenty}
   {* Momenty dropdown variant - full width with featured cards and category pills *}
   <div class="group/submenu relative">
-    <button class="text-body-normal text-dark-blue-500 flex flex-row pt-3 pb-4 font-medium group-hover/submenu:shadow-[inset_0_-2px_0]"
+    <button
+      class="text-body-normal text-dark-blue-500 flex flex-row pt-3 pb-4 font-medium group-hover/submenu:shadow-[inset_0_-2px_0]"
       aria-expanded="false" onclick="toggleCategoryMenu(this, event)">
       Momenty
       <svg aria-hidden="true" data-testid="CaretDownMd" class="transition-transform duration-300"
@@ -12,67 +13,83 @@
       </svg>
     </button>
 
-    <div class="absolute top-full left-0 z-[80] hidden momenty-dropdown" style="width: 100vw; margin-left: calc(-50vw + 50%);" data-menu-dropdown>
+    <div class="absolute top-full left-0 z-[80] hidden momenty-dropdown"
+      style="width: 100vw; margin-left: calc(-50vw + 50%);" data-menu-dropdown>
       {* Background overlay layer *}
-      <div class="bg-neutral-0 shadow-lg pointer-events-none absolute top-0 left-0 h-full transition-all duration-300 ease-in-out rounded-b-md opacity-0 -translate-y-4" style="width: 100vw;" data-menu-bg></div>
+      <div
+        class="bg-neutral-0 shadow-lg pointer-events-none absolute top-0 left-0 h-full transition-all duration-300 ease-in-out rounded-b-md opacity-0 -translate-y-4"
+        style="width: 100vw;" data-menu-bg></div>
 
       {* Content layer *}
-      <div class="relative flex flex-col transition-all duration-300 ease-in-out opacity-0 -translate-y-4" style="width: 100vw;">
+      <div class="relative flex flex-col transition-all duration-300 ease-in-out opacity-0 -translate-y-4"
+        style="width: 100vw;">
         <div class="relative flex w-full flex-col px-4 lg:px-8">
           <div class="mx-auto w-full max-w-7xl">
             <div class="flex flex-col gap-4 pt-4 pb-14">
 
               {* Featured cards row - 4 hardcoded cards *}
               <div class="flex justify-evenly gap-4">
-                {* Card 1: Sprzątanie i przechowywanie *}
+                {* Card 1: Wyposażęnie domu *}
                 <a class="group relative flex h-[280px] w-full lg:h-[360px] xl:h-[430px] overflow-hidden rounded-lg"
-                  href="#sprzatanie" data-testid="moment-menu-image-link">
+                  href="/15-wyposazenie-domu" data-testid="moment-menu-image-link">
                   <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
                     class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
                     style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                    src="https://asset.action.com/image/upload/t_digital_menu_thema_mobile/w_640/Fresh_Fun_Teaser_carousel_Cleaning_2025_hsydj0.webp">
-                  <span style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
-                  <span class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl" style="z-index: 2;">
-                    Sprzątanie i przechowywanie
+                    src="/static/Fresh_Fun_Teaser_carousel_Cleaning_2025_hsydj0.avif">
+                  <span
+                    style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
+                  <span
+                    class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl"
+                    style="z-index: 2;">
+                    Wyposażęnie domu
                   </span>
                 </a>
 
                 {* Card 2: Wszędzie najniższe ceny *}
                 <a class="group relative flex h-[280px] w-full lg:h-[360px] xl:h-[430px] overflow-hidden rounded-lg"
-                  href="#najnizsze-ceny" data-testid="moment-menu-image-link">
+                  href="/promocje" data-testid="moment-menu-image-link">
                   <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
                     class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
                     style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                    src="https://asset.action.com/image/upload/t_digital_menu_thema_mobile/w_640/Extreme_low_Prices_2025_PL_tbzpzg.webp">
-                  <span style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
-                  <span class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl" style="z-index: 2;">
+                    src="/static/Extreme_low_Prices_2025_PL_tbzpzg.png">
+                  <span
+                    style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
+                  <span
+                    class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl"
+                    style="z-index: 2;">
                     Wszędzie najniższe ceny
                   </span>
                 </a>
 
-                {* Card 3: Sport *}
+                {* Card 3: Hobby *}
                 <a class="group relative flex h-[280px] w-full lg:h-[360px] xl:h-[430px] overflow-hidden rounded-lg"
-                  href="#sport" data-testid="moment-menu-image-link">
+                  href="/10-Hobby" data-testid="moment-menu-image-link">
                   <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
                     class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
                     style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                    src="https://asset.action.com/image/upload/t_digital_menu_thema_mobile/w_640/FreshFun_Health_HealthySnacks_SportArticles_2026_2_zjrssk.webp">
-                  <span style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
-                  <span class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl" style="z-index: 2;">
-                    Sport
+                    src="/static/FreshFun_Health_HealthySnacks_SportArticles_2026_2_zjrssk.avif">
+                  <span
+                    style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
+                  <span
+                    class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl"
+                    style="z-index: 2;">
+                    Hobby
                   </span>
                 </a>
 
-                {* Card 4: Pudełka do przechowywania *}
+                {* Card 4: Pakowanie prezentow *}
                 <a class="group relative flex h-[280px] w-full lg:h-[360px] xl:h-[430px] overflow-hidden rounded-lg"
-                  href="#pudelka" data-testid="moment-menu-image-link">
+                  href="/19-pakowanie-prezentow" data-testid="moment-menu-image-link">
                   <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
                     class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
                     style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                    src="https://asset.action.com/image/upload/t_digital_menu_thema_mobile/w_640/FreshFun_Storage_Boxes_OrganizeStorage_2026_hmsavw.webp">
-                  <span style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
-                  <span class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl" style="z-index: 2;">
-                    Pudełka do przechowywania
+                    src="/static/FreshFun_Storage_Boxes_OrganizeStorage_2026_hmsavw.avif">
+                  <span
+                    style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
+                  <span
+                    class="text-neutral-0 absolute bottom-4 left-0 line-clamp-2 w-full px-4 text-lg font-bold break-words lg:text-xl"
+                    style="z-index: 2;">
+                    Pakowanie prezentow
                   </span>
                 </a>
               </div>
@@ -97,12 +114,12 @@
                 </button>
               </div>
 
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 {elseif $carousel}
   {if !empty($categories.children)}
@@ -176,7 +193,7 @@
     <button
       class="text-body-normal text-dark-blue-500 flex flex-row pt-3 pb-4 font-medium group-hover/submenu:shadow-[inset_0_-2px_0]"
       aria-expanded="false" onclick="toggleCategoryMenu(this, event)">
-{if $allCategories.name == "Strona główna"}Produkty{else}{$allCategories.name}{/if}
+      {if $allCategories.name == "Strona główna"}Produkty{else}{$allCategories.name}{/if}
       <svg aria-hidden="true" data-testid="CaretDownMd" class="transition-transform duration-300"
         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path fill="#001489"
@@ -185,8 +202,7 @@
       </svg>
     </button>
 
-    <div class="absolute top-full left-0 z-[80] hidden w-[640px]"
-      style="" data-menu-dropdown>
+    <div class="absolute top-full left-0 z-[80] hidden w-[640px]" style="" data-menu-dropdown>
       {* Background overlay layer *}
       <div
         class="bg-neutral-0 shadow-lg pointer-events-none absolute top-0 left-0 w-[640px] h-full transition-all duration-150 ease-out rounded-b-md opacity-0 -translate-y-4"
