@@ -69,7 +69,7 @@
 
 	@staticFiles path /static/*
 
-	@static path_regexp \.(css|js|jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot|pdf|txt|xml|json|map|mp4|webm|ogg|ogv|zip)$
+	@static path_regexp \.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot|pdf|txt|mp4|webm)$
 
 	handle @staticFiles {
 		root * /static
