@@ -30,7 +30,7 @@ href="/2-strona-glowna" aria-label="Zobacz wszystko"
                               class="bg-neutral-10 object-cover object-center transition-all duration-300 group-hover:scale-105 transition-transform duration-250 hover:scale-105 h-full w-full"
                               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                               sizes="(min-width: 1280px) calc(1280px / 3), (min-width: 1024px) calc(100vw / 3), (min-width: 768px) calc(100vw / 2), (min-width: 640px) calc(100vw / 1), calc(100vw / 1)"
-                              src="/static/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.avif">
+                              src="/static/images/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.avif">
                           </div>
                           <div class="relative w-full p-4 InspirationContentCard_titleContainer__TmDDF"
                             style="background-color:#4e769c">
@@ -58,7 +58,7 @@ href="/2-strona-glowna" aria-label="Zobacz wszystko"
                               class="bg-neutral-10 object-cover object-center transition-all duration-300 group-hover:scale-105 transition-transform duration-250 hover:scale-105 h-full w-full"
                               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                               sizes="(min-width: 1280px) calc(1280px / 3), (min-width: 1024px) calc(100vw / 3), (min-width: 768px) calc(100vw / 2), (min-width: 640px) calc(100vw / 1), calc(100vw / 1)"
-                              src="/static/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.avif">
+                              src="/static/images/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.avif">
                           </div>
                           <div class="relative w-full p-4 InspirationContentCard_titleContainer__TmDDF"
                             style="background-color:#e2273a">
@@ -86,7 +86,7 @@ href="/2-strona-glowna" aria-label="Zobacz wszystko"
                               class="bg-neutral-10 object-cover object-center transition-all duration-300 group-hover:scale-105 transition-transform duration-250 hover:scale-105 h-full w-full"
                               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                               sizes="(min-width: 1280px) calc(1280px / 3), (min-width: 1024px) calc(100vw / 3), (min-width: 768px) calc(100vw / 2), (min-width: 640px) calc(100vw / 1), calc(100vw / 1)"
-                              src="/static/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.avif">
+                              src="/static/images/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.avif">
                           </div>
                           <div class="relative w-full p-4 InspirationContentCard_titleContainer__TmDDF"
                             style="background-color:#4e769c">
@@ -130,7 +130,7 @@ href="/2-strona-glowna" aria-label="Zobacz wszystko"
               class="overflow-hidden rounded-lg object-cover object-center h-full w-full"
               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
               sizes="(min-width: 768px) 50vw, 100vw"
-src="/static/Teaser_Carousel_ESSENTIALS_2025_dywzbz.avif"></div>
+src="/static/images/Teaser_Carousel_ESSENTIALS_2025_dywzbz.avif"></div>
         </div>
         <div data-testid="split-teaser-content" class="md:m-0 md:self-center">
           <div class="flex flex-col sm:justify-center md:h-[300px]">
@@ -165,7 +165,7 @@ href="/14-zrob-to-sam" data-testid="split-teaser-cta"><span class="truncate px-1
                 class="overflow-hidden rounded-lg object-cover object-center h-full w-full"
                 style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                 sizes="(min-width: 768px) 50vw, 100vw"
-                src="/static/Hello_Digital_web_2025_PL_q2iekf.avif">
+                src="/static/images/Hello_Digital_web_2025_PL_q2iekf.avif">
             </div>
           </div>
           <div data-testid="split-teaser-content" class="md:m-0 md:self-center">

@@ -35,7 +35,7 @@
                   <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
                     class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
                     style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                    src="/static/Fresh_Fun_Teaser_carousel_Cleaning_2025_hsydj0.avif">
+                    src="/static/images/Fresh_Fun_Teaser_carousel_Cleaning_2025_hsydj0.avif">
                   <span
                     style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
                   <span
@@ -51,7 +51,7 @@
                   <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
                     class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
                     style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                    src="/static/Extreme_low_Prices_2025_PL_tbzpzg.png">
+                    src="/static/images/Extreme_low_Prices_2025_PL_tbzpzg.png">
                   <span
                     style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
                   <span
@@ -67,7 +67,7 @@
                   <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
                     class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
                     style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                    src="/static/FreshFun_Health_HealthySnacks_SportArticles_2026_2_zjrssk.avif">
+                    src="/static/images/FreshFun_Health_HealthySnacks_SportArticles_2026_2_zjrssk.avif">
                   <span
                     style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
                   <span
@@ -83,7 +83,7 @@
                   <img data-testid="moment-menu-image" alt="" loading="lazy" decoding="async"
                     class="object-cover object-center group-hover:scale-105 transition-transform duration-250 h-full w-full"
                     style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                    src="/static/FreshFun_Storage_Boxes_OrganizeStorage_2026_hmsavw.avif">
+                    src="/static/images/FreshFun_Storage_Boxes_OrganizeStorage_2026_hmsavw.avif">
                   <span
                     style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; pointer-events: none;"></span>
                   <span

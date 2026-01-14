@@ -1,6 +1,6 @@
-{**
+<html><head></head><body>{**
  * Copyright since 2007 PrestaShop SA and Contributors
- * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ * PrestaShop is an International Registered Trademark &amp; Property of PrestaShop SA
  *
  * NOTICE OF LICENSE
  *
@@ -33,17 +33,10 @@
           <div class="relative w-full" style="height: 44px;">
             <form class="relative h-full w-full border-neutral rounded-full border">
               <div class="relative flex h-full w-full items-center">
-                <div class="h-full grow"><input autocomplete="off"
-                    class="bg-neutral-0 box-border h-full w-full rounded-full py-[10px] text-neutral-900 placeholder:text-neutral-700 focus-visible:outline-none pl-4 pr-16"
-                    data-testid="search-minimal-input-field" readonly="" placeholder="Czego szukasz?" type="text"
-                    value="" name="query"></div>
+                <div class="h-full grow"><input autocomplete="off" class="bg-neutral-0 box-border h-full w-full rounded-full py-[10px] text-neutral-900 placeholder:text-neutral-700 focus-visible:outline-none pl-4 pr-16" data-testid="search-minimal-input-field" readonly="" placeholder="Czego szukasz?" type="text" value="" name="query"></div>
                 <div class="absolute top-0 right-0 flex h-full items-center">
-                  <div class="flex h-full items-center pr-4"><button class="flex h-6 w-6 items-center justify-center"
-                      type="submit" disabled="" data-testid="searchbar-button" aria-label="Szukaj"><svg
-                        aria-hidden="true" data-testid="SearchMagnifyingGlass" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path fill="#001489"
-                          d="M21 22a1 1 0 0 1-.707-.293l-5.39-5.39A7.96 7.96 0 0 1 10 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8a7.97 7.97 0 0 1-1.683 4.903l5.39 5.39A1 1 0 0 1 21 22M10 4c-3.309 0-6 2.691-6 6s2.691 6 6 6 6-2.691 6-6-2.691-6-6-6">
+                  <div class="flex h-full items-center pr-4"><button class="flex h-6 w-6 items-center justify-center" type="submit" disabled="" data-testid="searchbar-button" aria-label="Szukaj"><svg aria-hidden="true" data-testid="SearchMagnifyingGlass" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path fill="#001489" d="M21 22a1 1 0 0 1-.707-.293l-5.39-5.39A7.96 7.96 0 0 1 10 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8a7.97 7.97 0 0 1-1.683 4.903l5.39 5.39A1 1 0 0 1 21 22M10 4c-3.309 0-6 2.691-6 6s2.691 6 6 6 6-2.691 6-6-2.691-6-6-6">
                         </path>
                       </svg></button></div>
                 </div>
@@ -55,16 +48,14 @@
     </div>
     <div class="flex flex-1 flex-col" data-testid="cms-content-rows">
       <div class="hidden h-8 lg:block"></div>
-      <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8 lg:pt-0" aria-label="Wyłączenie odpowiedzialności"
-        data-testid="cms-content-title">
+      <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8 lg:pt-0" aria-label="Wyłączenie odpowiedzialności" data-testid="cms-content-title">
         <div class="relative flex w-full flex-col px-4 lg:px-8">
           <div class="mx-auto w-full max-w-7xl">
             <h1 class="heading-2xl text-dark-blue-500">Wyłączenie odpowiedzialności</h1>
           </div>
         </div>
       </section>
-      <section class="bg-neutral-0 pb-6 md:pb-8 lg:pt-0" aria-label="Klauzula zrzeczenia się odpowiedzialności"
-        data-testid="cms-markdown">
+      <section class="bg-neutral-0 pb-6 md:pb-8 lg:pt-0" aria-label="Klauzula zrzeczenia się odpowiedzialności" data-testid="cms-markdown">
         <div class="relative flex w-full flex-col px-4 lg:px-8">
           <div class="mx-auto w-full max-w-7xl">
             <div class="flex flex-col gap-4" data-content-king="rich-text">
@@ -105,3 +96,4 @@
     <!--/$-->
 </main>
 {/block}
+</contact@prestashop.com></body></html>
