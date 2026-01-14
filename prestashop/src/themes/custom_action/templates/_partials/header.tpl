@@ -119,16 +119,16 @@
                 class="text-body-normal text-dark-blue-500 pt-3 pb-4 font-medium hover:shadow-[inset_0_-2px_0]"
                 href="{$urls.pages.prices_drop}">Promocja Tygodnia</a>
               {widget name='ps_categorytree' momenty=true}
+              <div lang="pl-pl" class="flex gap-6"><a
+                  class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5" style="font-size: 14px;"
+                  href="/content/6-aplikacja"><span class="group-hover:shadow-bottom-border">Pobierz aplikację
+                    Action</span></a><a class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5"
+                  style="font-size: 14px;" href="{$urls.pages.stores}"><span class="group-hover:shadow-bottom-border">Znajdź
+                    sklep</span></a><a class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5"
+                  style="font-size: 14px;" href="{$urls.pages.contact}"><span class="group-hover:shadow-bottom-border">Biuro
+                    Obsługi
+                    Klienta</span></a></div>
             </div>
-            <div lang="pl-pl" class="flex gap-6"><a
-                class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5" style="font-size: 14px;"
-                href="/content/6-aplikacja"><span class="group-hover:shadow-bottom-border">Pobierz aplikację
-                  Action</span></a><a class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5"
-                style="font-size: 14px;" href="{$urls.pages.stores}"><span class="group-hover:shadow-bottom-border">Znajdź
-                  sklep</span></a><a class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5"
-                style="font-size: 14px;" href="{$urls.pages.contact}"><span class="group-hover:shadow-bottom-border">Biuro
-                  Obsługi
-                  Klienta</span></a></div>
           </nav>
         </div>
       </div>
