@@ -69,22 +69,18 @@
 
 	@staticFiles path /static/*
 
-	@static {
-		path *.css *.js *.jpg *.jpeg *.png *.gif *.ico *.svg *.webp *.avif
-		path *.woff *.woff2 *.ttf *.eot *.pdf *.txt *.xml *.json *.map
-		path *.mp4 *.webm *.ogg *.ogv *.zip
-	}
+	@static path_regexp \.(css|js|jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot|pdf|txt|xml|json|map|mp4|webm|ogg|ogv|zip)$
 
 	handle @staticFiles {
 		root * /static
 		uri strip_prefix /static
 		file_server
-		header Cache-Control "public, max-age=31536000, immutable"
+		header Cache-Control "public, max-age=600"
 	}
 
 	handle @static {
 		file_server
-		header Cache-Control "public, max-age=31536000, immutable"
+		header Cache-Control "public, max-age=600"
 	}
 
 	handle @api {
