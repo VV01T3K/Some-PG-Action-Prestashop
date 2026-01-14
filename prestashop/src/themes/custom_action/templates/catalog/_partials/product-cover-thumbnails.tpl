@@ -25,9 +25,12 @@
 <section aria-label="Images">
   {* Desktop Grid Layout - hidden on mobile *}
   {block name='product_images_grid'}
+    {assign var="totalImages" value=$product.images|count}
+    {* After the first image (col-span-2), remaining images are col-span-1. Last should only span 2 if alone in row (even total count) *}
+    {assign var="lastShouldSpan2" value=($totalImages % 2 == 0)}
     <ul class="hidden grid-cols-2 place-items-center gap-3 md:grid product-images-grid">
       {foreach from=$product.images item=image name=imageLoop}
-        <li class="flex h-full w-full cursor-pointer justify-center bg-neutral-50 object-cover p-6 lg:p-8 {if $smarty.foreach.imageLoop.first}first:col-span-2 col-span-2{else}col-span-1{/if} {if $smarty.foreach.imageLoop.last}last:col-span-2{/if}">
+        <li class="flex h-full w-full cursor-pointer justify-center bg-neutral-50 object-cover p-6 lg:p-8 {if $smarty.foreach.imageLoop.first}first:col-span-2 col-span-2{else}col-span-1{/if} {if $smarty.foreach.imageLoop.last && $lastShouldSpan2}last:col-span-2{/if}">
           <button type="button" class="js-thumb-trigger" data-image-medium-src="{$image.bySize.medium_default.url}" data-image-large-src="{$image.bySize.large_default.url}">
             <img
               alt="{if !empty($image.legend)}{$image.legend}{else}{$product.name} {$smarty.foreach.imageLoop.iteration}{/if}"
