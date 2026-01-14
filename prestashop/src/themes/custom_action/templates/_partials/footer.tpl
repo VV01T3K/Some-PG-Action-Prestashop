@@ -92,7 +92,7 @@
                     href="{$link->getPageLink('compliance')}" data-testid="about-link"><span
                       class="btn-content-label btn-shadow-dark-blue">Deklaracje zgodności</span></a></li>
                 <li class="flex flex-col"><a
-                    class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal" href="#"
+                    class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal"
                     onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;"
                     data-testid="about-link"><span class="btn-content-label btn-shadow-dark-blue">Nasi laureaci
                       nagród</span></a></li>
@@ -101,7 +101,7 @@
                     href="{$link->getPageLink('blog')}" data-testid="about-link"><span
                       class="btn-content-label btn-shadow-dark-blue">Blog</span></a></li>
                 <li class="flex flex-col"><a
-                    class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal" href="#"
+                    class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal"
                     onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;"
                     data-testid="about-link"><span class="btn-content-label btn-shadow-dark-blue">Nasze marki
                       własne</span></a></li>

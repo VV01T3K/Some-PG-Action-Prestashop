@@ -91,7 +91,7 @@
                 </div>
               </div>
             </div>
-          </a><a class="relative group block" href="#" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
+          </a><a class="relative group block" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
             <div class="group border-neutral-150 flex h-full w-full flex-row gap-4 overflow-hidden border md:min-h-[170px] md:flex-col md:gap-0 bg-white">
               <div class="flex justify-center md:mb-4 md:justify-start"><img alt="Produkty, dostępność i ceny" loading="lazy" width="48" height="48" decoding="async" data-nimg="1" class="h-[75px] w-[75px] rounded-full p-2 transition-all duration-300 group-hover:scale-110 md:m-4 md:mb-0 md:h-16 md:w-16 md:p-0" style="color:transparent" sizes="(min-width: 768px) 50vw, 100vw" src="/static/images/w_1920_App_Onboarding_Illustration_Bag_2025_a1dgcu.webp">
               </div>
@@ -111,7 +111,7 @@
                 </div>
               </div>
             </div>
-          </a><a class="relative group block" href="#" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
+          </a><a class="relative group block" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
             <div class="group border-neutral-150 flex h-full w-full flex-row gap-4 overflow-hidden border md:min-h-[170px] md:flex-col md:gap-0 bg-white">
               <div class="flex justify-center md:mb-4 md:justify-start"><img alt="Zwrot, wymiana, gwarancja" loading="lazy" width="48" height="48" decoding="async" data-nimg="1" class="h-[75px] w-[75px] rounded-full p-2 transition-all duration-300 group-hover:scale-110 md:m-4 md:mb-0 md:h-16 md:w-16 md:p-0" style="color:transparent" sizes="(min-width: 768px) 50vw, 100vw" src="/static/images/w_1920_App_Onboarding_Illustration_Receipt_2025_hmuyus.webp">
               </div>
@@ -131,7 +131,7 @@
                 </div>
               </div>
             </div>
-          </a><a class="relative group block" href="#" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
+          </a><a class="relative group block" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
             <div class="group border-neutral-150 flex h-full w-full flex-row gap-4 overflow-hidden border md:min-h-[170px] md:flex-col md:gap-0 bg-white">
               <div class="flex justify-center md:mb-4 md:justify-start"><img alt="Sklepy" loading="lazy" width="48" height="48" decoding="async" data-nimg="1" class="h-[75px] w-[75px] rounded-full p-2 transition-all duration-300 group-hover:scale-110 md:m-4 md:mb-0 md:h-16 md:w-16 md:p-0" style="color:transparent" sizes="(min-width: 768px) 50vw, 100vw" src="/static/images/w_1920_App_Onboarding_Illustration_No_results_stores_2025_vmxeqn.webp">
               </div>
@@ -151,7 +151,7 @@
                 </div>
               </div>
             </div>
-          </a><a class="relative group block" href="#" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
+          </a><a class="relative group block" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
             <div class="group border-neutral-150 flex h-full w-full flex-row gap-4 overflow-hidden border md:min-h-[170px] md:flex-col md:gap-0 bg-white">
               <div class="flex justify-center md:mb-4 md:justify-start"><img alt="Zamówienia" loading="lazy" width="48" height="48" decoding="async" data-nimg="1" class="h-[75px] w-[75px] rounded-full p-2 transition-all duration-300 group-hover:scale-110 md:m-4 md:mb-0 md:h-16 md:w-16 md:p-0" style="color:transparent" sizes="(min-width: 768px) 50vw, 100vw" src="/static/images/w_1920_App_Onboarding_Illustration_Bag_2025_a1dgcu.webp">
               </div>
@@ -171,7 +171,7 @@
                 </div>
               </div>
             </div>
-          </a><a class="relative group block" href="#" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
+          </a><a class="relative group block" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
             <div class="group border-neutral-150 flex h-full w-full flex-row gap-4 overflow-hidden border md:min-h-[170px] md:flex-col md:gap-0 bg-white">
               <div class="flex justify-center md:mb-4 md:justify-start"><img alt="Płatności i karta podarunkowa" loading="lazy" width="48" height="48" decoding="async" data-nimg="1" class="h-[75px] w-[75px] rounded-full p-2 transition-all duration-300 group-hover:scale-110 md:m-4 md:mb-0 md:h-16 md:w-16 md:p-0" style="color:transparent" sizes="(min-width: 768px) 50vw, 100vw" src="/static/images/w_1920_App_Onboarding_Illustration_Giftcards_2025_vyfneo.webp">
               </div>
@@ -191,7 +191,7 @@
                 </div>
               </div>
             </div>
-          </a><a class="relative group block" href="#" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
+          </a><a class="relative group block" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
             <div class="group border-neutral-150 flex h-full w-full flex-row gap-4 overflow-hidden border md:min-h-[170px] md:flex-col md:gap-0 bg-white">
               <div class="flex justify-center md:mb-4 md:justify-start"><img alt="App" loading="lazy" width="48" height="48" decoding="async" data-nimg="1" class="h-[75px] w-[75px] rounded-full p-2 transition-all duration-300 group-hover:scale-110 md:m-4 md:mb-0 md:h-16 md:w-16 md:p-0" style="color:transparent" sizes="(min-width: 768px) 50vw, 100vw" src="/static/images/w_1920_App_Onboarding_Illustration_Shoppinglist_2025_fq4viq.webp">
               </div>
@@ -211,7 +211,7 @@
                 </div>
               </div>
             </div>
-          </a><a class="relative group block" href="#" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
+          </a><a class="relative group block" onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" data-testid="customer-service-card">
             <div class="group border-neutral-150 flex h-full w-full flex-row gap-4 overflow-hidden border md:min-h-[170px] md:flex-col md:gap-0 bg-white">
               <div class="flex justify-center md:mb-4 md:justify-start"><img alt="Moje Action" loading="lazy" width="48" height="48" decoding="async" data-nimg="1" class="h-[75px] w-[75px] rounded-full p-2 transition-all duration-300 group-hover:scale-110 md:m-4 md:mb-0 md:h-16 md:w-16 md:p-0" style="color:transparent" sizes="(min-width: 768px) 50vw, 100vw" src="/static/images/w_1920_App_Onboarding_Illustration_My_Action_2025_vcgrat.webp">
               </div>
