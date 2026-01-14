@@ -1,6 +1,6 @@
 {if $momenty}
   {* Momenty dropdown variant - full width with featured cards and category pills *}
-  <div class="group/submenu">
+  <div class="group/submenu relative">
     <button class="text-body-normal text-dark-blue-500 flex flex-row pt-3 pb-4 font-medium group-hover/submenu:shadow-[inset_0_-2px_0]"
       aria-expanded="false" onclick="toggleCategoryMenu(this, event)">
       Momenty
@@ -12,9 +12,12 @@
       </svg>
     </button>
 
-    <div class="z-[80] overflow-hidden transition-all duration-300 ease-in-out momenty-dropdown"
-      style="opacity: 0; pointer-events: none; height: 0px;" data-menu-dropdown>
-      <div class="bg-neutral-0 rounded-b-md transition-all duration-300 ease-in-out">
+    <div class="absolute top-full left-0 z-[80] hidden momenty-dropdown" style="width: 100vw; margin-left: calc(-50vw + 50%);" data-menu-dropdown>
+      {* Background overlay layer *}
+      <div class="bg-neutral-0 shadow-lg pointer-events-none absolute top-0 left-0 h-full transition-all duration-300 ease-in-out rounded-b-md opacity-0 -translate-y-4" style="width: 100vw;" data-menu-bg></div>
+
+      {* Content layer *}
+      <div class="relative flex flex-col transition-all duration-300 ease-in-out opacity-0 -translate-y-4" style="width: 100vw;">
         <div class="relative flex w-full flex-col px-4 lg:px-8">
           <div class="mx-auto w-full max-w-7xl">
             <div class="flex flex-col gap-4 pt-4 pb-14">
@@ -94,6 +97,7 @@
                 </button>
               </div>
 
+              </div>
             </div>
           </div>
         </div>
@@ -181,19 +185,17 @@
       </svg>
     </button>
 
-    <div class="absolute top-full left-0 z-[80] flex overflow-hidden transition-all duration-300 ease-in-out w-[640px]"
-      style="opacity: 0; pointer-events: none;" data-menu-dropdown>
-      {* Background overlays *}
+    <div class="absolute top-full left-0 z-[80] hidden w-[640px]"
+      style="" data-menu-dropdown>
+      {* Background overlay layer *}
       <div
-        class="bg-neutral-0 pointer-events-none absolute inset-y-0 left-0 h-full w-[320px] transition-all duration-300 ease-in-out rounded-bl-md opacity-100 translate-y-0">
-      </div>
-      <div
-        class="pointer-events-none absolute inset-y-0 left-[320px] w-[320px] rounded-br-md bg-neutral-50 transition-all duration-300 ease-in-out opacity-100 translate-x-0 translate-y-0">
+        class="bg-neutral-0 shadow-lg pointer-events-none absolute top-0 left-0 w-[640px] h-full transition-all duration-150 ease-out rounded-b-md opacity-0 -translate-y-4"
+        data-menu-bg>
       </div>
 
-      {* Left column - Top level categories *}
+      {* Content layer - Top level categories *}
       <div
-        class="absolute top-0 left-0 w-[320px] flex flex-col pt-2 pb-4 transition-all duration-300 ease-in-out opacity-100 translate-y-0">
+        class="relative w-[320px] flex flex-col pt-2 pb-4 transition-all duration-150 ease-out opacity-0 -translate-y-4">
         {foreach from=$allCategories.children item=category name=categoryLoop}
           <div>
             <button
@@ -211,7 +213,7 @@
 
             {* Right column - Subcategories for this category *}
             <div
-              class="absolute inset-y-0 left-[320px] w-[320px] {if !$smarty.foreach.categoryLoop.first}pointer-events-none{/if}"
+              class="absolute top-0 left-[320px] w-[320px] {if !$smarty.foreach.categoryLoop.first}pointer-events-none{/if}"
               data-subcategory-panel="{$category.id}">
               <div
                 class="w-full flex flex-col pt-2 pb-4 transition-all duration-300 ease-in-out {if $smarty.foreach.categoryLoop.first}opacity-100 translate-x-0{else}opacity-0 -translate-x-2 hidden{/if}">
@@ -258,39 +260,52 @@
           const isExpanded = button.getAttribute('aria-expanded') === 'true';
           const svg = button.querySelector('svg');
 
+          // Get the background and content layers
+          const backgroundLayer = dropdown.querySelector(':scope > div:first-child');
+          const contentLayer = dropdown.querySelector(':scope > div:last-child');
+
           if (isExpanded) {
-            // Close menu
+            // Close menu - animate out
             button.setAttribute('aria-expanded', 'false');
             if (svg) svg.classList.remove('rotate-180');
-            if (dropdown) {
-              dropdown.style.height = '0px';
-              dropdown.style.opacity = '0';
-              dropdown.style.pointerEvents = 'none';
+
+            // Animate background and content to hidden state
+            if (backgroundLayer) {
+              backgroundLayer.classList.add('opacity-0', '-translate-y-4');
+              backgroundLayer.classList.remove('opacity-100', 'translate-y-0');
             }
+            if (contentLayer) {
+              contentLayer.classList.add('opacity-0', '-translate-y-4');
+              contentLayer.classList.remove('opacity-100', 'translate-y-0');
+            }
+
+            // After animation, hide dropdown
+            setTimeout(() => {
+              dropdown.classList.add('hidden');
+            }, 150);
+
             document.body.classList.remove('category-menu-open');
           } else {
-            // Open menu
+            // Open menu - animate in
             button.setAttribute('aria-expanded', 'true');
             if (svg) svg.classList.add('rotate-180');
-            if (dropdown) {
-              // Remove hidden class if it exists
-              dropdown.classList.remove('hidden');
 
-              // Calculate the actual height needed
-              dropdown.style.height = 'auto';
-              dropdown.style.opacity = '0';
-              dropdown.style.pointerEvents = 'none';
-              const height = dropdown.scrollHeight;
-              dropdown.style.height = '0px';
+            // Show dropdown first
+            dropdown.classList.remove('hidden');
 
-              // Force reflow
-              dropdown.offsetHeight;
+            // Force browser to acknowledge the display change before animating
+            void dropdown.offsetWidth;
 
-              // Animate to calculated height
-              dropdown.style.height = height + 'px';
-              dropdown.style.opacity = '1';
-              dropdown.style.pointerEvents = 'auto';
+            // Now animate background and content to visible state
+            if (backgroundLayer) {
+              backgroundLayer.classList.remove('opacity-0', '-translate-y-4');
+              backgroundLayer.classList.add('opacity-100', 'translate-y-0');
             }
+            if (contentLayer) {
+              contentLayer.classList.remove('opacity-0', '-translate-y-4');
+              contentLayer.classList.add('opacity-100', 'translate-y-0');
+            }
+
             document.body.classList.add('category-menu-open');
           }
         };
@@ -349,15 +364,9 @@
             allMenus.forEach(dropdown => {
               const button = dropdown.previousElementSibling;
               if (button && button.getAttribute('aria-expanded') === 'true') {
-                button.setAttribute('aria-expanded', 'false');
-                const svg = button.querySelector('svg');
-                if (svg) svg.classList.remove('rotate-180');
-                dropdown.style.height = '0px';
-                dropdown.style.opacity = '0';
-                dropdown.style.pointerEvents = 'none';
+                toggleCategoryMenu(button);
               }
             });
-            document.body.classList.remove('category-menu-open');
           }
         }, false);
       })();
