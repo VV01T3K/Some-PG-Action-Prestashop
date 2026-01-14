@@ -5,7 +5,7 @@
         <div
           class="after:bg-dark-blue-300 relative py-14 after:absolute after:-bottom-px after:left-[calc(50%-50vw)] after:hidden after:h-px after:w-screen md:after:block"
           data-testid="footer-top">
-<div class="grid grid-cols-1 gap-14 lg:grid-cols-3">
+          <div class="grid grid-cols-1 gap-14 lg:grid-cols-3">
             {hook h='displayNewsletterAsk'}
 
             <nav aria-labelledby="_S_1_" data-testid="customer-service-section">
@@ -20,12 +20,13 @@
                       class="truncate px-1">Biuro Obsługi Klienta</span></a></li>
                 <li class="max-w-full"><a
                     class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 text-neutral-0 outline outline-1 outline-neutral-0 enabled:hover:bg-dark-blue-300 active:bg-neutral-0 hover:bg-dark-blue-300 hover:text-neutral-0 active:text-dark-blue-500 focus:bg-dark-blue-300 focus:text-neutral-0 focus:outline focus:outline-2 focus:outline-neutral-0 focus:outline-offset-2 disabled:text-neutral disabled:outline-neutral"
-                    href="{$link->getPageLink('stores')}" data-testid="customer-service-link"><span class="truncate px-1">Znajdź
+                    href="{$link->getPageLink('stores')}" data-testid="customer-service-link"><span
+                      class="truncate px-1">Znajdź
                       sklep</span></a></li>
                 <li class="max-w-full"><a
                     class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 text-neutral-0 outline outline-1 outline-neutral-0 enabled:hover:bg-dark-blue-300 active:bg-neutral-0 hover:bg-dark-blue-300 hover:text-neutral-0 active:text-dark-blue-500 focus:bg-dark-blue-300 focus:text-neutral-0 focus:outline focus:outline-2 focus:outline-neutral-0 focus:outline-offset-2 disabled:text-neutral disabled:outline-neutral"
-                    href="{$link->getPageLink('productinfo')}"
-                    data-testid="customer-service-link"><span class="truncate px-1">Ważne informacje o
+                    href="{$link->getPageLink('productinfo')}" data-testid="customer-service-link"><span
+                      class="truncate px-1">Ważne informacje o
                       produkcie</span></a></li>
                 <li class="max-w-full"><a
                     class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 text-neutral-0 outline outline-1 outline-neutral-0 enabled:hover:bg-dark-blue-300 active:bg-neutral-0 hover:bg-dark-blue-300 hover:text-neutral-0 active:text-dark-blue-500 focus:bg-dark-blue-300 focus:text-neutral-0 focus:outline focus:outline-2 focus:outline-neutral-0 focus:outline-offset-2 disabled:text-neutral disabled:outline-neutral"
@@ -49,7 +50,8 @@
                       class="btn-content-label btn-shadow-dark-blue">Company website</span></a></li>
                 <li class="flex flex-col"><a
                     class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal"
-                    href="{$link->getPageLink('about')}" data-testid="about-link"><span class="btn-content-label btn-shadow-dark-blue">O
+                    href="{$link->getPageLink('about')}" data-testid="about-link"><span
+                      class="btn-content-label btn-shadow-dark-blue">O
                       nas</span></a></li>
                 <li class="flex flex-col"><a
                     class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal"
@@ -90,22 +92,23 @@
                     href="{$link->getPageLink('compliance')}" data-testid="about-link"><span
                       class="btn-content-label btn-shadow-dark-blue">Deklaracje zgodności</span></a></li>
                 <li class="flex flex-col"><a
-                    class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal"
-                    href="{$link->getPageLink('awards')}" data-testid="about-link"><span
-                      class="btn-content-label btn-shadow-dark-blue">Nasi laureaci nagród</span></a></li>
+                    class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal" href="#"
+                    onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;"
+                    data-testid="about-link"><span class="btn-content-label btn-shadow-dark-blue">Nasi laureaci
+                      nagród</span></a></li>
                 <li class="flex flex-col"><a
                     class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal"
                     href="{$link->getPageLink('blog')}" data-testid="about-link"><span
                       class="btn-content-label btn-shadow-dark-blue">Blog</span></a></li>
                 <li class="flex flex-col"><a
-                    class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal"
-                    href="{$link->getPageLink('ownbrands')}" data-testid="about-link"><span
-                      class="btn-content-label btn-shadow-dark-blue">Nasze marki własne</span></a></li>
+                    class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal" href="#"
+                    onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;"
+                    data-testid="about-link"><span class="btn-content-label btn-shadow-dark-blue">Nasze marki
+                      własne</span></a></li>
                 <li class="flex flex-col"><a
                     class="btn-base group btn-link-light w-fit break-words hyphens-auto whitespace-normal"
-                    href="{$urls.pages.index}?moment=all" data-testid="about-link"><span
-                      class="btn-content-label btn-shadow-dark-blue">Wszystkie
-                      motywy</span></a></li>
+                    href="{$urls.pages.sitemap}" data-testid="about-link"><span
+                      class="btn-content-label btn-shadow-dark-blue">{l s='Mapa strony'}</span></a></li>
               </ul>
             </nav>
 

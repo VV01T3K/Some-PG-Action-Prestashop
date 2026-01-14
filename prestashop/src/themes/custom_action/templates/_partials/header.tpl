@@ -126,7 +126,7 @@
                     Action</span></a><a class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5"
                   style="font-size: 14px;" href="{$urls.pages.stores}"><span class="group-hover:shadow-bottom-border">Znajdź
                     sklep</span></a><a class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5"
-                  style="font-size: 14px;" href="{$urls.pages.contact}"><span class="group-hover:shadow-bottom-border">Biuro
+style="font-size: 14px;" href="{$link->getPageLink('customerservice')}"><span class="group-hover:shadow-bottom-border">Biuro
                     Obsługi
                     Klienta</span></a></div>
             </div>
