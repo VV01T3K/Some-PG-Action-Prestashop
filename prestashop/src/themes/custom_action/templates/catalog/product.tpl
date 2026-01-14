@@ -41,6 +41,7 @@
   {/if}
   <link rel="stylesheet" href="{$urls.theme_assets}css/product.css">
   <script type="text/javascript" src="{$urls.theme_assets}js/product-images.js" defer></script>
+  <script type="text/javascript" src="{$urls.theme_assets}js/viewed-products.js" defer></script>
 {/block}
 
 {block name='head_microdata_special'}
@@ -256,17 +257,15 @@ data-testid="product-card-description">
       {/if}
     {/block}
 
-    {* {block name='product_footer'}
-      {hook h='displayFooterProduct' product=$product category=$category}
-    {/block} *}
-
     {block name='product_images_modal'}
       {include file='catalog/_partials/product-images-modal.tpl'}
     {/block}
 
     {hook h='displayFeaturedProducts'}
 
-  
+    {* Viewed Products Section - At the very bottom *}
+    <div id="viewed-products-container"></div>
+
     {block name='page_footer_container'}
       <footer class="page-footer">
         {block name='page_footer'}
