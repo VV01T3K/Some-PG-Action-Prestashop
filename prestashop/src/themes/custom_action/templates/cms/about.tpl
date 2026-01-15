@@ -74,8 +74,8 @@
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
                       style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                       sizes="(min-width: 1280px) calc(1280px / 4), (min-width: 1024px) calc(100vw / 4), (min-width: 768px) calc(100vw / 4), (min-width: 640px) calc(100vw / 3), calc(100vw / 2)"
-                      srcset="https://asset.action.com/image/upload/t_digital_content_card_small/w_128/Action_Logo_SmallCard_316x441_rt6qzi.webp 128w, https://asset.action.com/image/upload/t_digital_content_card_small/w_256/Action_Logo_SmallCard_316x441_rt6qzi.webp 256w, https://asset.action.com/image/upload/t_digital_content_card_small/w_640/Action_Logo_SmallCard_316x441_rt6qzi.webp 640w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1080/Action_Logo_SmallCard_316x441_rt6qzi.webp 1080w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Action_Logo_SmallCard_316x441_rt6qzi.webp 1920w"
-                      src="https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Action_Logo_SmallCard_316x441_rt6qzi.webp">
+                      srcset="/static/images/t_digital_content_card_small_w_128_Action_Logo_SmallCard_316x441_rt6qzi.webp 128w, /static/images/t_digital_content_card_small_w_256_Action_Logo_SmallCard_316x441_rt6qzi.webp 256w, /static/images/t_digital_content_card_small_w_640_Action_Logo_SmallCard_316x441_rt6qzi.webp 640w, /static/images/t_digital_content_card_small_w_1080_Action_Logo_SmallCard_316x441_rt6qzi.webp 1080w, /static/images/t_digital_content_card_small_w_1920_Action_Logo_SmallCard_316x441_rt6qzi.webp 1920w"
+                      src="/static/images/t_digital_content_card_small_w_1920_Action_Logo_SmallCard_316x441_rt6qzi.webp">
                   </div>
                   <div class="flex items-center">
                     <h3
@@ -95,8 +95,8 @@
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
                       style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                       sizes="(min-width: 1280px) calc(1280px / 2), (min-width: 1024px) calc(100vw / 2), (min-width: 768px) calc(100vw / 2), (min-width: 640px) calc(100vw / 3), calc(100vw / 1)"
-                      srcset="https://asset.action.com/image/upload/t_digital_content_card/w_128/Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp 128w, https://asset.action.com/image/upload/t_digital_content_card/w_256/Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp 256w, https://asset.action.com/image/upload/t_digital_content_card/w_640/Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp 640w, https://asset.action.com/image/upload/t_digital_content_card/w_1080/Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp 1080w, https://asset.action.com/image/upload/t_digital_content_card/w_1920/Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp 1920w"
-                      src="https://asset.action.com/image/upload/t_digital_content_card/w_1920/Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp">
+                      srcset="/static/images/t_digital_content_card_w_128_Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp 128w, /static/images/t_digital_content_card_w_256_Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp 256w, /static/images/t_digital_content_card_w_640_Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp 640w, /static/images/t_digital_content_card_w_1080_Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp 1080w, /static/images/t_digital_content_card_w_1920_Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp 1920w"
+                      src="/static/images/t_digital_content_card_w_1920_Basics_HouseholdGoods_Household_Shopper_2024_iqu3wd.webp">
                   </div>
                   <div class="flex items-center">
                     <h3
@@ -116,8 +116,8 @@
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
                       style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                       sizes="(min-width: 1280px) calc(1280px / 4), (min-width: 1024px) calc(100vw / 4), (min-width: 768px) calc(100vw / 4), (min-width: 640px) calc(100vw / 3), calc(100vw / 2)"
-                      srcset="https://asset.action.com/image/upload/t_digital_content_card_small/w_128/Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp 128w, https://asset.action.com/image/upload/t_digital_content_card_small/w_256/Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp 256w, https://asset.action.com/image/upload/t_digital_content_card_small/w_640/Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp 640w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1080/Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp 1080w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp 1920w"
-                      src="https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp">
+                      srcset="/static/images/t_digital_content_card_small_w_128_Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp 128w, /static/images/t_digital_content_card_small_w_256_Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp 256w, /static/images/t_digital_content_card_small_w_640_Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp 640w, /static/images/t_digital_content_card_small_w_1080_Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp 1080w, /static/images/t_digital_content_card_small_w_1920_Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp 1920w"
+                      src="/static/images/t_digital_content_card_small_w_1920_Action_Netherlands_SC_DCNL_Truck_Truckdrivers_2022_eznfyv.webp">
                   </div>
                   <div class="flex items-center">
                     <h3
@@ -137,8 +137,8 @@
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
                       style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                       sizes="(min-width: 1280px) calc(1280px / 4), (min-width: 1024px) calc(100vw / 4), (min-width: 768px) calc(100vw / 4), (min-width: 640px) calc(100vw / 3), calc(100vw / 2)"
-                      srcset="https://asset.action.com/image/upload/t_digital_content_card_small/w_128/Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp 128w, https://asset.action.com/image/upload/t_digital_content_card_small/w_256/Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp 256w, https://asset.action.com/image/upload/t_digital_content_card_small/w_640/Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp 640w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1080/Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp 1080w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp 1920w"
-                      src="https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp">
+                      srcset="/static/images/t_digital_content_card_small_w_128_Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp 128w, /static/images/t_digital_content_card_small_w_256_Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp 256w, /static/images/t_digital_content_card_small_w_640_Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp 640w, /static/images/t_digital_content_card_small_w_1080_Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp 1080w, /static/images/t_digital_content_card_small_w_1920_Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp 1920w"
+                      src="/static/images/t_digital_content_card_small_w_1920_Action_FirstStore_NL_Enkhuizen_1993_qvgcqx.webp">
                   </div>
                   <div class="flex items-center">
                     <h3
@@ -158,8 +158,8 @@
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
                       style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                       sizes="(min-width: 1280px) calc(1280px / 4), (min-width: 1024px) calc(100vw / 4), (min-width: 768px) calc(100vw / 4), (min-width: 640px) calc(100vw / 3), calc(100vw / 2)"
-                      srcset="https://asset.action.com/image/upload/t_digital_content_card_small/w_128/ActionStore_Shop_Entrance_2019_i3zava.webp 128w, https://asset.action.com/image/upload/t_digital_content_card_small/w_256/ActionStore_Shop_Entrance_2019_i3zava.webp 256w, https://asset.action.com/image/upload/t_digital_content_card_small/w_640/ActionStore_Shop_Entrance_2019_i3zava.webp 640w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1080/ActionStore_Shop_Entrance_2019_i3zava.webp 1080w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/ActionStore_Shop_Entrance_2019_i3zava.webp 1920w"
-                      src="https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/ActionStore_Shop_Entrance_2019_i3zava.webp">
+                      srcset="/static/images/t_digital_content_card_small_w_128_ActionStore_Shop_Entrance_2019_i3zava.webp 128w, /static/images/t_digital_content_card_small_w_256_ActionStore_Shop_Entrance_2019_i3zava.webp 256w, /static/images/t_digital_content_card_small_w_640_ActionStore_Shop_Entrance_2019_i3zava.webp 640w, /static/images/t_digital_content_card_small_w_1080_ActionStore_Shop_Entrance_2019_i3zava.webp 1080w, /static/images/t_digital_content_card_small_w_1920_ActionStore_Shop_Entrance_2019_i3zava.webp 1920w"
+                      src="/static/images/t_digital_content_card_small_w_1920_ActionStore_Shop_Entrance_2019_i3zava.webp">
                   </div>
                   <div class="flex items-center">
                     <h3
@@ -180,8 +180,8 @@
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
                       style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                       sizes="(min-width: 1280px) calc(1280px / 4), (min-width: 1024px) calc(100vw / 4), (min-width: 768px) calc(100vw / 4), (min-width: 640px) calc(100vw / 3), calc(100vw / 2)"
-                      srcset="https://asset.action.com/image/upload/t_digital_content_card_small/w_128/Sustainability_HUB_Paper_2024_rdxc46.webp 128w, https://asset.action.com/image/upload/t_digital_content_card_small/w_256/Sustainability_HUB_Paper_2024_rdxc46.webp 256w, https://asset.action.com/image/upload/t_digital_content_card_small/w_640/Sustainability_HUB_Paper_2024_rdxc46.webp 640w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1080/Sustainability_HUB_Paper_2024_rdxc46.webp 1080w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Sustainability_HUB_Paper_2024_rdxc46.webp 1920w"
-                      src="https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Sustainability_HUB_Paper_2024_rdxc46.webp">
+                      srcset="/static/images/t_digital_content_card_small_w_128_Sustainability_HUB_Paper_2024_rdxc46.webp 128w, /static/images/t_digital_content_card_small_w_256_Sustainability_HUB_Paper_2024_rdxc46.webp 256w, /static/images/t_digital_content_card_small_w_640_Sustainability_HUB_Paper_2024_rdxc46.webp 640w, /static/images/t_digital_content_card_small_w_1080_Sustainability_HUB_Paper_2024_rdxc46.webp 1080w, /static/images/t_digital_content_card_small_w_1920_Sustainability_HUB_Paper_2024_rdxc46.webp 1920w"
+                      src="/static/images/t_digital_content_card_small_w_1920_Sustainability_HUB_Paper_2024_rdxc46.webp">
                   </div>
                   <div class="flex items-center">
                     <h3
@@ -201,8 +201,8 @@
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
                       style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                       sizes="(min-width: 1280px) calc(1280px / 4), (min-width: 1024px) calc(100vw / 4), (min-width: 768px) calc(100vw / 4), (min-width: 640px) calc(100vw / 3), calc(100vw / 2)"
-                      srcset="https://asset.action.com/image/upload/t_digital_content_card_small/w_128/Action_Shirt_Employees_Store_2024_pcukem.webp 128w, https://asset.action.com/image/upload/t_digital_content_card_small/w_256/Action_Shirt_Employees_Store_2024_pcukem.webp 256w, https://asset.action.com/image/upload/t_digital_content_card_small/w_640/Action_Shirt_Employees_Store_2024_pcukem.webp 640w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1080/Action_Shirt_Employees_Store_2024_pcukem.webp 1080w, https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Action_Shirt_Employees_Store_2024_pcukem.webp 1920w"
-                      src="https://asset.action.com/image/upload/t_digital_content_card_small/w_1920/Action_Shirt_Employees_Store_2024_pcukem.webp">
+                      srcset="/static/images/t_digital_content_card_small_w_128_Action_Shirt_Employees_Store_2024_pcukem.webp 128w, /static/images/t_digital_content_card_small_w_256_Action_Shirt_Employees_Store_2024_pcukem.webp 256w, /static/images/t_digital_content_card_small_w_640_Action_Shirt_Employees_Store_2024_pcukem.webp 640w, /static/images/t_digital_content_card_small_w_1080_Action_Shirt_Employees_Store_2024_pcukem.webp 1080w, /static/images/t_digital_content_card_small_w_1920_Action_Shirt_Employees_Store_2024_pcukem.webp 1920w"
+                      src="/static/images/t_digital_content_card_small_w_1920_Action_Shirt_Employees_Store_2024_pcukem.webp">
                   </div>
                   <div class="flex items-center">
                     <h3
@@ -228,8 +228,8 @@
                 <div class="flex gap-4">
                   <div><img data-testid="image" alt="" loading="lazy" width="80" height="80" decoding="async"
                       data-nimg="1" class="" style="color:transparent"
-                      srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Icon_Polishz%C5%82oty_2024_y5gbbh.webp 1x, https://asset.action.com/image/upload/t_digital_square/w_256/Icon_Polishz%C5%82oty_2024_y5gbbh.webp 2x"
-                      src="https://asset.action.com/image/upload/t_digital_square/w_256/Icon_Polishz%C5%82oty_2024_y5gbbh.webp">
+                      srcset="/static/images/t_digital_square_w_128_Icon_Polishzłoty_2024_y5gbbh.webp 1x, /static/images/t_digital_square_w_256_Icon_Polishzłoty_2024_y5gbbh.webp 2x"
+                      src="/static/images/t_digital_square_w_256_Icon_Polishzłoty_2024_y5gbbh.webp">
                   </div>
                   <div class="flex flex-1 auto-rows-min flex-col gap-1 overflow-hidden justify-center">
                     <h2 class="heading-lg" data-testid="title">Zawsze 1500 produktów poniżej 5 zł</h2>
@@ -240,8 +240,8 @@
                 <div class="flex gap-4">
                   <div><img data-testid="image" alt="" loading="lazy" width="80" height="80" decoding="async"
                       data-nimg="1" class="" style="color:transparent"
-                      srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Icon_Check_Transparant_2023_zgi2x8.webp 1x, https://asset.action.com/image/upload/t_digital_square/w_256/Icon_Check_Transparant_2023_zgi2x8.webp 2x"
-                      src="https://asset.action.com/image/upload/t_digital_square/w_256/Icon_Check_Transparant_2023_zgi2x8.webp">
+                      srcset="/static/images/t_digital_square_w_128_Icon_Check_Transparant_2023_zgi2x8.webp 1x, /static/images/t_digital_square_w_256_Icon_Check_Transparant_2023_zgi2x8.webp 2x"
+                      src="/static/images/t_digital_square_w_256_Icon_Check_Transparant_2023_zgi2x8.webp">
                   </div>
                   <div class="flex flex-1 auto-rows-min flex-col gap-1 overflow-hidden justify-center">
                     <h2 class="heading-lg" data-testid="title">14 kategorii</h2>
@@ -252,8 +252,8 @@
                 <div class="flex gap-4">
                   <div><img data-testid="image" alt="" loading="lazy" width="80" height="80" decoding="async"
                       data-nimg="1" class="" style="color:transparent"
-                      srcset="https://asset.action.com/image/upload/t_digital_square/w_128/Icon_New_Transparant_2023_nev2ei.webp 1x, https://asset.action.com/image/upload/t_digital_square/w_256/Icon_New_Transparant_2023_nev2ei.webp 2x"
-                      src="https://asset.action.com/image/upload/t_digital_square/w_256/Icon_New_Transparant_2023_nev2ei.webp">
+                      srcset="/static/images/t_digital_square_w_128_Icon_New_Transparant_2023_nev2ei.webp 1x, /static/images/t_digital_square_w_256_Icon_New_Transparant_2023_nev2ei.webp 2x"
+                      src="/static/images/t_digital_square_w_256_Icon_New_Transparant_2023_nev2ei.webp">
                   </div>
                   <div class="flex flex-1 auto-rows-min flex-col gap-1 overflow-hidden justify-center">
                     <h2 class="heading-lg" data-testid="title">Co tydzień 150 nowych produktów</h2>
@@ -264,8 +264,8 @@
                 <div class="flex gap-4">
                   <div><img data-testid="image" alt="" loading="lazy" width="80" height="80" decoding="async"
                       data-nimg="1" class="" style="color:transparent"
-                      srcset="https://asset.action.com/image/upload/t_digital_square/w_128/EmployerBranding_ForAll_ForAll_Icon_Dynamic_2024_aqvmkf.webp 1x, https://asset.action.com/image/upload/t_digital_square/w_256/EmployerBranding_ForAll_ForAll_Icon_Dynamic_2024_aqvmkf.webp 2x"
-                      src="https://asset.action.com/image/upload/t_digital_square/w_256/EmployerBranding_ForAll_ForAll_Icon_Dynamic_2024_aqvmkf.webp">
+                      srcset="/static/images/t_digital_square_w_128_EmployerBranding_ForAll_ForAll_Icon_Dynamic_2024_aqvmkf.webp 1x, /static/images/t_digital_square_w_256_EmployerBranding_ForAll_ForAll_Icon_Dynamic_2024_aqvmkf.webp 2x"
+                      src="/static/images/t_digital_square_w_256_EmployerBranding_ForAll_ForAll_Icon_Dynamic_2024_aqvmkf.webp">
                   </div>
                   <div class="flex flex-1 auto-rows-min flex-col gap-1 overflow-hidden justify-center">
                     <h2 class="heading-lg" data-testid="title">2/3 asortymentu nieustannie się zmienia</h2>
