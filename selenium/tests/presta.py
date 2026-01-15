@@ -99,15 +99,18 @@ def main():
         remove_from_cart.run_test(driver)
         
         cart_is_empty = checkout.is_cart_empty(driver)
-        
+
         if not cart_is_empty:
             logger.info("TEST 4: Checkout")
             logger.info("-"*70)
-            checkout.run_test(driver)
-            
-            logger.info("TEST 5: Check Order Status")
-            logger.info("-"*70)
-            order_status.run_test(driver)
+            checkout_success = checkout.run_test(driver)
+
+            if checkout_success:
+                logger.info("TEST 5: Check Order Status")
+                logger.info("-"*70)
+                order_status.run_test(driver)
+            else:
+                logger.warning("Warning: Checkout failed - skipping TEST 5 (Order Status)")
         else:
             logger.warning("Warning: Cart is empty - skipping TEST 4 (Checkout) and TEST 5 (Order Status)")
     except KeyboardInterrupt:

@@ -115,39 +115,40 @@ def remove_product_from_cart(driver, items_before, item_index):
 
 
 def run_test(driver):
-    
+
     initial_cart = get_cart_count(driver)
     logger.info(f"Initial cart count: {initial_cart}")
-    
+
     # Open cart
     if not open_cart(driver):
-        return 
-    
+        return
+
     # Get initial items
     items_before = get_cart_items_with_details(driver, display=True)
-    
+
     # Remove 3 products (or less if not enough items) - RANDOMLY
     removed_count = 0
     removed_items = []
-    items_remaining = items_before.copy()
-    
+
     for i in range(3):
-        if not items_remaining:
+        # Re-query the DOM to get current items after each removal
+        wait_for_page_load(driver, timeout=2)
+        current_items = get_cart_items_with_details(driver, display=False)
+
+        if not current_items:
             logger.warning("Warning: No more items to remove")
             break
-        
-        # Select random index from remaining items
-        random_index = random.randint(0, len(items_remaining) - 1)
-        
-        wait_for_page_load(driver, timeout=2)
-        success, removed_item = remove_product_from_cart(driver, items_remaining, random_index)
-        
+
+        # Select random index from current items
+        random_index = random.randint(0, len(current_items) - 1)
+
+        success, removed_item = remove_product_from_cart(driver, current_items, random_index)
+
         if success:
             removed_count += 1
             removed_items.append(removed_item)
-            items_remaining.pop(random_index)  
         else:
             logger.warning(f"Warning: Failed to remove product #{i+1}")
             break
-    
+
     return
