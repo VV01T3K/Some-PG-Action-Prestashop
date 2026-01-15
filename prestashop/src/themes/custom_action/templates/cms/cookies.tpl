@@ -125,10 +125,10 @@
                   style="">Wybierz opcję „Akceptuj”, jeśli zgadzasz się na używanie przez nas (i strony trzecie) plików
                 cookie. Klikając „Ustawienia własne“, możesz samodzielnie określić swoje preferencje dotyczące plików
                 cookie. Możesz też odrzucić wszystkie opcjonalne pliki cookie za jednym zamachem, klikając „Odrzuć“.
-                Chcesz dowiedzieć się więcej? W naszym <a href="https://www.action.com/pl-pl/Pliki-cookies/"
+Chcesz dowiedzieć się więcej? W naszym <a href="{$link->getPageLink('cookies')}"
                   style="">oświadczeniu o plikach cookie</a> znajdziesz zestawienie wszystkich używanych przez nas cookies
                 wraz z ich funkcją. Ponadto pełną treść naszych warunków prywatności znajdziesz w naszym oświadczeniu
-                dotyczącym <a href="https://www.action.com/pl-pl/oswiadczenie-dotyczace-prywatnosci/" target="_blank"
+dotyczącym <a href="{$link->getPageLink('privacy')}" target="_blank"
                   style="">prywatności</a>.</p>
               <p></p>
               <p class="CookieDeclarationIntro"> </p>

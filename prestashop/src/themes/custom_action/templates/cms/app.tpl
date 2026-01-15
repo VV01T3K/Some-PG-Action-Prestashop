@@ -137,42 +137,6 @@
           </div>
         </div>
       </section>
-      <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="Podziel się listą i rób zakupy razem!"
-        data-testid="cms-split-teaser">
-        <div class="relative flex w-full flex-col px-4 lg:px-8">
-          <div class="mx-auto w-full max-w-7xl">
-            <div data-testid="split-teaser" class="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-8">
-              <div data-testid="split-teaser-media" class="relative order-first md:order-0 md:mt-0 h-80 sm:min-h-[500px]">
-                <div data-testid="split-teaser-image"
-                  class="relative h-80 overflow-hidden rounded-lg sm:h-[500px] object-cover object-center sm:min-h-[500px]">
-                  <img alt="" loading="lazy" decoding="async" data-nimg="fill"
-                    class="overflow-hidden rounded-lg object-cover object-center h-full w-full"
-                    style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    srcset="/static/images/w_128_presents-digital-assets-deel-je-lijstje-phone-pl_wpo4kx.webp 128w, /static/images/w_256_presents-digital-assets-deel-je-lijstje-phone-pl_wpo4kx.webp 256w, /static/images/w_640_presents-digital-assets-deel-je-lijstje-phone-pl_wpo4kx.webp 640w, /static/images/w_1080_presents-digital-assets-deel-je-lijstje-phone-pl_wpo4kx.webp 1080w, /static/images/w_1920_presents-digital-assets-deel-je-lijstje-phone-pl_wpo4kx.webp 1920w"
-                    src="/static/images/w_1920_presents-digital-assets-deel-je-lijstje-phone-pl_wpo4kx.webp">
-                </div>
-              </div>
-              <div data-testid="split-teaser-content" class="md:m-0 md:self-center">
-                <div class="flex flex-col sm:justify-center md:h-[300px]">
-                  <h2 class="heading-xl pb-2" data-testid="split-teaser-content-title">Podziel się listą i rób zakupy
-                    razem!</h2>
-                  <p class="text-body-normal whitespace-break-spaces text-neutral-900"
-                    data-testid="split-teaser-content-description">Udostępniane listy życzeń sprawiają, że kupowanie
-                    prezentów to czysta frajda. Dodaj wszystkie swoje ulubione zabawki do listy w aplikacji Action i
-                    podziel się nią z rodziną lub znajomymi. Róbcie zakupy razem, odhaczajcie kupione produkty i
-                    unikajcie podwójnych niespodzianek.</p>
-                  <div class="flex items-center justify-start md:items-start"><a
-                      class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral mt-4"
-                      href="https://open.action.com/favorites/?webRedirect=%2Fredirect%2Fnl-nl%2Fapp%2F"
-                      data-testid="split-teaser-cta" referrerpolicy="no-referrer-when-downgrade"><span
-                        class="truncate px-1">Zobacz swoją listę życzeń</span></a></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="Aplikacja Action" data-testid="cms-markdown">
         <div class="relative flex w-full flex-col px-4 lg:px-8">
           <div class="mx-auto w-full max-w-7xl">

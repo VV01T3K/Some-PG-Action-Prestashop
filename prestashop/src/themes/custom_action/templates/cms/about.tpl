@@ -68,7 +68,7 @@
             <div class="flex flex-col gap-2">
               <div class="grid grid-flow-dense grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 md:grid-cols-4"><a
                   class="relative flex flex-col gap-2 h-full w-full [&amp;_h3]:line-clamp-1 aspect-4/5 self-start"
-                  href="/pl-pl/o-nas/nazywamy-si-action/" aria-label="To właśnie jest Action" data-testid="content-card">
+                  href="/content/4-o-nas" aria-label="To właśnie jest Action" data-testid="content-card">
                   <div class="relative h-full w-full overflow-hidden rounded-md"><img data-testid="content-card-image"
                       alt="" loading="lazy" decoding="async" data-nimg="fill"
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
@@ -89,7 +89,8 @@
                     </svg>
                   </div>
                 </a><a class="relative flex flex-col gap-2 h-full w-full [&amp;_h3]:line-clamp-1 col-span-2 aspect-3/2"
-                  href="/pl-pl/o-nas/formua-sprzeday-detalicznej/" aria-label="Produkty" data-testid="content-card">
+                  onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" aria-label="Produkty"
+                  data-testid="content-card">
                   <div class="relative h-full w-full overflow-hidden rounded-md"><img data-testid="content-card-image"
                       alt="" loading="lazy" decoding="async" data-nimg="fill"
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
@@ -131,7 +132,8 @@
                     </svg>
                   </div>
                 </a><a class="relative flex flex-col gap-2 h-full w-full [&amp;_h3]:line-clamp-1 aspect-4/5 self-start"
-                  href="/pl-pl/o-nas/historia/" aria-label="Historia" data-testid="content-card">
+                  onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" aria-label="Historia"
+                  data-testid="content-card">
                   <div class="relative h-full w-full overflow-hidden rounded-md"><img data-testid="content-card-image"
                       alt="" loading="lazy" decoding="async" data-nimg="fill"
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
@@ -152,7 +154,8 @@
                     </svg>
                   </div>
                 </a><a class="relative flex flex-col gap-2 h-full w-full [&amp;_h3]:line-clamp-1 aspect-4/5 self-start"
-                  href="/pl-pl/o-nas/sklepy/" aria-label="Sklepy" data-testid="content-card">
+                  onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;" aria-label="Sklepy"
+                  data-testid="content-card">
                   <div class="relative h-full w-full overflow-hidden rounded-md"><img data-testid="content-card-image"
                       alt="" loading="lazy" decoding="async" data-nimg="fill"
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
@@ -173,8 +176,8 @@
                     </svg>
                   </div>
                 </a><a class="relative flex flex-col gap-2 h-full w-full [&amp;_h3]:line-clamp-1 aspect-4/5 self-start"
-                  href="/pl-pl/o-nas/w-jaki-sposob-firma-action-odwdziecza-sie/" aria-label="Co Action daje w zamian?"
-                  data-testid="content-card">
+                  onclick="alert('Funkcjonalność niedostępna w tej wersji.'); return false;"
+                  aria-label="Co Action daje w zamian?" data-testid="content-card">
                   <div class="relative h-full w-full overflow-hidden rounded-md"><img data-testid="content-card-image"
                       alt="" loading="lazy" decoding="async" data-nimg="fill"
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
@@ -195,7 +198,7 @@
                     </svg>
                   </div>
                 </a><a class="relative flex flex-col gap-2 h-full w-full [&amp;_h3]:line-clamp-1 aspect-4/5 self-start"
-                  href="/pl-pl/o-nas/nasi-pracownicy/" aria-label="Nasi ludzie" data-testid="content-card">
+                  href="https://pl.action.jobs/" aria-label="Nasi ludzie" data-testid="content-card">
                   <div class="relative h-full w-full overflow-hidden rounded-md"><img data-testid="content-card-image"
                       alt="" loading="lazy" decoding="async" data-nimg="fill"
                       class="bg-neutral-50 object-cover object-center transition-transform duration-250 hover:scale-105 h-full w-full"
