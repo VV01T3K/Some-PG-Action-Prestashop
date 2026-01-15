@@ -122,6 +122,51 @@ class ViewedProductsTracker {
     // Render viewed products (excluding current one)
     this.renderViewedProducts(productId);
   }
+
+  /**
+   * Render viewed products on homepage (no current product to exclude)
+   */
+  async renderViewedProductsForHomepage(containerId = 'viewed-products-container') {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const productIds = this.getViewedProductIds();
+
+    if (productIds.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+
+    try {
+      const baseUrl = typeof prestashop !== 'undefined' && prestashop.urls
+        ? prestashop.urls.base_url
+        : '/';
+
+      const ajaxUrl = `${baseUrl}module/ps_viewedproducts_custom/ajax?product_ids=${productIds.join(',')}`;
+
+      const response = await fetch(ajaxUrl, {
+        method: 'GET',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      if (data.html) {
+        container.innerHTML = data.html;
+      } else {
+        container.innerHTML = '';
+      }
+    } catch (error) {
+      console.error('Error fetching viewed products:', error);
+      container.innerHTML = '';
+    }
+  }
 }
 
 // Initialize on DOM ready
@@ -132,11 +177,18 @@ if (document.readyState === 'loading') {
 }
 
 function initViewedProducts() {
+  const tracker = new ViewedProductsTracker();
   const productId = getProductIdFromPage();
 
   if (productId) {
-    const tracker = new ViewedProductsTracker();
+    // On product page: track the product and render viewed products
     tracker.initProductPage(productId);
+  } else {
+    // On other pages (e.g., homepage): just render viewed products if container exists
+    const container = document.getElementById('viewed-products-container');
+    if (container) {
+      tracker.renderViewedProductsForHomepage();
+    }
   }
 }
 

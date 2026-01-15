@@ -1,5 +1,9 @@
 {extends file=$layout}
 
+{block name='head' append}
+  <script type="text/javascript" src="{$urls.theme_assets}js/viewed-products.js" defer></script>
+{/block}
+
 {block name='content'}
 
   <div class="hidden h-8 lg:block"></div>
@@ -186,6 +190,6 @@ href="/content/6-aplikacja" data-testid="split-teaser-cta"><span class="truncate
   </section>
 
 
-{hook h='displayViewedProducts'}
+<div id="viewed-products-container" class="bg-neutral-50"></div>
 
 {/block}
