@@ -35,6 +35,7 @@ use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
+use StockAvailable;
 
 class Ps_FeaturedProducts extends Module implements WidgetInterface
 {
@@ -237,7 +238,15 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
 
     public function renderWidget($hookName = null, array $configuration = [])
     {
-        if (!$this->isCached($this->templateFile, $this->getCacheId('ps_featuredproducts'))) {
+        $cacheId = $this->getCacheId('ps_featuredproducts');
+        if (!empty($configuration['category_id'])) {
+            $cacheId .= '_cat_' . (int)$configuration['category_id'];
+        }
+        if (!empty($configuration['compact'])) {
+            $cacheId .= '_compact';
+        }
+        
+        if (!$this->isCached($this->templateFile, $cacheId)) {
             $variables = $this->getWidgetVariables($hookName, $configuration);
 
             if (empty($variables)) {
@@ -247,26 +256,34 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
             $this->smarty->assign($variables);
         }
 
-        return $this->fetch($this->templateFile, $this->getCacheId('ps_featuredproducts'));
+        return $this->fetch($this->templateFile, $cacheId);
     }
 
     public function getWidgetVariables($hookName = null, array $configuration = [])
     {
-        $products = $this->getProducts();
+        $categoryId = !empty($configuration['category_id']) ? (int)$configuration['category_id'] : null;
+        $products = $this->getProducts($categoryId);
 
         if (!empty($products)) {
+            $targetCategoryId = $categoryId ?: $this->getConfigFieldsValues()['HOME_FEATURED_CAT'];
+            $category = new Category($targetCategoryId, $this->context->language->id);
+            
             return [
                 'products' => $products,
-                'allProductsLink' => Context::getContext()->link->getCategoryLink($this->getConfigFieldsValues()['HOME_FEATURED_CAT']),
+                'allProductsLink' => Context::getContext()->link->getCategoryLink($targetCategoryId),
+                'isCategoryMode' => !empty($categoryId),
+                'categoryId' => $categoryId,
+                'categoryName' => $category->name,
+                'isCompact' => !empty($configuration['compact']),
             ];
         }
 
         return false;
     }
 
-    protected function getProducts()
+    protected function getProducts($categoryId = null)
     {
-        $category = new Category((int) Configuration::get('HOME_FEATURED_CAT'));
+        $category = new Category($categoryId ?: (int) Configuration::get('HOME_FEATURED_CAT'));
 
         $searchProvider = new CategoryProductSearchProvider(
             $this->context->getTranslator(),
@@ -275,33 +292,15 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
 
         $context = new ProductSearchContext($this->context);
 
-        $query = new ProductSearchQuery();
-
         $nProducts = Configuration::get('HOME_FEATURED_NBR');
         if ($nProducts < 0) {
             $nProducts = 12;
         }
 
-        $query
-            ->setResultsPerPage($nProducts)
-            ->setPage(1)
-        ;
-
-        if (Configuration::get('HOME_FEATURED_RANDOMIZE')) {
-            $query->setSortOrder(SortOrder::random());
-        } else {
-            $query->setSortOrder(new SortOrder('product', 'position', 'asc'));
-        }
-
-        $result = $searchProvider->runQuery(
-            $context,
-            $query
-        );
-
         $assembler = new ProductAssembler($this->context);
-
         $presenterFactory = new ProductPresenterFactory($this->context);
         $presentationSettings = $presenterFactory->getPresentationSettings();
+        
         if (version_compare(_PS_VERSION_, '1.7.5', '>=')) {
             $presenter = new \PrestaShop\PrestaShop\Adapter\Presenter\Product\ProductListingPresenter(
                 new ImageRetriever(
@@ -324,24 +323,102 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
             );
         }
 
-        // Now, we can present the products for the template.
         $products_for_template = [];
-        $rawProducts = $result->getProducts();
+        $page = 1;
+        $maxPages = 10;
+        $targetQuantity = $nProducts;
 
-        // Assemble & present in bulk or separately, depending on core version
-        $assembleInBulk = method_exists($assembler, 'assembleProducts');
-        if ($assembleInBulk) {
-            $rawProducts = $assembler->assembleProducts($rawProducts);
-        }
-        foreach ($rawProducts as $rawProduct) {
-            $products_for_template[] = $presenter->present(
-                $presentationSettings,
-                ($assembleInBulk ? $rawProduct : $assembler->assembleProduct($rawProduct)),
-                $this->context->language
-            );
+        // Keep fetching pages until we have enough products or reach max pages
+        while (count($products_for_template) < $targetQuantity && $page <= $maxPages) {
+            $query = new ProductSearchQuery();
+            
+            // Fetch double the amount per page to account for filtering
+            $query->setResultsPerPage($targetQuantity * 2);
+            $query->setPage($page);
+
+            if (Configuration::get('HOME_FEATURED_RANDOMIZE')) {
+                $query->setSortOrder(SortOrder::random());
+            } else {
+                $query->setSortOrder(new SortOrder('product', 'position', 'asc'));
+            }
+
+            $result = $searchProvider->runQuery($context, $query);
+            $rawProducts = $result->getProducts();
+
+            if (empty($rawProducts)) {
+                break;
+            }
+
+            // Filter for available products only
+            $rawProducts = $this->filterAvailableProducts($rawProducts);
+
+            if (empty($rawProducts)) {
+                $page++;
+                continue;
+            }
+
+            // Assemble & present in bulk or separately, depending on core version
+            $assembleInBulk = method_exists($assembler, 'assembleProducts');
+            if ($assembleInBulk) {
+                $rawProducts = $assembler->assembleProducts($rawProducts);
+            }
+
+            foreach ($rawProducts as $rawProduct) {
+                if (count($products_for_template) >= $targetQuantity) {
+                    break;
+                }
+
+                $products_for_template[] = $presenter->present(
+                    $presentationSettings,
+                    ($assembleInBulk ? $rawProduct : $assembler->assembleProduct($rawProduct)),
+                    $this->context->language
+                );
+            }
+
+            $page++;
         }
 
         return $products_for_template;
+    }
+
+    /**
+     * Keep only products that have stock available.
+     */
+    private function filterAvailableProducts(array $products)
+    {
+        return array_values(array_filter($products, function ($product) {
+            $productId = (int) ($product['id_product'] ?? 0);
+            $combinationId = (int) ($product['id_product_attribute'] ?? 0);
+
+            if (!$productId) {
+                return false;
+            }
+
+            $quantity = $this->resolveProductQuantity($product, $productId, $combinationId);
+
+            return $quantity > 0;
+        }));
+    }
+
+    /**
+     * Try to determine a product's available quantity from multiple possible keys, with a StockAvailable fallback.
+     */
+    private function resolveProductQuantity(array $product, $productId, $combinationId)
+    {
+        $candidates = [
+            'quantity',
+            'available_quantity',
+            'quantity_all_versions',
+            'stock_quantity',
+        ];
+
+        foreach ($candidates as $key) {
+            if (isset($product[$key])) {
+                return (int) $product[$key];
+            }
+        }
+
+        return (int) StockAvailable::getQuantityAvailableByProduct($productId, $combinationId);
     }
 
     protected function getCacheId($name = null)

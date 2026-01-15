@@ -3,6 +3,38 @@
     display: none !important;
 }
 
+/* Momenty card gradient overlay */
+.momenty-card-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Ensure text is above gradient */
+[data-testid="moment-menu-image-link"] > span:last-child {
+    z-index: 2;
+}
+
+/* Momenty dropdown - full viewport width breaking out of container */
+.group\/submenu:has(.momenty-dropdown) {
+    position: static !important;
+}
+
+.momenty-dropdown {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    width: 100vw !important;
+    transform: translateX(-50%) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
 
 #search_widget,
 #search_widget search,
@@ -264,18 +296,73 @@ ul.searchbar-autocomplete li.search-result-item.ui-state-focus {
     margin: 0;
 }
 
-/* Dim page when search dropdown open */
-body.search-dropdown-open {
+/* Search cart heart button */
+ul.searchbar-autocomplete li.search-result-item .search-cart-heart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.2s ease;
+    flex-shrink: 0;
+}
+
+ul.searchbar-autocomplete li.search-result-item .search-cart-heart:hover {
+    transform: scale(1.1);
+}
+
+ul.searchbar-autocomplete li.search-result-item .search-cart-heart.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+ul.searchbar-autocomplete li.search-result-item .search-cart-heart svg {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+/* Heart states for search - default: show outline only */
+.search-cart-heart .heart-outline { display: block; }
+.search-cart-heart .heart-hover { display: none; }
+.search-cart-heart .heart-filled { display: none; }
+
+/* Hover state - show filled gray heart when not in cart */
+.search-cart-heart:not(.is-in-cart):hover .heart-outline { display: none; }
+.search-cart-heart:not(.is-in-cart):hover .heart-hover { display: block; }
+
+/* In cart state - always show orange filled heart */
+.search-cart-heart.is-in-cart .heart-outline { display: none !important; }
+.search-cart-heart.is-in-cart .heart-hover { display: none !important; }
+.search-cart-heart.is-in-cart .heart-filled { display: block !important; }
+
+/* Always have main positioned for overlay */
+main {
     position: relative;
 }
 
-body.search-dropdown-open::before {
+/* Overlay always present but invisible */
+main::before {
     content: "";
-    position: fixed;
+    position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    /* below header/logo adjustments if needed */
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Show overlay when search dropdown or category menu open */
+body.search-dropdown-open main::before {
+    opacity: 1;
+}
+
+/* Hide old overlay when new search overlay is active */
+body.search-active main::before {
+    opacity: 0 !important;
 }
 
 /* Keep search dropdown and search widget above the overlay */
@@ -283,6 +370,39 @@ body.search-dropdown-open::before {
 ul.ui-autocomplete.searchbar-autocomplete {
     position: relative;
     z-index: 1000;
+}
+
+/* Full-page search overlay - covers entire viewport including header */
+.search-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Show search overlay when search is active */
+body.search-active .search-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Ensure header search area stays above the search overlay */
+body.search-active #search_widget {
+    position: relative;
+    z-index: 9999;
+}
+
+body.search-active ul.ui-autocomplete.searchbar-autocomplete {
+    z-index: 9999 !important;
+}
+
+/* Keep search container above overlay */
+body.search-active [data-testid="desktop-search"] {
+    position: relative;
+    z-index: 9999;
 }
 
 section.splide[aria-label="Simple Splide Carousel"] .splide__arrow--prev {

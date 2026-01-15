@@ -29,11 +29,11 @@
     <div class="clearfix product-variants-item">
       {* Display selected value in label *}
       <span class="control-label">{$group.name}
-          {foreach from=$group.attributes key=id_attribute item=group_attribute}
-            {if $group_attribute.selected}
-              <span class="selected-variant-name">: {$group_attribute.name}</span>
-            {/if}
-          {/foreach}
+          <span class="selected-variant-name" data-group-id="{$id_attribute_group}">
+            {foreach from=$group.attributes key=id_attribute item=group_attribute}
+              {if $group_attribute.selected}: {$group_attribute.name}{/if}
+            {/foreach}
+          </span>
       </span>
       
       {if $group.group_type == 'select'}
@@ -102,4 +102,32 @@
     {/if}
   {/foreach}
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var variantsContainer = document.querySelector('.js-product-variants');
+    if (!variantsContainer) return;
+
+    variantsContainer.addEventListener('change', function(e) {
+      var input = e.target;
+      var groupId = input.getAttribute('data-product-attribute');
+      if (!groupId) return;
+
+      var selectedText = '';
+
+      if (input.tagName === 'SELECT') {
+        selectedText = ': ' + input.options[input.selectedIndex].text;
+      } else if (input.type === 'radio' && input.checked) {
+        var label = input.closest('label');
+        var name = input.title || label.getAttribute('aria-label') || label.querySelector('.color-name, .radio-label').textContent;
+        selectedText = ': ' + name;
+      }
+
+      var labelSpan = variantsContainer.querySelector('.selected-variant-name[data-group-id="' + groupId + '"]');
+      if (labelSpan && selectedText) {
+        labelSpan.textContent = selectedText;
+      }
+    });
+  });
+</script>
 {/if}

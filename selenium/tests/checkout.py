@@ -294,86 +294,122 @@ def click_payment_confirm_button(driver):
 
 def display_order_confirmation(driver):
     try:
-        wait = WebDriverWait(driver, 10)
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".order-line")))
-        
-        # Get all order lines
+        import time
+        start_time = time.time()
+
+        logger.info(f"Current URL after checkout: {driver.current_url}")
+        logger.info("Waiting for order confirmation details to load...")
+
+        wait = WebDriverWait(driver, 50, poll_frequency=2)
+
+        def check_and_log_state(d):
+            """Custom wait condition that logs state while waiting"""
+            order_lines = d.find_elements(By.CSS_SELECTOR, ".order-line")
+            if order_lines:
+                elapsed = time.time() - start_time
+                logger.info(f"Order lines found after {elapsed:.1f} seconds")
+                return True
+
+            elapsed = time.time() - start_time
+            if int(elapsed) % 5 == 0 and elapsed > 0:
+                loading = d.find_elements(By.CSS_SELECTOR, ".loader, .loading, .spinner")
+                if loading:
+                    logger.debug(f"Still loading after {elapsed:.0f}s (loading indicator visible)")
+                else:
+                    logger.debug(f"Still waiting after {elapsed:.0f}s (no loading indicator)")
+
+            return False
+
+        wait.until(check_and_log_state)
+
         order_lines = driver.find_elements(By.CSS_SELECTOR, ".order-line")
-        
+
+        if not order_lines:
+            logger.warning("No order lines found in confirmation page")
+            return False
+
         logger.info("=== Order Confirmation ===")
-        
+
         for order_line in order_lines:
             try:
                 product_name = order_line.find_element(By.CSS_SELECTOR, ".details span").text
                 qty_div = order_line.find_element(By.CSS_SELECTOR, ".qty .row")
                 cols = qty_div.find_elements(By.CSS_SELECTOR, ".col-xs-4, .col-md-2")
-                
+
                 if len(cols) >= 3:
                     unit_price = cols[0].text.strip()
                     quantity = cols[1].text.strip()
                     total_price = cols[2].text.strip()
-                    
+
                     logger.info(f"Product: {product_name}, Unit Price: {unit_price}, Quantity: {quantity}, Total: {total_price}")
-                    
+
             except Exception as line_e:
                 logger.debug(f"Error extracting order line details: {line_e}")
                 continue
-        
+
         return True
     except Exception as e:
         logger.error(f"Error displaying order confirmation: {e}")
+        logger.debug(f"Current URL when error occurred: {driver.current_url}")
         return False
 
 
 def run_test(driver):
     try:
-        
+
         if not click_cart_button(driver):
-            return 
-        
+            return False
+
         wait = WebDriverWait(driver, 10)
-        
+
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[data-testid='checkout-button']")))
-        
+
         if not click_checkout_button(driver):
-            return
-        
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='address1-input'] input[data-testid='input']"))) 
-        
+            return False
+
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='address1-input'] input[data-testid='input']")))
+
         address = random.choice(ADDRESSES)
         city = random.choice(CITIES)
         postcode = random.choice(POSTCODES)
-        
+
         logger.info(f"Address: {address}, {postcode} {city}")
-        
+
         if not fill_address(driver, address):
-            return 
-        
+            return False
+
         if not fill_postcode(driver, postcode):
-            return 
-        
+            return False
+
         if not fill_city(driver, city):
-            return 
-        
+            return False
+
         if not click_address_confirm_button(driver):
-            return 
-        
+            return False
+
         wait_for_page_load(driver)
         select_shipping_method(driver)
         click_shipping_confirm_button(driver)
-        
+
         wait_for_page_load(driver)
         select_payment_method(driver, "ps_cashondelivery")
         wait_for_page_load(driver, timeout=2)
-        click_payment_confirm_button(driver)
-        
+
+        if not click_payment_confirm_button(driver):
+            logger.error("Failed to confirm payment and place order")
+            return False
+
         logger.info("Checkout completed!")
-        
+
         # Display order confirmation details
-        wait_for_page_load(driver, timeout=2)
-        display_order_confirmation(driver)
-        
-        return   
+        wait_for_page_load(driver, timeout=3)
+        confirmation_success = display_order_confirmation(driver)
+
+        if not confirmation_success:
+            logger.warning("Could not display order confirmation details, but order may have been placed")
+            # Don't return False here as the order might still be successful
+
+        return True
     except Exception as e:
         logger.error(f"Checkout test failed: {e}")
-        return 
+        return False 

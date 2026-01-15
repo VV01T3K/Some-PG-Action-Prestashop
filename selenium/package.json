@@ -6,6 +6,7 @@
     "deps": "uv sync && docker compose pull && docker compose build && mkdir -p tests/downloads && sudo chmod 777 tests/downloads",
     "tests": "(sudo chmod 777 tests/downloads) && bun test:presta",
     "test:presta": "uv run tests/presta.py",
+    "test:loop": "./run_tests_loop.sh",
     "sel:up": "SE_START_VNC=false docker compose up -d",
     "sel:down": "docker compose down",
     "sel:up:vnc": "SE_START_VNC=true docker compose up -d",

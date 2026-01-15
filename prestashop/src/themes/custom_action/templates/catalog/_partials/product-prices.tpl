@@ -90,7 +90,7 @@
          {* Netto price display *}
           <div class="mt-2 flex justify-left">
             <span class="rounded-md bg-blue-50 border border-blue-200 px-2 py-1 text-sm font-medium text-blue-800 shadow-sm">
-              {$product.price_tax_exc} zł netto
+              {$product.price_tax_exc|floatval|number_format:2:",":""} zł netto
             </span>
           </div>
         {block name='product_unit_price'}

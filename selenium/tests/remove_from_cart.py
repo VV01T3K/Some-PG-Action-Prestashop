@@ -79,75 +79,86 @@ def get_cart_items_with_details(driver,display=False):
 def remove_product_from_cart(driver, items_before, item_index):
     try:
         wait = WebDriverWait(driver, 10)
-        
+
         if item_index >= len(items_before):
             logger.error(f"Invalid index {item_index}, only {len(items_before)} items available")
             return False, {}
-        
+
         removed_item = items_before[item_index]
         logger.info(f"Removing item #{item_index + 1}: {removed_item['name']} (qty: {removed_item['quantity']})")
-        
+
         try:
+            wait_for_page_load(driver, timeout=1)
+
             product_lines = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
-            
+
+            if item_index >= len(product_lines):
+                logger.error(f"Item index {item_index} out of range, only {len(product_lines)} products in DOM")
+                return False, removed_item
+
             product_line = product_lines[item_index]
-            
-            delete_btn = product_line.find_element(By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']")
-            
-            driver.execute_script("arguments[0].scrollIntoView(true);", delete_btn)
-            
+
+            delete_btn = WebDriverWait(product_line, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']"))
+            )
+
+            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", delete_btn)
+            wait_for_page_load(driver, timeout=0.5)
+
             try:
                 delete_btn.click()
             except Exception:
-                logger.debug("click failed")
+                logger.debug("Regular click failed, using JS click")
+                driver.execute_script("arguments[0].click();", delete_btn)
 
             wait.until(EC.staleness_of(product_line))
             logger.debug("Confirmed product removed from DOM")
-            
+
             return True, removed_item
-        except Exception:
-            logger.error(f"Error finding delete button: {item_index}")
+        except Exception as e:
+            logger.error(f"Error finding/clicking delete button for item {item_index}: {e}")
             return False, removed_item
-        
+
     except Exception as e:
         logger.error(f"Error removing product: {e}")
         return False, {}
 
 
 def run_test(driver):
-    
+
     initial_cart = get_cart_count(driver)
     logger.info(f"Initial cart count: {initial_cart}")
-    
+
     # Open cart
     if not open_cart(driver):
-        return 
-    
+        return
+
     # Get initial items
     items_before = get_cart_items_with_details(driver, display=True)
-    
+
     # Remove 3 products (or less if not enough items) - RANDOMLY
     removed_count = 0
     removed_items = []
-    items_remaining = items_before.copy()
-    
+
     for i in range(3):
-        if not items_remaining:
+        # Re-query the DOM to get current items after each removal
+        wait_for_page_load(driver, timeout=2)
+        current_items = get_cart_items_with_details(driver, display=False)
+
+        if not current_items:
             logger.warning("Warning: No more items to remove")
             break
-        
-        # Select random index from remaining items
-        random_index = random.randint(0, len(items_remaining) - 1)
-        
-        wait_for_page_load(driver, timeout=2)
-        success, removed_item = remove_product_from_cart(driver, items_remaining, random_index)
-        
+
+        # Select random index from current items
+        random_index = random.randint(0, len(current_items) - 1)
+
+        success, removed_item = remove_product_from_cart(driver, current_items, random_index)
+
         if success:
             removed_count += 1
             removed_items.append(removed_item)
-            items_remaining.pop(random_index)  
         else:
             logger.warning(f"Warning: Failed to remove product #{i+1}")
             break
-    
+
     return

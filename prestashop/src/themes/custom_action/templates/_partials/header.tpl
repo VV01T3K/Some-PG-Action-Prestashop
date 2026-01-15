@@ -1,4 +1,5 @@
 {block name='header'}
+  <div class="search-overlay" aria-hidden="true"></div>
   <header>
     <div id="skiptocontent" class="sr-only focus-within:not-sr-only">
       <div class="bg-orange-300 px-4 py-1"><a class="text-body-small text-dark-blue-500 font-medium underline"
@@ -117,25 +118,56 @@
               <a class="text-body-normal text-dark-blue-500 pt-3 pb-4 font-medium hover:shadow-[inset_0_-2px_0]"
                 href="/nowe-produkty">Nowości</a><a
                 class="text-body-normal text-dark-blue-500 pt-3 pb-4 font-medium hover:shadow-[inset_0_-2px_0]"
-                href="{$urls.pages.prices_drop}">Promocje</a>
+                href="{$urls.pages.prices_drop}">Promocja Tygodnia</a>
+              {widget name='ps_categorytree' momenty=true}
+              <div lang="pl-pl" class="flex gap-6"><a
+                  class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5" style="font-size: 14px;"
+                  href="/content/6-aplikacja"><span class="group-hover:shadow-bottom-border">Pobierz aplikację
+                    Action</span></a><a class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5"
+                  style="font-size: 14px;" href="{$urls.pages.stores}"><span class="group-hover:shadow-bottom-border">Znajdź
+                    sklep</span></a><a class="flex flex-col justify-center group font-normal text-dark-blue-500 my-0.5"
+style="font-size: 14px;" href="{$link->getPageLink('customerservice')}"><span class="group-hover:shadow-bottom-border">Biuro
+                    Obsługi
+                    Klienta</span></a></div>
             </div>
-            <div lang="pl-pl" class="flex gap-6"><a
-                class="flex flex-col justify-center group text-body-small font-normal text-dark-blue-500 my-0.5"
-                href="/content/6-aplikacja"><span class="group-hover:shadow-bottom-border">Pobierz aplikację
-                  Action</span></a><a
-                class="flex flex-col justify-center group text-body-small font-normal text-dark-blue-500 my-0.5"
-                href="{$urls.pages.stores}"><span class="group-hover:shadow-bottom-border">Znajdź sklep</span></a><a
-                class="flex flex-col justify-center group text-body-small font-normal text-dark-blue-500 my-0.5"
-                href="{$urls.pages.contact}"><span class="group-hover:shadow-bottom-border">Biuro Obsługi
-                  Klienta</span></a></div>
           </nav>
         </div>
       </div>
       <div class="-mt-px h-px bg-neutral-50"></div>
     </div>
   </header>
-  {* <script>
-var urls = {$urls.pages|json_encode nofilter};
-    console.log(urls);
-  </script> *}
+  <script>
+  (function() {
+    var searchInput = document.querySelector('[data-testid="search-bar"]');
+    var searchOverlay = document.querySelector('.search-overlay');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        var hasValue = this.value.trim().length > 0;
+        document.body.classList.toggle('search-active', hasValue);
+      });
+
+      searchInput.addEventListener('focus', function() {
+        if (this.value.trim().length > 0) {
+          document.body.classList.add('search-active');
+        }
+      });
+    }
+
+    if (searchOverlay) {
+      searchOverlay.addEventListener('click', function() {
+        if (searchInput) {
+          searchInput.value = '';
+          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+          searchInput.blur();
+        }
+        document.body.classList.remove('search-active');
+        document.body.classList.remove('search-dropdown-open');
+        if (window.jQuery && jQuery(searchInput).autocomplete) {
+          jQuery(searchInput).autocomplete('close');
+        }
+      });
+    }
+  })();
+  </script>
 {/block}

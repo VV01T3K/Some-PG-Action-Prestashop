@@ -1,11 +1,15 @@
 {extends file=$layout}
 
+{block name='head' append}
+  <script type="text/javascript" src="{$urls.theme_assets}js/viewed-products.js" defer></script>
+{/block}
+
 {block name='content'}
 
   <div class="hidden h-8 lg:block"></div>
   {widget name='ps_categorytree' carousel=true}
-  {hook h='displayFeaturedProducts'}
 
+{hook h='displayDiscountedProducts'}
 
   <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8" data-testid="cms-page-teaser-carousel">
     <div class="relative flex w-full flex-col px-4 lg:px-8">
@@ -30,7 +34,7 @@ href="/2-strona-glowna" aria-label="Zobacz wszystko"
                               class="bg-neutral-10 object-cover object-center transition-all duration-300 group-hover:scale-105 transition-transform duration-250 hover:scale-105 h-full w-full"
                               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                               sizes="(min-width: 1280px) calc(1280px / 3), (min-width: 1024px) calc(100vw / 3), (min-width: 768px) calc(100vw / 2), (min-width: 640px) calc(100vw / 1), calc(100vw / 1)"
-                              src="/static/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.avif">
+                              src="/static/images/Presents_ToysEntertainment_Toys_Dolls_2025_ygfmvt.avif">
                           </div>
                           <div class="relative w-full p-4 InspirationContentCard_titleContainer__TmDDF"
                             style="background-color:#4e769c">
@@ -58,7 +62,7 @@ href="/2-strona-glowna" aria-label="Zobacz wszystko"
                               class="bg-neutral-10 object-cover object-center transition-all duration-300 group-hover:scale-105 transition-transform duration-250 hover:scale-105 h-full w-full"
                               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                               sizes="(min-width: 1280px) calc(1280px / 3), (min-width: 1024px) calc(100vw / 3), (min-width: 768px) calc(100vw / 2), (min-width: 640px) calc(100vw / 1), calc(100vw / 1)"
-                              src="/static/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.avif">
+                              src="/static/images/Christmas_Decoration_SeasonalDecoration_DecoratingTree_2025_d2npid.avif">
                           </div>
                           <div class="relative w-full p-4 InspirationContentCard_titleContainer__TmDDF"
                             style="background-color:#e2273a">
@@ -86,7 +90,7 @@ href="/2-strona-glowna" aria-label="Zobacz wszystko"
                               class="bg-neutral-10 object-cover object-center transition-all duration-300 group-hover:scale-105 transition-transform duration-250 hover:scale-105 h-full w-full"
                               style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                               sizes="(min-width: 1280px) calc(1280px / 3), (min-width: 1024px) calc(100vw / 3), (min-width: 768px) calc(100vw / 2), (min-width: 640px) calc(100vw / 1), calc(100vw / 1)"
-                              src="/static/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.avif">
+                              src="/static/images/Winter_WinterFashionInside_Clothing_Womenswear_ClothingAccessories_Shoes_Legwear_2025_adcx1s.avif">
                           </div>
                           <div class="relative w-full p-4 InspirationContentCard_titleContainer__TmDDF"
                             style="background-color:#4e769c">
@@ -115,9 +119,43 @@ href="/2-strona-glowna" aria-label="Zobacz wszystko"
     </div>
   </section>
 
-{hook h='displayDiscountedProducts'}
 
 {hook h='displayNewProducts'}
+
+<section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="Wszystko na co dzień"
+  data-testid="cms-split-teaser">
+  <div class="relative flex w-full flex-col px-4 lg:px-8">
+    <div class="mx-auto w-full max-w-7xl">
+      <div data-testid="split-teaser" class="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-8">
+        <div data-testid="split-teaser-media" class="relative order-first md:order-0 md:mt-0 h-80 sm:min-h-[500px]">
+          <div data-testid="split-teaser-image"
+            class="relative h-80 overflow-hidden rounded-lg sm:h-[500px] object-cover object-center sm:min-h-[500px]">
+            <img alt="" loading="lazy" decoding="async" data-nimg="fill"
+              class="overflow-hidden rounded-lg object-cover object-center h-full w-full"
+              style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
+              sizes="(min-width: 768px) 50vw, 100vw"
+src="/static/images/Teaser_Carousel_ESSENTIALS_2025_dywzbz.avif"></div>
+        </div>
+        <div data-testid="split-teaser-content" class="md:m-0 md:self-center">
+          <div class="flex flex-col sm:justify-center md:h-[300px]">
+<h2 class="heading-xl pb-2" data-testid="split-teaser-content-title">Wszystko dla majsterkowiczów</h2>
+            <p class="text-body-normal whitespace-break-spaces text-neutral-900"
+              data-testid="split-teaser-content-description">w najniższej cenie</p>
+            <div class="flex items-center justify-start md:items-start"><a
+                class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-dark-blue-500 text-neutral-0 hover:bg-dark-blue-300 active:bg-dark-blue-700 focus:bg-dark-blue-300 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral mt-4"
+href="/14-zrob-to-sam" data-testid="split-teaser-cta"><span class="truncate px-1">Zobacz
+                  więcej</span></a></div>
+          </div>
+          <div data-testid="product-carousel" class="mt-6 md:-ml-[60%] lg:-ml-[40%]">
+{widget name='ps_featuredproducts' category_id=14 compact=true}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{hook h='displayFeaturedProducts'}
 
   <section class="bg-neutral-0 pt-6 md:pt-8 pb-6 md:pb-8" aria-label="POWITAJ 100+ PROMOCJI!"
     data-testid="cms-split-teaser">
@@ -131,7 +169,7 @@ href="/2-strona-glowna" aria-label="Zobacz wszystko"
                 class="overflow-hidden rounded-lg object-cover object-center h-full w-full"
                 style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
                 sizes="(min-width: 768px) 50vw, 100vw"
-                src="/static/Hello_Digital_web_2025_PL_q2iekf.avif">
+                src="/static/images/Hello_Digital_web_2025_PL_q2iekf.avif">
             </div>
           </div>
           <div data-testid="split-teaser-content" class="md:m-0 md:self-center">
@@ -152,6 +190,6 @@ href="/content/6-aplikacja" data-testid="split-teaser-cta"><span class="truncate
   </section>
 
 
-{hook h='displayViewedProducts'}
+<div id="viewed-products-container" class="bg-neutral-50"></div>
 
 {/block}

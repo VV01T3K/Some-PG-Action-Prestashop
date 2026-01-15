@@ -112,9 +112,16 @@ function createProductApiPayload(product: Product, categoryIds: number[], associ
     const ean13 = generateRandomEAN13();
 
     // --- HTML DESCRIPTION BLOCK ---
+    const descriptionListHtml = product.description_list && product.description_list.length > 0
+        ? `<ul data-testid="product-description-usps">
+${product.description_list.map((item: string) => `        <li><span>${item}</span></li>`).join('\n')}
+    </ul>`
+        : '';
+
     const htmlDescriptionBlock = `
-<div id="product-description">
-    <div id="product-description-long">
+<div data-content-king="product-description" data-testid="product-description">
+    ${descriptionListHtml}
+    <div data-testid="product-description-long" class="mt-2">
         ${product.description_long || ""}
     </div>
 </div>

@@ -40,6 +40,9 @@
     <meta property="product:weight:units" content="{$product.weight_unit}">
   {/if}
   <link rel="stylesheet" href="{$urls.theme_assets}css/product.css">
+  <script type="text/javascript" src="{$urls.theme_assets}js/product-images.js" defer></script>
+  <script type="text/javascript" src="{$urls.theme_assets}js/viewed-products.js" defer></script>
+  <script type="text/javascript" src="{$urls.theme_assets}js/product-add-to-cart.js" defer></script>
 {/block}
 
 {block name='head_microdata_special'}
@@ -51,16 +54,16 @@
   <section id="main" class="action-product">
     <meta property="og:url" content="{$product.url}">
 
-    <div class="ap-container">
-      {* Breadcrumb navigation *}
-      {block name='breadcrumb'}
-        {include file='_partials/breadcrumb.tpl'}
-      {/block}
+    {* Breadcrumb navigation *}
+    {block name='breadcrumb'}
+      {include file='_partials/breadcrumb.tpl'}
+    {/block}
 
+    <div class="mx-auto w-full max-w-7xl">
       {block name='page_content_container'}
         <section class="page-content" id="content">
           {block name='page_content'}
-            <div class="ap-grid product-container js-product-container">
+<div class="relative md:grid md:grid-cols-2 md:gap-8">
               {* Left column: Product images gallery *}
               <div class="ap-media-col">
                 {include file='catalog/_partials/product-flags.tpl'}
@@ -72,22 +75,29 @@
               </div>
 
               {* Right column: Product details *}
-              <aside class="ap-side">
+              <aside class="">
                 {* Product Title *}
                 {block name='page_header_container'}
                   {block name='page_header'}
+                    <section>
                     <h1 class="heading-2xl mb-1">{block name='page_title'}{$product.name}{/block}</h1>
                     {* Quick product features *}
-                    {if $product.grouped_features}
-                      <p class="ap-reference text-sm text-neutral-700">
-                        <span class="font-medium">{l s='Właściwości:' d='Shop.Theme.Catalog'}</span>
-                        {foreach from=$product.grouped_features item=feature name=quickFeatures}
-                          {if $smarty.foreach.quickFeatures.index < 4}
-                            {$feature.value|escape:'htmlall'}{if !$smarty.foreach.quickFeatures.last && $smarty.foreach.quickFeatures.index < 3} | {/if}
-                          {/if}
-                        {/foreach}
+                    {if isset($product.description_short) && $product.description_short}
+                      <p class="mb-8"
+                        data-testid="product-card-description">
+                        {$product.description_short|strip_tags:'UTF-8'|truncate:80:'...'}
                       </p>
-                    {/if}
+                    {elseif isset($product.main_variants) && $product.main_variants}
+<p class="mb-8"
+data-testid="product-card-description">
+                        {l s='Different variants' d='Shop.Theme.Catalog'}
+                      </p>
+                    {else}
+<p class="mb-8"data-testid="product-card-description">
+                        &nbsp;
+                      </p>
+{/if}
+<section>
                   {/block}
                 {/block}
 
@@ -202,44 +212,61 @@
 
             {* Product characteristics - full width section below *}
             {block name='product_tabs'}
-              <div class="ap-tabs">
                 {block name='product_details'}
                   {include file='catalog/_partials/product-details.tpl'}
                 {/block}
-              </div>
             {/block}
 
           {/block}
         </section>
+        {if isset($product_categories) && $product_categories|count > 0}
+          <section aria-labelledby="related-categories-title" class="mt-8 mb-8">
+            <h2 id="related-categories-title" class="heading-lg mb-2" data-testid="related-categories">
+              {l s='Powiązane kategorie' d='Shop.Theme.Catalog'}</h2>
+            <ul class="no-scrollbar -mx-4 flex flex-row gap-2 overflow-auto px-4 whitespace-nowrap lg:flex-wrap lg:justify-center" style="list-style: none; display: flex; flex-direction: row; gap: 0.5rem; overflow: auto; padding-left: 1rem; padding-right: 1rem; margin-left: -1rem; margin-right: -1rem; white-space: nowrap; flex-wrap: wrap; justify-content: center;">
+              {foreach from=$product_categories item=cat}
+                <li class="group flex flex-wrap items-center gap-2" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;">
+                  <a class="btn-base group btn-tertiary w-fit" href="{$cat.link|escape:'html':'UTF-8'}" data-testid="links-list-link" style="position: relative; box-sizing: border-box; display: flex; max-width: 100%; align-items: center; justify-content: center; gap: 0.25rem; border-radius: 9999px; font-size: 1rem; font-weight: 500; padding: 0.625rem 1.25rem; background-color: transparent; border: 1px solid #1a365d; text-decoration: none; transition: all 0.2s ease; width: fit-content;" onmouseover="this.style.backgroundColor='#1a365d'; this.querySelector('p').style.setProperty('color', '#ffffff', 'important');" onmouseout="this.style.backgroundColor='transparent'; this.querySelector('p').style.setProperty('color', '#ffffff', 'important');">
+                    <span class="btn-content-label btn-shadow-dark-blue" style="display: flex; align-items: center; justify-content: center;">
+                      <p class="text-body-small" style="font-size: 0.875rem; line-height: 1.25rem; margin: 0; color: #ffffff !important; transition: color 0.2s ease;">{$cat.name|escape:'html':'UTF-8'}</p>
+                    </span>
+                  </a>
+                </li>
+              {/foreach}
+            </ul>
+          </section>
+{/if}
       {/block}
     </div>
 
+    {* Podobne produkty - Similar Products *}
     {block name='product_accessories'}
       {if $accessories}
-        <section class="product-accessories clearfix">
-          <p class="h5 text-uppercase">{l s='You might also like' d='Shop.Theme.Catalog'}</p>
-          <div class="products row">
-            {foreach from=$accessories item="product_accessory" key="position"}
-              {block name='product_miniature'}
-                {include file='catalog/_partials/miniatures/product.tpl' product=$product_accessory position=$position productClasses="col-xs-12 col-sm-6 col-lg-4 col-xl-3"}
-              {/block}
-            {/foreach}
+        <section class="mt-12 mb-12" aria-labelledby="similar-products-title">
+          <div class="mx-auto w-full max-w-7xl px-4">
+            <h2 id="similar-products-title" class="heading-xl mb-6" style="color: #001489; font-size: 28px; font-weight: 700;">{l s='Podobne produkty' d='Shop.Theme.Catalog'}</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {foreach from=$accessories item="product_accessory" key="position"}
+                {block name='product_miniature'}
+                  {include file='catalog/_partials/miniatures/product.tpl' product=$product_accessory position=$position}
+                {/block}
+              {/foreach}
+            </div>
           </div>
         </section>
       {/if}
     {/block}
 
-    {* {block name='product_footer'}
-      {hook h='displayFooterProduct' product=$product category=$category}
-    {/block} *}
-
-    {* {block name='product_images_modal'}
+    {block name='product_images_modal'}
       {include file='catalog/_partials/product-images-modal.tpl'}
-    {/block} *}
+    {/block}
 
     {hook h='displayFeaturedProducts'}
 
-  
+    {* Viewed Products Section - At the very bottom *}
+    <div id="viewed-products-container"></div>
+
     {block name='page_footer_container'}
       <footer class="page-footer">
         {block name='page_footer'}

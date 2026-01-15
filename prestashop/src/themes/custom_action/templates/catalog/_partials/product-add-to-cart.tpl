@@ -22,6 +22,51 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
+<style>
+  .add-to-cart-btn {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.625rem 1.25rem;
+    background-color: #f97316;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .add-to-cart-btn:hover {
+    background-color: #c2410c;
+  }
+
+  .add-to-cart-btn:active {
+    background-color: #7c2d12;
+  }
+
+  .add-to-cart-btn:focus {
+    background-color: #c2410c;
+    outline: 2px solid #1e3a8a;
+    outline-offset: 2px;
+  }
+
+  .add-to-cart-btn:disabled {
+    background-color: #e5e5e5;
+    color: #737373;
+    cursor: not-allowed;
+    outline: 1px solid #d4d4d4;
+  }
+
+  .add-to-cart-btn:disabled:hover {
+    background-color: #e5e5e5;
+  }
+</style>
 <div class="product-add-to-cart js-product-add-to-cart">
   {if !$configuration.is_catalog}
 
@@ -42,6 +87,10 @@
               value="1"
               min="1"
             {/if}
+            {if $product.quantity && $product.quantity > 0}
+              max="{$product.quantity}"
+              data-stock="{$product.quantity}"
+            {/if}
             class="input-group"
             aria-label="{l s='Quantity' d='Shop.Theme.Actions'}"
           >
@@ -49,7 +98,7 @@
 
         <div class="add flex-1">
           <button
-            class="relative box-border flex max-w-full items-center justify-center gap-1 rounded-full text-base font-medium py-2.5 px-5 bg-orange-500 text-neutral-0 hover:bg-orange-700 active:bg-orange-900 focus:bg-orange-700 focus:outline focus:outline-2 focus:outline-dark-blue-500 focus:outline-offset-2 disabled:bg-neutral-150 disabled:text-neutral-700 disabled:outline disabled:outline-1 disabled:outline-neutral"
+            class="add-to-cart-btn"
             data-button-action="add-to-cart"
             data-testid='add-to-cart'
             type="submit"
