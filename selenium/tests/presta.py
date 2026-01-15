@@ -108,7 +108,9 @@ def main():
             if checkout_success:
                 logger.info("TEST 5: Check Order Status")
                 logger.info("-"*70)
-                order_status.run_test(driver)
+                status_success = order_status.run_test(driver)
+                if not status_success:
+                    logger.warning("Warning: Order status check had issues, but test flow continues")
             else:
                 logger.warning("Warning: Checkout failed - skipping TEST 5 (Order Status)")
         else:

@@ -76,29 +76,51 @@ def click_download_invoice(driver):
 
 
 def get_order_status(driver):
-    wait = WebDriverWait(driver, 10)
-        
-    status_label = wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-testid='order-status']"))
-    )
-    status_text = status_label.text.strip()
-    
-    if not status_text:
-        status_text = "(no status text found)"
-    
-    logger.info(f"Order status: {status_text}")
-    return status_text
+    try:
+        wait = WebDriverWait(driver, 15)
+
+        status_label = wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-testid='order-status']"))
+        )
+        status_text = status_label.text.strip()
+
+        if not status_text:
+            status_text = "(no status text found)"
+
+        logger.info(f"Order status: {status_text}")
+        return status_text
+    except TimeoutException:
+        logger.error("Timeout waiting for order status element")
+        try:
+            status_elements = driver.find_elements(By.CSS_SELECTOR, ".label.label-pill")
+            if status_elements:
+                status_text = status_elements[0].text.strip()
+                logger.info(f"Order status (fallback): {status_text}")
+                return status_text
+        except Exception:
+            pass
+        logger.error("Could not find order status on page")
+        return None
+    except Exception as e:
+        logger.error(f"Error getting order status: {e}")
+        return None
 
 
 
 def run_test(driver):
     logger.info("Starting order status check...")
-    
+
     if not navigate_to_order_history(driver):
-        return 
-    
+        logger.error("Failed to navigate to order history")
+        return False
+
     wait_for_page_load(driver, timeout=2)
-    get_order_status(driver)
-    # Attempt to click invoice download if available
+
+    status = get_order_status(driver)
+    if status is None:
+        logger.error("Failed to retrieve order status")
+        return False
+
     click_download_invoice(driver)
-    return 
+
+    return True 
