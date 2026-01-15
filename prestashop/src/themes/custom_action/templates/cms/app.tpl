@@ -127,10 +127,10 @@
                   <div class="mt-4 flex flex-wrap justify-center gap-4 md:justify-start"><a
                       href="https://apps.apple.com/pl/app/action/id1531860284?l=pl" target="_blank"><img alt=""
                         loading="lazy" width="185" height="62" decoding="async" data-nimg="1" class=""
-                        style="color:transparent" src="/images/apple-app-store/pl.svg"></a><a
+                        style="color:transparent" src="/static/images/apple-app-store/pl.svg"></a><a
                       href="https://play.google.com/store/apps/details?id=com.action.consumerapp&amp;hl=pl&amp;gl=pl"
                       target="_blank"><img alt="" loading="lazy" width="207" height="62" decoding="async" data-nimg="1"
-                        class="" style="color:transparent" src="/images/google-play-store/pl.svg"></a></div>
+                        class="" style="color:transparent" src="/static/images/google-play-store/pl.svg"></a></div>
                 </div>
               </div>
             </div>
