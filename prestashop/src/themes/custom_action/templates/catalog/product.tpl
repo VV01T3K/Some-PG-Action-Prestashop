@@ -42,6 +42,7 @@
   <link rel="stylesheet" href="{$urls.theme_assets}css/product.css">
   <script type="text/javascript" src="{$urls.theme_assets}js/product-images.js" defer></script>
   <script type="text/javascript" src="{$urls.theme_assets}js/viewed-products.js" defer></script>
+  <script type="text/javascript" src="{$urls.theme_assets}js/product-add-to-cart.js" defer></script>
 {/block}
 
 {block name='head_microdata_special'}
