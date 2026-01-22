@@ -8,6 +8,7 @@ on:
       - "prestashop/Caddyfile"
       - "prestashop/static/**"
       - "prestashop/src/**"
+      - "prestashop/backup/**"
       - "prestashop/Prestashop.prod.entrypoint.sh"
       - ".github/workflows/build-push.yaml"
 

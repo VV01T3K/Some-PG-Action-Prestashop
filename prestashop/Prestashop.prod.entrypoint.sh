@@ -2,6 +2,37 @@
 set -e
 
 PARAMS_FILE="/var/www/html/app/config/parameters.php"
+BACKUP_FILE="/tmp/db_backup.sql.gz.enc"
+
+# Restore database from backup if it exists
+if [ -f "$BACKUP_FILE" ]; then
+    echo "Found database backup, initiating restore..."
+
+    # Wait for database to be available
+    echo "Waiting for database to be available..."
+    for i in $(seq 1 30); do
+        if mysql -h"${DB_HOST:-db}" -u"${DB_USER:-root}" -p"${DB_PASSWORD:-dev}" -e "SELECT 1" "${DB_NAME:-prestashop}" >/dev/null 2>&1; then
+            echo "Database is available"
+            break
+        fi
+        if [ $i -eq 30 ]; then
+            echo "ERROR: Database did not become available after 30 attempts"
+            exit 1
+        fi
+        sleep 1
+    done
+
+    # Restore database using db.sh script
+    echo "Restoring database from backup..."
+    cd /tmp
+    /usr/local/bin/db.sh --silent restore "$BACKUP_FILE"
+
+    # Delete backup file after successful restore
+    rm -f "$BACKUP_FILE"
+    echo "Database restore complete, backup file deleted"
+else
+    echo "No database backup found, skipping restore"
+fi
 
 if [ -f "$PARAMS_FILE" ]; then
     echo "Updating parameters.php with environment variables..."

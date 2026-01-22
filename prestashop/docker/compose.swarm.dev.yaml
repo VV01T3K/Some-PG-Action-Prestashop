@@ -39,6 +39,7 @@ services:
       DB_NAME: ${DB_NAME:-prestashop}
       DB_USER: ${DB_USER:-root}
       DB_PASSWORD: ${DB_PASSWORD:-dev}
+      DB_BACKUP_KEY: ${DB_BACKUP_KEY}
     networks:
       - backend
       - db-network
