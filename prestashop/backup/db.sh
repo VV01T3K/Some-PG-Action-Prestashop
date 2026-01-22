@@ -6,31 +6,36 @@
 
 set -e
 
-# Load environment variables
+# Load environment variables from .env file if available (for local dev)
+# In container context, env vars are already set
 if [ -f "../../.env" ]; then
   source "../../.env"
 elif [ -f "../.env" ]; then
   source "../.env"
 elif [ -f ".env" ]; then
   source ".env"
-else
-  echo "Error: .env file not found"
-  exit 1
 fi
 
 # Check for encryption key
 if [ -z "$DB_BACKUP_KEY" ]; then
-  echo "Error: DB_BACKUP_KEY not set in .env file"
+  echo "Error: DB_BACKUP_KEY not set"
   exit 1
 fi
 
-CONTAINER="${DB_HOST:-db}"
+DB_HOST="${DB_HOST:-db}"
 DB="${DB_NAME:-prestashop}"
 DB_USER="${DB_USER:-root}"
 DB_PASS="${DB_PASSWORD:-dev}"
 BACKUP_DIR="./prestashop/backup"
 
-mkdir -p "$BACKUP_DIR"
+# Detect if running inside prestashop container (script located at /usr/local/bin/db.sh)
+SCRIPT_PATH="$(readlink -f "$0")"
+if [ "$SCRIPT_PATH" = "/usr/local/bin/db.sh" ]; then
+  IN_CONTAINER=true
+else
+  IN_CONTAINER=false
+  mkdir -p "$BACKUP_DIR"
+fi
 
 SILENT=false
 if [ "$1" = "--silent" ]; then
@@ -48,7 +53,11 @@ case "$1" in
   backup)
     log "Backing up database..."
     FILE="$BACKUP_DIR/backup_$(date +%Y%m%d_%H%M%S).sql.gz.enc"
-    docker exec "$CONTAINER" mariadb-dump -u"$DB_USER" -p"$DB_PASS" "$DB" | gzip | openssl enc -aes-256-cbc -salt -pbkdf2 -pass pass:"$DB_BACKUP_KEY" > "$FILE"
+    if [ "$IN_CONTAINER" = true ]; then
+      mariadb-dump -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASS" "$DB" | gzip | openssl enc -aes-256-cbc -salt -pbkdf2 -pass pass:"$DB_BACKUP_KEY" > "$FILE"
+    else
+      docker exec "$DB_HOST" mariadb-dump -u"$DB_USER" -p"$DB_PASS" "$DB" | gzip | openssl enc -aes-256-cbc -salt -pbkdf2 -pass pass:"$DB_BACKUP_KEY" > "$FILE"
+    fi
     log "Encrypted backup saved: $FILE"
     ;;
   
@@ -63,28 +72,34 @@ case "$1" in
     else
       FILE="$2"
     fi
-    
+
     if [ ! -f "$FILE" ]; then
       echo "File not found: $FILE"
-      ls -lh "$BACKUP_DIR"
+      ls -lh "$BACKUP_DIR" 2>/dev/null || true
       exit 1
     fi
     log "Restoring from: $FILE"
-    
-    log "Waiting for database to be available..."
-    for i in {1..30}; do
-      if docker exec "$CONTAINER" mariadb -u"$DB_USER" -p"$DB_PASS" -e "SELECT 1" "$DB" >/dev/null 2>&1; then
-        log "Database is available"
-        break
-      fi
-      if [ $i -eq 30 ]; then
-        echo "Database did not become available after 30 attempts"
-        exit 1
-      fi
-      sleep 1
-    done
-    
-    openssl enc -d -aes-256-cbc -pbkdf2 -pass pass:"$DB_BACKUP_KEY" -in "$FILE" | gunzip | docker exec -i "$CONTAINER" mariadb -u"$DB_USER" -p"$DB_PASS" "$DB"
+
+    if [ "$IN_CONTAINER" = false ]; then
+      log "Waiting for database to be available..."
+      for i in {1..30}; do
+        if docker exec "$DB_HOST" mariadb -u"$DB_USER" -p"$DB_PASS" -e "SELECT 1" "$DB" >/dev/null 2>&1; then
+          log "Database is available"
+          break
+        fi
+        if [ $i -eq 30 ]; then
+          echo "Database did not become available after 30 attempts"
+          exit 1
+        fi
+        sleep 1
+      done
+    fi
+
+    if [ "$IN_CONTAINER" = true ]; then
+      openssl enc -d -aes-256-cbc -pbkdf2 -pass pass:"$DB_BACKUP_KEY" -in "$FILE" | gunzip | mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASS" "$DB"
+    else
+      openssl enc -d -aes-256-cbc -pbkdf2 -pass pass:"$DB_BACKUP_KEY" -in "$FILE" | gunzip | docker exec -i "$DB_HOST" mariadb -u"$DB_USER" -p"$DB_PASS" "$DB"
+    fi
     log "Database restored"
     ;;
   
