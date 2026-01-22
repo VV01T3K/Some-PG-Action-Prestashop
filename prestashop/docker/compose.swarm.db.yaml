@@ -28,6 +28,7 @@ services:
       PMA_PASSWORD: ${DB_PASSWORD:-dev}
     networks:
       - db-network
+      - gateway
     deploy:
       replicas: 1
       restart_policy:
@@ -37,14 +38,19 @@ services:
 
   gateway:
     image: caddy:2-alpine
-    command: caddy reverse-proxy --from :8080 --to phpmyadmin:80
     ports:
       - target: 8080
         published: 8080
         protocol: tcp
         mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    volumes:
+      - ./Caddyfile.gateway:/etc/caddy/Caddyfile:ro
     networks:
-      - db-network
+      - gateway
     deploy:
       replicas: 1
       restart_policy:
@@ -58,5 +64,9 @@ volumes:
 networks:
   db-network:
     name: ${STACK_PREFIX:-prestashop}-db-network
+    driver: overlay
+    attachable: true
+  gateway:
+    name: ${STACK_PREFIX:-prestashop}-gateway-network
     driver: overlay
     attachable: true
