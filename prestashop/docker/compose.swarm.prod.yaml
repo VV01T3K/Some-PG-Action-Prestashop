@@ -94,6 +94,7 @@ volumes:
 
 networks:
   backend:
+    name: ${STACK_PREFIX}_backend
     driver: overlay
 
 

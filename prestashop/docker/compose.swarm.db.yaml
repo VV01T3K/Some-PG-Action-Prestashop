@@ -37,7 +37,7 @@ services:
         max_attempts: 3
 
   gateway:
-    image: caddy:2-alpine
+    image: vv01tek/caddy-l4:latest
     ports:
       - target: 8080
         published: 8080
@@ -63,10 +63,10 @@ volumes:
 
 networks:
   db-network:
-    name: ${STACK_PREFIX:-prestashop}-db-network
+    name: ${STACK_PREFIX}_db_db-network
     driver: overlay
     attachable: true
   gateway:
-    name: ${STACK_PREFIX:-prestashop}-gateway-network
+    name: ${STACK_PREFIX}_db_gateway
     driver: overlay
     attachable: true

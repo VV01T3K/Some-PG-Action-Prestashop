@@ -10,6 +10,8 @@ services:
     image: ghcr.io/vv01t3k/some-pg-action-prestashop/caddy:latest
     hostname: caddy
     # Port exposed via gateway in compose.swarm.db.yaml
+    # expose:
+    #   - 433
     volumes:
       - caddy_data:/data
       - caddy_config:/config
@@ -51,8 +53,8 @@ services:
     image: valkey/valkey:9-alpine
     hostname: valkey
     command: [ "valkey-server", "--appendonly", "yes" ]
-    expose:
-      - 6379
+    # expose:
+    #   - 6379
     volumes:
       - valkey_data:/data
     networks:
@@ -72,10 +74,11 @@ volumes:
 
 networks:
   backend:
+    name: ${STACK_PREFIX}_backend
     driver: overlay
   db-network:
-    name: ${STACK_PREFIX:-prestashop}-db-network
+    name: ${STACK_PREFIX}_db_db-network
     external: true
   gateway:
-    name: ${STACK_PREFIX:-prestashop}-gateway-network
+    name: ${STACK_PREFIX}_db_gateway
     external: true
