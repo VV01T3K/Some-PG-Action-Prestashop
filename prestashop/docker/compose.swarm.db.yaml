@@ -1,0 +1,45 @@
+services:
+  db:
+    image: mariadb:12.0
+    hostname: db
+    expose:
+      - 3306
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-dev}
+      MYSQL_DATABASE: ${DB_NAME:-prestashop}
+    networks:
+      - db-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_PASSWORD:-dev}
+    networks:
+      - db-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+volumes:
+  mariadb-data:
+
+networks:
+  db-network:
+    name: ${STACK_PREFIX:-prestashop}-db-network
+    driver: overlay
+    attachable: true

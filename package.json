@@ -34,6 +34,11 @@
     "presta:hack:theme": "docker exec prestashop php bin/console prestashop:theme:enable custom_action && sleep 2 && docker exec prestashop bash -c \"rm -rf var/cache/*\"",
     "scrap:get": "cd scrapper && bun git:download",
     "scrap:seed": "cd scrapper && bun run seed",
-    "scrap:sync": "bun scrap:get && bun scrap:seed"
+    "scrap:sync": "bun scrap:get && bun scrap:seed",
+    "swarm:db:up": "cd prestashop && docker stack deploy --env-file ../.env -c docker/compose.swarm.db.yaml ${STACK_PREFIX:-prestashop}_db",
+    "swarm:db:down": "docker stack rm ${STACK_PREFIX:-prestashop}_db",
+    "swarm:up": "cd prestashop && docker stack deploy --env-file ../.env -c docker/compose.swarm.dev.yaml ${STACK_PREFIX:-prestashop}",
+    "swarm:down": "docker stack rm ${STACK_PREFIX:-prestashop}",
+    "swarm:ls": "docker stack ls && docker service ls"
   }
 }

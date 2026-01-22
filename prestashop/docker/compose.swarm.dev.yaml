@@ -1,0 +1,78 @@
+# Local Development - Mimics PG Student Cluster
+# Uses local DB from compose.swarm.db.yaml
+#
+# Usage:
+#   docker stack deploy -c compose.swarm.db.yaml ${STACK_PREFIX}_db
+#   docker stack deploy -c compose.swarm.dev.yaml ${STACK_PREFIX}
+
+services:
+  caddy:
+    image: ghcr.io/vv01t3k/some-pg-action-prestashop/caddy:latest
+    hostname: caddy
+    ports:
+      - 443:443
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - prestashop_src:/var/www/html:ro
+    environment:
+      - SHOP_DOMAIN=${SHOP_DOMAIN:-shop.pg.wojtecs.com}
+    networks:
+      - backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  prestashop:
+    image: ghcr.io/vv01t3k/some-pg-action-prestashop/prestashop:latest
+    hostname: prestashop
+    volumes:
+      - prestashop_src:/var/www/html
+    environment:
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${DB_NAME:-prestashop}
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-dev}
+    networks:
+      - backend
+      - db-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  valkey:
+    image: valkey/valkey:9-alpine
+    hostname: valkey
+    command: [ "valkey-server", "--appendonly", "yes" ]
+    expose:
+      - 6379
+    volumes:
+      - valkey_data:/data
+    networks:
+      - backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+volumes:
+  prestashop_src:
+  caddy_data:
+  caddy_config:
+  valkey_data:
+
+networks:
+  backend:
+    driver: overlay
+  db-network:
+    name: ${STACK_PREFIX:-prestashop}-db-network
+    external: true
