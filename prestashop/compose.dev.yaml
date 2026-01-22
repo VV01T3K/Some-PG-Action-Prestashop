@@ -1,8 +1,5 @@
 services:
   caddy:
-    # build: # for Caddyfile with plugins (Cloudflare DNS challenge)
-    #   context: .
-    #   dockerfile: Dockerfile.caddy
     image: caddy:2-alpine
     container_name: caddy
     restart: unless-stopped
@@ -50,7 +47,6 @@ services:
     #   - 3306:3306
     volumes:
       - mariadb-data:/var/lib/mysql
-      - ./backup:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: dev
       MYSQL_DATABASE: prestashop

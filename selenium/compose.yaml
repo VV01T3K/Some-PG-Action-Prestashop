@@ -15,9 +15,9 @@ services:
     image: selenium/hub:4.15.0
     container_name: selenium-hub
     environment:
-      GRID_MAX_SESSION: 5
+      GRID_MAX_SESSION: 3
     ports:
-      - "4444:4444"
+      - 4444:4444
 
   chrome:
     image: selenium/node-chrome:4.15.0
@@ -31,19 +31,19 @@ services:
       - ./tests/downloads:/home/seluser/Downloads
     shm_size: 2gb
     ports:
-      - "7900:7900"
+      - 7900:7900
     extra_hosts: *hosts
 
-  firefox:
-    image: selenium/node-firefox:4.15.0
-    container_name: selenium-firefox
-    depends_on:
-      - selenium-hub
-    environment:
-      <<: *node-env
-    volumes:
-      - /dev/shm:/dev/shm
-    shm_size: 2gb
-    ports:
-      - "7901:7900"
-    extra_hosts: *hosts
+  # firefox:
+  #   image: selenium/node-firefox:4.15.0
+  #   container_name: selenium-firefox
+  #   depends_on:
+  #     - selenium-hub
+  #   environment:
+  #     <<: *node-env
+  #   volumes:
+  #     - /dev/shm:/dev/shm
+  #   shm_size: 2gb
+  #   ports:
+  #     - 7901:7900
+  #   extra_hosts: *hosts
