@@ -67,6 +67,18 @@
 
 	@apiHasQuery expression {query} != ""
 
+	# Product images - Serve WebP from /static (no JPG fallback)
+	# Matches paths like /img/p/3/3/3/8/3338.jpg or /img/p/3/3/3/8/3338-small_default.jpg
+	# Extracts the directory path and image ID (without size suffix) to serve {id}.webp
+	@productImageJpg path_regexp productImg ^/img/p/((?:\d/)+)(\d+)(-[a-z_]+)?\.jpg$
+	handle @productImageJpg {
+		root * /static
+		rewrite * /img/p/{re.productImg.1}{re.productImg.2}.webp
+		file_server
+		header Content-Type "image/webp"
+		header Cache-Control "public, max-age=31536000, immutable"
+	}
+
 	@staticFiles path /static/*
 
 	@static path_regexp \.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot|pdf|txt|mp4|webm)$

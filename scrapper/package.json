@@ -17,7 +17,8 @@
     "scrape:products": "mkdir -p ../scrapper-results && bun run ./src/products_scrapper.ts",
     "scrape:img": "bun run ./src/download_images.ts",
     "scrape:all": "bun scrape:products && bun scrape:img",
-    "convert:img": "bun run ./src/convert_images.ts"
+    "convert:img": "bun run ./src/convert_images.ts",
+    "sync:webp": "bun run ./src/sync_webp_images.ts"
   },
   "dependencies": {
     "cheerio": "^1.1.2",
