@@ -76,7 +76,7 @@
 		rewrite * /img/p/{re.productImg.1}{re.productImg.2}.webp
 		file_server
 		header Content-Type "image/webp"
-		header Cache-Control "public, max-age=31536000, immutable"
+		header Cache-Control "public, max-age=2592000, immutable"
 	}
 
 	@staticFiles path /static/*
