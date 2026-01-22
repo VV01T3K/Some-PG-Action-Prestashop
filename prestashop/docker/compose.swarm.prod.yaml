@@ -1,16 +1,16 @@
 # PG Student Cluster - Production Deployment
 #
 # Deployment:
-#   docker stack deploy -c compose.swarm.prod.yaml RSWW_12345 --with-registry-auth
+#   docker stack deploy -c compose.swarm.prod.yaml BE_19781 --with-registry-auth
 #
 # Create database first:
-#   - SSH tunnel: ssh -L 9099:student-swarm01.maas:9099 rsww@172.20.83.101
+#   - SSH tunnel: ssh -L 9099:student-swarm01.maas:9099 be@172.20.83.101
 #   - Open phpMyAdmin: http://localhost:9099
-#   - Create database: RSWW_12345
+#   - Create database: BE_19781
 #   - Credentials: root / student
 #
 # Access your app:
-#   ssh -L 8443:student-swarm01.maas:19542 rsww@172.20.83.101
+#   ssh -L 8443:student-swarm01.maas:19542 be@172.20.83.101
 #   Open: https://localhost:8443
 
 services:
@@ -18,11 +18,11 @@ services:
     image: ghcr.io/vv01t3k/some-pg-action-prestashop/caddy:latest
     hostname: caddy
     ports:
-      - 19542:443
+      - 19781:443
     volumes:
-      - caddy_data:/data
-      - caddy_config:/config
-      - prestashop_src:/var/www/html:ro
+      - BE_19781_caddy_data:/data
+      - BE_19781_caddy_config:/config
+      - BE_19781_prestashop_src:/var/www/html:ro
     environment:
       - SHOP_DOMAIN=shop.example.com
     networks:
@@ -33,21 +33,21 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 3
-      resources:
-        limits:
-          memory: 256M
-        reservations:
-          memory: 64M
+      # resources:
+      #   limits:
+      #     memory: 256M
+      #   reservations:
+      #     memory: 64M
 
   prestashop:
     image: ghcr.io/vv01t3k/some-pg-action-prestashop/prestashop:latest
     hostname: prestashop
     volumes:
-      - prestashop_src:/var/www/html
+      - BE_19781_prestashop_src:/var/www/html
     environment:
-      DB_HOST: student-swarm01.maas
+      DB_HOST: giberish
       DB_PORT: 3306
-      DB_NAME: RSWW_12345
+      DB_NAME: giberish
       DB_USER: root
       DB_PASSWORD: student
     networks:
@@ -58,11 +58,11 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 3
-      resources:
-        limits:
-          memory: 512M
-        reservations:
-          memory: 128M
+      # resources:
+      #   limits:
+      #     memory: 512M
+      #   reservations:
+      #     memory: 128M
 
   valkey:
     image: valkey/valkey:9-alpine
@@ -71,7 +71,7 @@ services:
     expose:
       - 6379
     volumes:
-      - valkey_data:/data
+      - BE_19781_valkey_data:/data
     networks:
       - backend
     deploy:
@@ -80,22 +80,22 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 3
-      resources:
-        limits:
-          memory: 128M
-        reservations:
-          memory: 32M
+      # resources:
+      #   limits:
+      #     memory: 128M
+      #   reservations:
+      #     memory: 32M
 
 volumes:
-  prestashop_src:
-  caddy_data:
-  caddy_config:
-  valkey_data:
+  BE_19781_prestashop_src:
+  BE_19781_caddy_data:
+  BE_19781_caddy_config:
+  BE_19781_valkey_data:
 
 networks:
   backend:
-    name: ${STACK_PREFIX}_backend
+    name: BE_19781_backend
     driver: overlay
 
 
-# docker stack deploy -c compose.swarm.prod.yaml RSWW_12345 --with-registry-auth
+# docker stack deploy -c compose.swarm.prod.yaml BE_19781 --with-registry-auth
