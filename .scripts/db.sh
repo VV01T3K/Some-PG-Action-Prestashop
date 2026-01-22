@@ -118,21 +118,31 @@ case "$1" in
     ;;
 
   clean)
-    log "Cleaning up backups, keeping only the newest..."
+    log "Cleaning up backups, keeping only the newest encrypted backup..."
     BACKUP_COUNT=$(ls -1 "$BACKUP_DIR"/*.sql.gz.enc 2>/dev/null | wc -l)
-    
+
     if [ "$BACKUP_COUNT" -le 1 ]; then
       log "Only one or fewer backups found, nothing to clean"
-      exit 0
+    else
+      NEWEST=$(ls -t "$BACKUP_DIR"/*.sql.gz.enc 2>/dev/null | head -1)
+      log "Keeping: $(basename "$NEWEST")"
+
+      ls -t "$BACKUP_DIR"/*.sql.gz.enc 2>/dev/null | tail -n +2 | while read -r file; do
+        log "Removing: $(basename "$file")"
+        rm "$file"
+      done
     fi
-    
-    NEWEST=$(ls -t "$BACKUP_DIR"/*.sql.gz.enc 2>/dev/null | head -1)
-    log "Keeping: $(basename "$NEWEST")"
-    
-    ls -t "$BACKUP_DIR"/*.sql.gz.enc 2>/dev/null | tail -n +2 | while read -r file; do
-      log "Removing: $(basename "$file")"
-      rm "$file"
-    done
+
+    # Clean up all decrypted files
+    DECRYPTED_COUNT=$(ls -1 "$BACKUP_DIR"/*.sql.gz 2>/dev/null | grep -v "\.enc$" | wc -l)
+    if [ "$DECRYPTED_COUNT" -gt 0 ]; then
+      log "Removing all decrypted files..."
+      ls -1 "$BACKUP_DIR"/*.sql.gz 2>/dev/null | grep -v "\.enc$" | while read -r file; do
+        log "Removing: $(basename "$file")"
+        rm "$file"
+      done
+    fi
+
     log "Cleanup complete"
     ;;
 esac
