@@ -3,3 +3,4 @@
 .env.*
 !.env.example
 scrapper-results/*
+prestashop/backup/backup_*.sql.gz

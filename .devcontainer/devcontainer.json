@@ -13,18 +13,18 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		443, // caddy
+		8080,// phpmyadmin
 		8025,// mailhog
 		4444,// selenium-hub/grid
-		7900,// chrome vnc
-		7901 // firefox vnc
+		7900 // chrome vnc
 	],
 	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		"ghcr.io/devcontainers-extra/features/graphite-cli:1": {}
 	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"cweijan.vscode-mysql-client2",
 				"dotenv.dotenv-vscode",
 				"matthewpi.caddyfile-support",
 				"ms-azuretools.vscode-containers",
@@ -35,7 +35,8 @@
 				"aswinkumar863.smarty-template-support",
 				"GitHub.vscode-pull-request-github",
 				"Anthropic.claude-code",
-				"eamodio.gitlens"
+				"eamodio.gitlens",
+				"Graphite.gti-vscode"
 			]
 		}
 	},

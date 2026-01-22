@@ -28,33 +28,18 @@ services:
     restart: unless-stopped
     volumes:
       - prestashop_src:/var/www/html
+    environment:
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${DB_NAME:-prestashop}
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-dev}
     depends_on:
-      db:
-        condition: service_healthy
       valkey:
         condition: service_healthy
     networks:
       - backend
-
-  db:
-    image: mariadb:12.0
-    restart: unless-stopped
-    container_name: db
-    expose:
-      - 3306
-    volumes:
-      - mariadb-data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: dev
-      MYSQL_DATABASE: prestashop
-    healthcheck:
-      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
-      start_period: 10s
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - backend
+      - db-network
 
   valkey:
     image: valkey/valkey:9-alpine
@@ -76,7 +61,6 @@ services:
 
 volumes:
   prestashop_src:
-  mariadb-data:
   caddy_data:
   caddy_config:
   valkey_data:
@@ -84,3 +68,6 @@ volumes:
 networks:
   frontend:
   backend:
+  db-network:
+    name: prestashop-db-network
+    external: true

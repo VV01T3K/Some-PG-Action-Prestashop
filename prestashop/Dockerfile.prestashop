@@ -21,8 +21,11 @@ RUN apt-get purge -y --auto-remove \
 
 FROM base AS prod
 COPY --chown=www-data:www-data src /var/www/html
+COPY Prestashop.prod.entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 FROM base AS dev
 COPY Prestashop.gitignore /tmp/Prestashop.gitignore
-COPY Prestashop.entrypoint.sh /tmp/docker_run.sh
+COPY Prestashop.dev.entrypoint.sh /tmp/docker_run.sh
 RUN chmod +x /tmp/docker_run.sh

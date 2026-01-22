@@ -5,7 +5,6 @@ services:
     restart: unless-stopped
     ports:
       - 443:443
-      - 8080:80
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
@@ -39,17 +38,17 @@ services:
   db:
     image: mariadb:12.0
     restart: unless-stopped
-    container_name: db
+    container_name: ${DB_HOST:-db}
     expose:
-      - 3306
+      - ${DB_PORT:-3306}
     # ports:
     #   # for dev purposes only
-    #   - 3306:3306
+    #   - ${DB_PORT:-3306}:3306
     volumes:
       - mariadb-data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: dev
-      MYSQL_DATABASE: prestashop
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-dev}
+      MYSQL_DATABASE: ${DB_NAME:-prestashop}
     healthcheck:
       test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
       start_period: 10s
