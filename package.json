@@ -35,10 +35,10 @@
     "scrap:get": "cd scrapper && bun git:download",
     "scrap:seed": "cd scrapper && bun run seed",
     "scrap:sync": "bun scrap:get && bun scrap:seed",
-    "swarm:db:up": "cd prestashop/docker && docker stack deploy --env-file ../../.env -c compose.swarm.db.yaml ${STACK_PREFIX:-prestashop}_db",
-    "swarm:db:down": "docker stack rm ${STACK_PREFIX:-prestashop}_db",
-    "swarm:up": "cd prestashop/docker && docker stack deploy --env-file ../../.env -c compose.swarm.dev.yaml ${STACK_PREFIX:-prestashop}",
-    "swarm:down": "docker stack rm ${STACK_PREFIX:-prestashop}",
+    "swarm:db:up": "source .env && cd prestashop/docker && docker stack deploy -c compose.swarm.db.yaml ${STACK_PREFIX}_db",
+    "swarm:db:down": "source .env && docker stack rm ${STACK_PREFIX}_db",
+    "swarm:up": "source .env && cd prestashop/docker && docker stack deploy -c compose.swarm.dev.yaml ${STACK_PREFIX}",
+    "swarm:down": "source .env && docker stack rm ${STACK_PREFIX}",
     "swarm:ls": "docker stack ls && docker service ls"
   }
 }
