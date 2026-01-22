@@ -35,10 +35,10 @@
     "scrap:get": "cd scrapper && bun git:download",
     "scrap:seed": "cd scrapper && bun run seed",
     "scrap:sync": "bun scrap:get && bun scrap:seed",
-    "swarm:db:up": "source .env && export STACK_PREFIX && cd prestashop/docker && envsubst < compose.swarm.db.yaml | docker stack deploy -c - ${STACK_PREFIX}_db -d",
-    "swarm:db:down": "source .env && docker stack rm ${STACK_PREFIX}_db",
-    "swarm:up": "source .env && export STACK_PREFIX && cd prestashop/docker && envsubst < compose.swarm.dev.yaml | docker stack deploy -c - ${STACK_PREFIX} -d",
-    "swarm:down": "source .env && docker stack rm ${STACK_PREFIX}",
+    "swarm:db:up": "set -a && source .env && set +a && cd prestashop/docker && envsubst < compose.swarm.db.yaml | docker stack deploy -c - ${STACK_PREFIX}_db -d",
+    "swarm:db:down": "set -a && source .env && set +a && docker stack rm ${STACK_PREFIX}_db",
+    "swarm:up": "set -a && source .env && set +a && cd prestashop/docker && envsubst < compose.swarm.dev.yaml | docker stack deploy -c - ${STACK_PREFIX} -d",
+    "swarm:down": "set -a && source .env && set +a && docker stack rm ${STACK_PREFIX}",
     "swarm:ls": "docker stack ls && docker service ls"
   }
 }

@@ -17,7 +17,7 @@ services:
       - caddy_config:/config
       - prestashop_src:/var/www/html:ro
     environment:
-      - SHOP_DOMAIN=${SHOP_DOMAIN:-shop.pg.wojtecs.com}
+      SHOP_DOMAIN: ${SHOP_DOMAIN}
     networks:
       - backend
       - gateway
@@ -34,11 +34,11 @@ services:
     volumes:
       - prestashop_src:/var/www/html
     environment:
-      DB_HOST: ${DB_HOST:-db}
-      DB_PORT: ${DB_PORT:-3306}
-      DB_NAME: ${DB_NAME:-prestashop}
-      DB_USER: ${DB_USER:-root}
-      DB_PASSWORD: ${DB_PASSWORD:-dev}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_BACKUP_KEY: ${DB_BACKUP_KEY}
     networks:
       - backend
