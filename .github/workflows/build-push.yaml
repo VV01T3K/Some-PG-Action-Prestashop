@@ -3,7 +3,7 @@ name: Build and push images
 on:
   workflow_dispatch: # Manual trigger from GitHub UI
   push:
-    branches: [main]
+    branches: [main, ci-cd-setup]
     paths:
       - "prestashop/Dockerfile.*"
       - "prestashop/Caddyfile"
