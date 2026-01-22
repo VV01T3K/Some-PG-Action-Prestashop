@@ -7,7 +7,7 @@
     "all:del": "bun presta:del && (cd selenium && bun sel:down) && (rm -rf scrapper-results)",
     "all:down": "bun presta:down && (cd selenium && bun sel:down)",
     "all:setup": "cp .env.example .env && bun all:deps && echo 'Setup complete. You can now run `bun presta:up` to start the PrestaShop environment.'",
-    "all:deps": "bun presta:deps && (cd scrapper && bun deps) && (cd selenium && bun deps)",
+    "all:deps": "bun presta:deps && (cd scrapper && bun deps) && (cd selenium && bun deps) && docker swarm init || echo 'Swarm already initialized'",
     "presta:deps": "cd prestashop && docker compose --env-file ../.env -f compose.dev.yaml pull && docker compose --env-file ../.env -f compose.dev.yaml build",
     "presta:up": "cd prestashop && docker compose --env-file ../.env -f compose.dev.yaml up -d --build",
     "presta:down": "cd prestashop && docker compose --env-file ../.env -f compose.dev.yaml down",
