@@ -1,0 +1,99 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - 443:443
+    volumes:
+      - ../Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+      - ../src:/var/www/html
+      - ../static:/static
+    environment:
+      - SHOP_DOMAIN=shop.pg.wojtecs.com
+    depends_on:
+      - prestashop
+    networks:
+      - frontend
+      - backend
+
+  prestashop:
+    build:
+      context: ..
+      dockerfile: Dockerfile.prestashop
+      target: dev
+    container_name: prestashop
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+    volumes:
+      - ../src:/var/www/html
+    networks:
+      - backend
+  db:
+    image: mariadb:12.0
+    restart: unless-stopped
+    container_name: ${DB_HOST:-db}
+    expose:
+      - ${DB_PORT:-3306}
+    # ports:
+    #   # for dev purposes only
+    #   - ${DB_PORT:-3306}:3306
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-dev}
+      MYSQL_DATABASE: ${DB_NAME:-prestashop}
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+  valkey:
+    image: valkey/valkey:9-alpine
+    container_name: valkey
+    restart: unless-stopped
+    command: [ "valkey-server", "--appendonly", "yes" ]
+    expose:
+      - 6379
+    volumes:
+      - valkey_data:/data
+    healthcheck:
+      test: [ "CMD", "valkey-cli", "--raw", "ping" ]
+      start_period: 5s
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - backend
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    restart: unless-stopped
+    expose:
+      - 1025 # SMTP
+      - 8025 # Web UI
+    ports:
+      - 8025:8025
+    networks:
+      - backend
+
+volumes:
+  # prestashop_data:
+  mariadb-data:
+  caddy_data:
+  caddy_config:
+  valkey_data:
+
+
+networks:
+  frontend:
+  backend:

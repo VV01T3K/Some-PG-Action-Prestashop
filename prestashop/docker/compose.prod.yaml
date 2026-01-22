@@ -1,0 +1,73 @@
+services:
+  caddy:
+    build:
+      context: ..
+      dockerfile: Dockerfile.caddy
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - 443:443
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - prestashop_src:/var/www/html:ro
+    environment:
+      - SHOP_DOMAIN=shop.pg.wojtecs.com
+    depends_on:
+      - prestashop
+    networks:
+      - frontend
+      - backend
+
+  prestashop:
+    build:
+      context: ..
+      dockerfile: Dockerfile.prestashop
+      target: prod
+    container_name: prestashop
+    restart: unless-stopped
+    volumes:
+      - prestashop_src:/var/www/html
+    environment:
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${DB_NAME:-prestashop}
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-dev}
+    depends_on:
+      valkey:
+        condition: service_healthy
+    networks:
+      - backend
+      - db-network
+
+  valkey:
+    image: valkey/valkey:9-alpine
+    container_name: valkey
+    restart: unless-stopped
+    command: [ "valkey-server", "--appendonly", "yes" ]
+    expose:
+      - 6379
+    volumes:
+      - valkey_data:/data
+    healthcheck:
+      test: [ "CMD", "valkey-cli", "--raw", "ping" ]
+      start_period: 5s
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - backend
+
+volumes:
+  prestashop_src:
+  caddy_data:
+  caddy_config:
+  valkey_data:
+
+networks:
+  frontend:
+  backend:
+  db-network:
+    name: prestashop-db-network
+    external: true
