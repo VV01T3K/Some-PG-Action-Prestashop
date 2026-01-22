@@ -1,7 +1,7 @@
 services:
   caddy:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile.caddy
     container_name: caddy
     restart: unless-stopped
@@ -21,7 +21,7 @@ services:
 
   prestashop:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile.prestashop
       target: prod
     container_name: prestashop

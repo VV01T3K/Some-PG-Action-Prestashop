@@ -137,7 +137,7 @@ bun run tests
 ```
 Some-PG-Action-Prestashop/
 ├── prestashop/           # PrestaShop Docker environment
-│   ├── compose.dev.yaml # Docker Compose configuration
+│   ├── docker/          # Docker Compose & Stack configurations
 │   ├── Dockerfile.*     # Custom Docker images
 │   ├── Caddyfile        # Web server configuration
 │   ├── backup/          # Database backups
