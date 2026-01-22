@@ -48,7 +48,7 @@ services:
         protocol: tcp
         mode: host
     volumes:
-      - ./Caddyfile.gateway:/etc/caddy/Caddyfile:ro
+      - ../Caddyfile.gateway:/etc/caddy/Caddyfile:ro
     networks:
       - gateway
     deploy:
