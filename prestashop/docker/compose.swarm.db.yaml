@@ -2,8 +2,8 @@ services:
   db:
     image: mariadb:12.0
     hostname: db
-    expose:
-      - 3306
+    # expose:
+    #   - 3306
     volumes:
       - mariadb-data:/var/lib/mysql
     environment:
@@ -20,12 +20,29 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:latest
-    ports:
-      - 8080:80
+    # expose:
+    #   - 80
     environment:
       PMA_HOST: db
       PMA_USER: root
       PMA_PASSWORD: ${DB_PASSWORD:-dev}
+    networks:
+      - db-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  gateway:
+    image: caddy:2-alpine
+    command: caddy reverse-proxy --from :8080 --to phpmyadmin:80
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
     networks:
       - db-network
     deploy:
