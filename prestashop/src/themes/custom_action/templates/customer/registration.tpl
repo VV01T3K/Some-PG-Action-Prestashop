@@ -37,5 +37,34 @@
        *}
       {render file='customer/_partials/customer-form.tpl' ui=$register_form}
     </section>
+    
+    {* Google Analytics 4 - Registration Form Submit Event *}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('GA4: Registration page loaded');
+        console.log('GA4: gtag available:', typeof gtag !== 'undefined');
+        
+        // Find the registration form
+        const registrationForm = document.querySelector('form[action*="register"]') || document.querySelector('.register-form form');
+        console.log('GA4: Registration form found:', !!registrationForm);
+        
+        if (registrationForm) {
+          registrationForm.addEventListener('submit', function(e) {
+            console.log('GA4: Registration form submitted');
+            
+            if (typeof gtag !== 'undefined') {
+              gtag('event', 'registration_complete', {
+                'method': 'website'
+              });
+              console.log('GA4: Registration event sent to GA4');
+            } else {
+              console.error('GA4: gtag is not defined!');
+            }
+          });
+        } else {
+          console.error('GA4: Registration form not found on page');
+        }
+      });
+    </script>
   {/block}
 {/block}

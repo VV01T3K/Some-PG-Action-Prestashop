@@ -261,6 +261,46 @@
                       if (!cartProductIds.includes(parseInt(productId))) {
                         cartProductIds.push(parseInt(productId));
                       }
+                      
+                      // Google Analytics 4 - Track add to cart for promotional products
+                      console.log('GA4: Checking product add to cart, productId:', productId);
+                      console.log('GA4: gtag available:', typeof gtag !== 'undefined');
+                      
+                      if (typeof gtag !== 'undefined') {
+                        // Check if product is on promotion (has discount)
+                        const productCard = document.querySelector(`[data-id-product="${productId}"]`);
+                        console.log('GA4: productCard found:', !!productCard);
+                        
+                        const hasPromo = productCard && productCard.querySelector('[data-testid="product-card-price-discount"]');
+                        console.log('GA4: hasPromo element found:', !!hasPromo);
+                        
+                        if (hasPromo) {
+                          const productName = productCard.querySelector('[data-testid="product-card-title"]')?.textContent?.trim() || '';
+                          const productPriceWhole = productCard.querySelector('[data-testid="product-card-price-whole"]')?.textContent?.trim() || '0';
+                          const productPriceFractional = productCard.querySelector('[data-testid="product-card-price-fractional"]')?.textContent?.trim() || '00';
+                          const discountPercent = productCard.querySelector('[data-testid="product-card-price-discount-percentage"]')?.textContent?.trim() || '';
+                          
+                          console.log('GA4: Price parts:', { productPriceWhole, productPriceFractional });
+                          
+                          // Combine whole and fractional parts to create decimal price
+                          const productPrice = Number(parseFloat(productPriceWhole + '.' + productPriceFractional).toFixed(2));
+                          
+                          console.log('GA4: Product details:', { productId, productName, productPrice, discountPercent });
+                          
+                          gtag('event', 'add_promotion_to_cart', {
+                            'item_id': productId,
+                            'item_name': productName,
+                            'discount': discountPercent,
+                            'price': productPrice,
+                          });
+                          console.log('GA4: Promotional product added to cart - ' + productName);
+                        } else {
+                          console.log('GA4: Product is not on promotion or promo elements not found');
+                        }
+                      } else {
+                        console.error('GA4: gtag is not defined!');
+                      }
+                      
                       // Emit PrestaShop event
                       if (window.prestashop && window.prestashop.emit) {
                         window.prestashop.emit('updateCart', {
