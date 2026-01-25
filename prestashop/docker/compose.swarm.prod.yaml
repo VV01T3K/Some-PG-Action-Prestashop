@@ -20,11 +20,10 @@ services:
     ports:
       - 19781:443
     volumes:
-      - BE_19781_caddy_data:/data
-      - BE_19781_caddy_config:/config
       - BE_19781_prestashop_src:/var/www/html:ro
     environment:
-      - SHOP_DOMAIN=shop.example.com
+      SHOP_DOMAIN: shop.example.com
+      SHOP_PORT: 19781
     networks:
       - backend
     deploy:
@@ -55,6 +54,7 @@ services:
       DB_BACKUP_KEY: DB_BACKUP_KEY
     networks:
       - backend
+      # - db-network
     deploy:
       replicas: 1
       restart_policy:
@@ -73,10 +73,6 @@ services:
     image: valkey/valkey:9-alpine
     hostname: valkey
     command: [ "valkey-server", "--appendonly", "yes" ]
-    expose:
-      - 6379
-    volumes:
-      - BE_19781_valkey_data:/data
     networks:
       - backend
     deploy:
@@ -92,17 +88,35 @@ services:
         reservations:
           cpus: '0.1'
           memory: 64M
+  mailpit:
+    image: axllent/mailpit:latest
+    hostname: mailhog
+    networks:
+      - backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
 
 volumes:
   BE_19781_prestashop_src:
-  BE_19781_caddy_data:
-  BE_19781_caddy_config:
-  BE_19781_valkey_data:
+
 
 networks:
   backend:
     name: BE_19781_backend
     driver: overlay
-
+  # db-network:
+  #   name: shared-db-network
+  #   external: true
 
 # docker stack deploy -c compose.swarm.prod.yaml BE_19781 --with-registry-auth
