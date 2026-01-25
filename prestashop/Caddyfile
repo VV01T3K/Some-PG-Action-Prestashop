@@ -158,6 +158,10 @@ localhost {
 {$SHOP_DOMAIN}, {$SHOP_DOMAIN}:{$SHOP_PORT} {
 	tls internal
 	request_header Host {$SHOP_DOMAIN}
+	replace {
+		https://{$SHOP_DOMAIN}/ https://{$SHOP_DOMAIN}:{$SHOP_PORT}/
+		stream
+	}
 	import prestashop
 }
 
