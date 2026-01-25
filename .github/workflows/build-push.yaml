@@ -3,14 +3,6 @@ name: Build and push images
 on:
   push:
     branches: [main, ga-fixes-1]
-    paths:
-      - "prestashop/Dockerfile.*"
-      - "prestashop/Caddyfile"
-      - "prestashop/static/**"
-      - "prestashop/src/**"
-      - "prestashop/backup/**"
-      - "prestashop/Prestashop.prod.entrypoint.sh"
-      - ".github/workflows/build-push.yaml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
