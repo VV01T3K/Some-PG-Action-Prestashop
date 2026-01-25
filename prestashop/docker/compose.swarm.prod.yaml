@@ -52,6 +52,7 @@ services:
       DB_NAME: giberish
       DB_USER: root
       DB_PASSWORD: student
+      DB_BACKUP_KEY: DB_BACKUP_KEY
     networks:
       - backend
     deploy:
