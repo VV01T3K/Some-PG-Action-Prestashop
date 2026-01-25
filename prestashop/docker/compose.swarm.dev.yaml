@@ -7,7 +7,7 @@
 
 services:
   caddy:
-    image: ghcr.io/vv01t3k/some-pg-action-prestashop/caddy:latest
+    image: ghcr.io/vv01t3k/some-pg-action-prestashop/caddy:ga-fixes-1
     hostname: caddy
     # Port exposed via gateway in compose.swarm.db.yaml
     # expose:
@@ -35,7 +35,7 @@ services:
           memory: 64M
 
   prestashop:
-    image: ghcr.io/vv01t3k/some-pg-action-prestashop/prestashop:latest
+    image: ghcr.io/vv01t3k/some-pg-action-prestashop/prestashop:ga-fixes-1
     hostname: prestashop
     volumes:
       - prestashop_src:/var/www/html
