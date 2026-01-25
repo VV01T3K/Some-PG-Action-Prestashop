@@ -1,0 +1,13 @@
+{
+	layer4 {
+		:443 {
+			route {
+				proxy caddy:443
+			}
+		}
+	}
+}
+
+:8080 {
+	reverse_proxy phpmyadmin:80
+}

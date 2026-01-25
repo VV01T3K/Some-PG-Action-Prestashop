@@ -152,10 +152,20 @@
 }
 
 localhost {
-	redir * https://{$SHOP_DOMAIN}{http.request.uri} permanent
+	redir * https://{$SHOP_DOMAIN}{uri} permanent
 }
 
-{$SHOP_DOMAIN} {
+{$SHOP_DOMAIN}, {$SHOP_DOMAIN}:{$SHOP_PORT} {
 	tls internal
+	request_header Host {$SHOP_DOMAIN}
+	replace {
+		https://{$SHOP_DOMAIN}/ https://{$SHOP_DOMAIN}:{$SHOP_PORT}/
+		stream
+	}
 	import prestashop
+}
+
+mail.pg.wojtecs.com {
+	tls internal
+	reverse_proxy mailhog:8025
 }

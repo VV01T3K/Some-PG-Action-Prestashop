@@ -1,0 +1,72 @@
+services:
+  db:
+    image: mariadb:12.0
+    hostname: db
+    # expose:
+    #   - 3306
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-dev}
+      MYSQL_DATABASE: ${DB_NAME:-prestashop}
+    networks:
+      - db-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    # expose:
+    #   - 80
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_PASSWORD:-dev}
+    networks:
+      - db-network
+      - gateway
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  gateway:
+    image: vv01tek/caddy-l4:latest
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 19781
+        protocol: tcp
+        mode: host
+    volumes:
+      - ../Caddyfile.gateway:/etc/caddy/Caddyfile:ro
+    networks:
+      - gateway
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+volumes:
+  mariadb-data:
+
+networks:
+  db-network:
+    name: ${STACK_PREFIX}_db_db-network
+    driver: overlay
+    attachable: true
+  gateway:
+    name: ${STACK_PREFIX}_db_gateway
+    driver: overlay
+    attachable: true

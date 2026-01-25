@@ -2,12 +2,13 @@ name: Build and push images
 
 on:
   push:
-    branches: [main]
+    branches: [main, swarm-setup]
     paths:
       - "prestashop/Dockerfile.*"
       - "prestashop/Caddyfile"
       - "prestashop/static/**"
       - "prestashop/src/**"
+      - "prestashop/backup/**"
       - "prestashop/Prestashop.prod.entrypoint.sh"
       - ".github/workflows/build-push.yaml"
 

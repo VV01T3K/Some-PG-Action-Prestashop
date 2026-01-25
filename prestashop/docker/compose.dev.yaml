@@ -6,11 +6,11 @@ services:
     ports:
       - 443:443
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ../Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
-      - ./src:/var/www/html
-      - ./static:/static
+      - ../src:/var/www/html
+      - ../static:/static
     environment:
       - SHOP_DOMAIN=shop.pg.wojtecs.com
     depends_on:
@@ -21,7 +21,7 @@ services:
 
   prestashop:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile.prestashop
       target: dev
     container_name: prestashop
@@ -32,7 +32,7 @@ services:
       valkey:
         condition: service_healthy
     volumes:
-      - ./src:/var/www/html
+      - ../src:/var/www/html
     networks:
       - backend
   db:

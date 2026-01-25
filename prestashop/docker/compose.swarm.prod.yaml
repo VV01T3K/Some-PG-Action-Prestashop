@@ -1,0 +1,122 @@
+# PG Student Cluster - Production Deployment
+#
+# Deployment:
+#   docker stack deploy -c compose.swarm.prod.yaml BE_19781 --with-registry-auth
+#
+# Create database first:
+#   - SSH tunnel: ssh -L 9099:student-swarm01.maas:9099 be@172.20.83.101
+#   - Open phpMyAdmin: http://localhost:9099
+#   - Create database: BE_19781
+#   - Credentials: root / student
+#
+# Access your app:
+#   ssh -L 8443:student-swarm01.maas:19542 be@172.20.83.101
+#   Open: https://localhost:8443
+
+services:
+  caddy:
+    image: ghcr.io/vv01t3k/some-pg-action-prestashop/caddy:latest
+    hostname: caddy
+    ports:
+      - 19781:443
+    volumes:
+      - BE_19781_prestashop_src:/var/www/html:ro
+    environment:
+      SHOP_DOMAIN: shop.example.com
+      SHOP_PORT: 19781
+    networks:
+      - backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+
+  prestashop:
+    image: ghcr.io/vv01t3k/some-pg-action-prestashop/prestashop:latest
+    hostname: prestashop
+    volumes:
+      - BE_19781_prestashop_src:/var/www/html
+    environment:
+      DB_HOST: giberish
+      DB_PORT: 3306
+      DB_NAME: giberish
+      DB_USER: root
+      DB_PASSWORD: student
+      DB_BACKUP_KEY: DB_BACKUP_KEY
+    networks:
+      - backend
+      # - db-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  valkey:
+    image: valkey/valkey:9-alpine
+    hostname: valkey
+    command: [ "valkey-server", "--appendonly", "yes" ]
+    networks:
+      - backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+  mailpit:
+    image: axllent/mailpit:latest
+    hostname: mailhog
+    networks:
+      - backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
+
+volumes:
+  BE_19781_prestashop_src:
+
+
+networks:
+  backend:
+    name: BE_19781_backend
+    driver: overlay
+  # db-network:
+  #   name: shared-db-network
+  #   external: true
+
+# docker stack deploy -c compose.swarm.prod.yaml BE_19781 --with-registry-auth
