@@ -75,7 +75,7 @@ services:
     networks:
       - backend
   mailhog:
-    image: mailhog/mailhog:latest
+    image: axllent/mailpit:latest
     container_name: mailhog
     restart: unless-stopped
     expose:

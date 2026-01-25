@@ -14,7 +14,7 @@
 	"forwardPorts": [
 		443, // caddy
 		8080,// phpmyadmin
-		8025,// mailhog
+		8025,// mailpit
 		4444,// selenium-hub/grid
 		7900 // chrome vnc
 	],
