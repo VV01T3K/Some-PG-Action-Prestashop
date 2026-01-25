@@ -20,13 +20,14 @@ RUN apt-get purge -y --auto-remove \
     rm -rf /var/lib/apt/lists/*
 
 FROM base AS prod
+RUN rm -rf /var/www/html/* /tmp/data-ps
 COPY --chown=www-data:www-data src /var/www/html
-COPY Prestashop.prod.entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY Prestashop.prod.entrypoint.sh /tmp/docker_run.sh
 COPY backup/db.sh /usr/local/bin/db.sh
-COPY backup/backup_20260115_112618.sql.gz.enc /tmp/db_backup.sql.gz.enc
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+COPY backup/backup_20260125_203353.sql.gz.enc /tmp/db_backup.sql.gz.enc
+RUN chmod +x /tmp/docker_run.sh && \
     chmod +x /usr/local/bin/db.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
+
 
 FROM base AS dev
 COPY Prestashop.gitignore /tmp/Prestashop.gitignore
