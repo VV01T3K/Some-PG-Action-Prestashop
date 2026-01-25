@@ -2,7 +2,7 @@ name: Build and push images
 
 on:
   push:
-    branches: [main, ga-fixes-1]
+    branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
