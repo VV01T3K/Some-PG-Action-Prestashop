@@ -16,6 +16,7 @@ services:
       - prestashop_src:/var/www/html:ro
     environment:
       SHOP_DOMAIN: ${SHOP_DOMAIN}
+      SHOP_PORT: ${SHOP_PORT}
     networks:
       - backend
       - gateway

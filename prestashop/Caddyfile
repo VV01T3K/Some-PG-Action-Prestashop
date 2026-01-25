@@ -1,4 +1,3 @@
-
 (prestashop) {
 	encode zstd gzip
 
@@ -156,8 +155,9 @@ localhost {
 	redir * https://{$SHOP_DOMAIN}{uri} permanent
 }
 
-{$SHOP_DOMAIN} {
+{$SHOP_DOMAIN}, {$SHOP_DOMAIN}:{$SHOP_PORT} {
 	tls internal
+	request_header Host {$SHOP_DOMAIN}
 	import prestashop
 }
 
