@@ -12,11 +12,12 @@
 	// "customizations": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
-		443, // caddy
-		8080,// phpmyadmin
-		8025,// mailpit
-		4444,// selenium-hub/grid
-		7900 // chrome vnc
+		19781,// swarm-gateway
+		443,  // caddy-dev
+		8080, // phpmyadmin
+		8025, // mailpit-dev
+		4444, // selenium-hub/grid
+		7900  // chrome vnc
 	],
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
