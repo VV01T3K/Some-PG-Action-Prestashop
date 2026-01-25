@@ -2,7 +2,7 @@ name: Build and push images
 
 on:
   push:
-    branches: [main]
+    branches: [main, ga-fixes-1]
     paths:
       - "prestashop/Dockerfile.*"
       - "prestashop/Caddyfile"
