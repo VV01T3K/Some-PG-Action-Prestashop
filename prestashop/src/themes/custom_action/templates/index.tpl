@@ -192,4 +192,32 @@ href="/content/6-aplikacja" data-testid="split-teaser-cta"><span class="truncate
 
 <div id="viewed-products-container" class="bg-neutral-50"></div>
 
+{* Google Analytics 4 - Registration Success (Homepage) Event *}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Check if user was redirected from successful registration
+    const registrationCompleted = localStorage.getItem('registration_completed');
+    const registrationTimestamp = localStorage.getItem('registration_timestamp');
+    
+    if (registrationCompleted === 'true' && registrationTimestamp) {
+      // Check if registration happened within last 5 seconds (to avoid false positives)
+      const timeDiff = new Date().getTime() - parseInt(registrationTimestamp);
+      
+      if (timeDiff < 5000) {
+        
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'registration_complete', {
+            'method': 'redirect_to_homepage',
+            'url': window.location.href
+          });
+        } 
+        // Clear the registration flags
+        localStorage.removeItem('registration_completed');
+        localStorage.removeItem('registration_timestamp');
+      }
+    }
+  });
+</script>
+
 {/block}
