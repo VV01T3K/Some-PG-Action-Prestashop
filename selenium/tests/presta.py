@@ -24,7 +24,10 @@ logger = logging.getLogger(__name__)
 
 def main():
     prestashop_domain = os.getenv("SHOP_DOMAIN", "shop.pg.wojtecs.com")
+    prestashop_port = os.getenv("SHOP_PORT")
     prestashop_url = f"https://{prestashop_domain}"
+    if prestashop_port:
+        prestashop_url += f":{prestashop_port}"
 
     host_downloads_dir = os.path.join(os.path.dirname(__file__), "downloads")
     os.makedirs(host_downloads_dir, exist_ok=True)
