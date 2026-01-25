@@ -51,7 +51,9 @@ services:
       DB_NAME: giberish
       DB_USER: root
       DB_PASSWORD: student
-      DB_BACKUP_KEY: DB_BACKUP_KEY
+      DB_BACKUP_KEY: OHVpHhQ5z0ke5HCulYXecBXBeA1Q4G1Wm7h6CSXIofI=
+      SHOP_DOMAIN: shop.pg.wojtecs.com
+      SHOP_PORT: 19781
     networks:
       - backend
       # - db-network

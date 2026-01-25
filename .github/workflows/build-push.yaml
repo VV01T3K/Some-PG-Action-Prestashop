@@ -2,7 +2,7 @@ name: Build and push images
 
 on:
   push:
-    branches: [main, swarm-setup]
+    branches: [main]
     paths:
       - "prestashop/Dockerfile.*"
       - "prestashop/Caddyfile"
