@@ -262,6 +262,88 @@
       }, 100);
     }
 
+    // Google Analytics 4 - Track promotional products being added to cart
+    try {
+      if (typeof gtag !== 'undefined') {
+        let product = null;
+
+        // Try to get product data from window.prestashop.product first
+        if (window.prestashop && window.prestashop.product) {
+          product = window.prestashop.product;
+          log('GA4: Product data from window.prestashop.product');
+        } else {
+          // Fallback: Try to get product data from DOM data-product attribute
+          const productDataElement = document.querySelector('[data-product]');
+          if (productDataElement && productDataElement.dataset.product) {
+            try {
+              product = JSON.parse(productDataElement.dataset.product);
+              log('GA4: Product data from DOM data-product');
+            } catch (e) {
+              log('GA4: Failed to parse data-product JSON:', e);
+            }
+          }
+        }
+
+        if (product) {
+          log('GA4: Checking for promotional product');
+          log('GA4: Product data:', {
+            id: product.id,
+            name: product.name,
+            has_discount: product.has_discount,
+            discount_percentage: product.discount_percentage,
+            price: product.price
+          });
+
+          // Check if product is on promotion
+          if (product.has_discount) {
+            let productPrice = 0;
+            
+            // Try to get price from separate whole/fractional parts (more reliable for formatting)
+            const priceWhole = document.querySelector('[data-testid="product-card-price-whole"]')?.textContent?.trim();
+            const priceFractional = document.querySelector('[data-testid="product-card-price-fractional"]')?.textContent?.trim();
+            
+            if (priceWhole && priceFractional) {
+              // Combine whole and fractional parts with dot separator
+              productPrice = Number(parseFloat(priceWhole + '.' + priceFractional).toFixed(2));
+              log('GA4: Price from DOM elements:', { priceWhole, priceFractional, productPrice });
+            } else {
+              // Fallback: parse from product.price string (handle Polish format with comma)
+              const priceString = String(product.price).replace(/[^\d,.-]/g, '').replace(',', '.');
+              productPrice = parseFloat(priceString) || 0;
+              log('GA4: Price from product.price:', { original: product.price, parsed: productPrice });
+            }
+            
+            const discountPercent = product.discount_percentage || '';
+            
+            log('GA4: Sending promotional product event');
+            gtag('event', 'add_promotion_to_cart', {
+              'item_id': String(product.id),
+              'item_name': product.name,
+              'discount': String(discountPercent),
+              'price': productPrice,
+              'quantity': quantity
+            });
+            // console.log('GA4: Event parameters:', {
+            //   'item_id': String(product.id),
+            //   'item_name': product.name,
+            //   'discount': String(discountPercent),
+            //   'price': productPrice,
+            //   'quantity': quantity
+            // });
+            log('GA4: Promotional product added to cart - ' + product.name);
+          } else {
+            log('GA4: Product is not on promotion');
+          }
+        } else {
+          log('GA4: Product data not found in prestashop.product or DOM');
+        }
+      } else {
+        log('GA4: gtag is not available');
+      }
+    } catch (error) {
+      log('GA4: Error sending event:', error);
+    }
+
     // Let PrestaShop handle the actual add-to-cart
     return true;
   }
