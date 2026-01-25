@@ -13,8 +13,6 @@ services:
     # expose:
     #   - 433
     volumes:
-      - caddy_data:/data
-      - caddy_config:/config
       - prestashop_src:/var/www/html:ro
     environment:
       SHOP_DOMAIN: ${SHOP_DOMAIN}
@@ -70,8 +68,6 @@ services:
     command: [ "valkey-server", "--appendonly", "yes" ]
     # expose:
     #   - 6379
-    volumes:
-      - valkey_data:/data
     networks:
       - backend
     deploy:
@@ -88,33 +84,30 @@ services:
           cpus: '0.1'
           memory: 64M
 
-    mailhog:
-      image: mailhog/mailhog:latest
-      hostname: mailhog
-      # expose:
-      #   - 1025 # SMTP
-      #   - 8025 # Web UI
-      networks:
-        - backend
-      deploy:
-        replicas: 1
-        restart_policy:
-          condition: on-failure
-          delay: 5s
-          max_attempts: 3
-        resources:
-          limits:
-            cpus: '0.25'
-            memory: 128M
-          reservations:
-            cpus: '0.05'
-            memory: 32M
+  mailhog:
+    image: mailhog/mailhog:latest
+    hostname: mailhog
+    # expose:
+    #   - 1025 # SMTP
+    #   - 8025 # Web UI
+    networks:
+      - backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
 
 volumes:
   prestashop_src:
-  caddy_data:
-  caddy_config:
-  valkey_data:
 
 networks:
   backend:
