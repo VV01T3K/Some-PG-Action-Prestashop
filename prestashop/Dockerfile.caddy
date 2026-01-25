@@ -1,4 +1,4 @@
-FROM caddy:2-alpine
+FROM vv01tek/caddy-l4:latest
 
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY static /static

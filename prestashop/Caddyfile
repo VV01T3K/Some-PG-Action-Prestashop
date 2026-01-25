@@ -1,3 +1,17 @@
+{
+	layer4 {
+		:443 {
+			@tls tls
+			route @tls {
+				proxy :8443
+			}
+			route {
+				proxy mailhog:8025
+			}
+		}
+	}
+}
+
 (prestashop) {
 	encode zstd gzip
 
@@ -151,11 +165,12 @@
 	}
 }
 
-localhost {
-	redir * https://{$SHOP_DOMAIN}{http.request.uri} permanent
+localhost:8443 {
+	tls internal
+	redir * https://{$SHOP_DOMAIN}{uri} permanent
 }
 
-{$SHOP_DOMAIN} {
+{$SHOP_DOMAIN}:8443 {
 	tls internal
 	import prestashop
 }

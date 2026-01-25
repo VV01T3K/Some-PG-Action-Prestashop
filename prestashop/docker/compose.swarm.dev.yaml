@@ -7,7 +7,7 @@
 
 services:
   caddy:
-    image: ghcr.io/vv01t3k/some-pg-action-prestashop/caddy:latest
+    image: ghcr.io/vv01t3k/some-pg-action-prestashop/caddy:swarm-setup
     hostname: caddy
     # Port exposed via gateway in compose.swarm.db.yaml
     # expose:
@@ -36,7 +36,7 @@ services:
           memory: 64M
 
   prestashop:
-    image: ghcr.io/vv01t3k/some-pg-action-prestashop/prestashop:latest
+    image: ghcr.io/vv01t3k/some-pg-action-prestashop/prestashop:swarm-setup
     hostname: prestashop
     volumes:
       - prestashop_src:/var/www/html
@@ -87,6 +87,28 @@ services:
         reservations:
           cpus: '0.1'
           memory: 64M
+
+    mailhog:
+      image: mailhog/mailhog:latest
+      hostname: mailhog
+      # expose:
+      #   - 1025 # SMTP
+      #   - 8025 # Web UI
+      networks:
+        - backend
+      deploy:
+        replicas: 1
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+        resources:
+          limits:
+            cpus: '0.25'
+            memory: 128M
+          reservations:
+            cpus: '0.05'
+            memory: 32M
 
 volumes:
   prestashop_src:
