@@ -46,4 +46,31 @@ if [ -f "$PARAMS_FILE" ]; then
     echo "parameters.php updated"
 fi
 
+# Update shop URL in database if SHOP_DOMAIN and SHOP_PORT are set
+if [ -n "$SHOP_DOMAIN" ] && [ -n "$SHOP_PORT" ]; then
+    echo "Updating shop URL in database to include port..."
+
+    # Wait for database to be available
+    for i in $(seq 1 30); do
+        if mysql -h"${DB_HOST:-db}" -u"${DB_USER:-root}" -p"${DB_PASSWORD:-dev}" -e "SELECT 1" "${DB_NAME:-prestashop}" >/dev/null 2>&1; then
+            break
+        fi
+        if [ $i -eq 30 ]; then
+            echo "WARNING: Could not connect to database to update shop URL"
+            break
+        fi
+        sleep 1
+    done
+
+    # Update ps_shop_url table to include port in domain
+    mysql -h"${DB_HOST:-db}" -u"${DB_USER:-root}" -p"${DB_PASSWORD:-dev}" "${DB_NAME:-prestashop}" <<-EOSQL
+        UPDATE ps_shop_url
+        SET domain = '${SHOP_DOMAIN}:${SHOP_PORT}',
+            domain_ssl = '${SHOP_DOMAIN}:${SHOP_PORT}'
+        WHERE id_shop = 1;
+EOSQL
+
+    echo "Shop URL updated to: ${SHOP_DOMAIN}:${SHOP_PORT}"
+fi
+
 exec php-fpm
