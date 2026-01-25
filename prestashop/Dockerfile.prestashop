@@ -20,7 +20,7 @@ RUN apt-get purge -y --auto-remove \
     rm -rf /var/lib/apt/lists/*
 
 FROM base AS prod
-RUN rm -rf /var/www/html/*
+RUN rm -rf /var/www/html/* /tmp/data-ps
 COPY --chown=www-data:www-data src /var/www/html
 COPY Prestashop.prod.entrypoint.sh /tmp/docker_run.sh
 COPY backup/db.sh /usr/local/bin/db.sh
