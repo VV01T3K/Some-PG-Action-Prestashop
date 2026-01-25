@@ -84,8 +84,8 @@ services:
           cpus: '0.1'
           memory: 64M
 
-  mailhog:
-    image: mailhog/mailhog:latest
+  mailpit:
+    image: axllent/mailpit:latest
     hostname: mailhog
     # expose:
     #   - 1025 # SMTP
