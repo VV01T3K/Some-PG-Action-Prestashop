@@ -89,35 +89,42 @@ def remove_product_from_cart(driver, items_before, item_index):
 
         try:
             wait_for_page_load(driver, timeout=1)
+            max_click_retries = 5
+            for click_attempt in range(max_click_retries):
+                try:
+                    product_lines = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
 
-            product_lines = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
+                    if item_index >= len(product_lines):
+                        logger.error(f"Item index {item_index} out of range, only {len(product_lines)} products in DOM")
+                        return False, removed_item
 
-            if item_index >= len(product_lines):
-                logger.error(f"Item index {item_index} out of range, only {len(product_lines)} products in DOM")
-                return False, removed_item
+                    product_line = product_lines[item_index]
 
-            product_line = product_lines[item_index]
+                    try:
+                        delete_btn = WebDriverWait(product_line, 5).until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']"))
+                        )
+                    except Exception as e:
+                        logger.error(f"Failed to locate delete button for item {item_index}: {e}")
+                        continue
+                    
+                    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", delete_btn)
+                    
+                    delete_btn.click()
 
-            delete_btn = WebDriverWait(product_line, 5).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']"))
-            )
+                    wait.until(EC.staleness_of(product_line))
+                    logger.debug("Confirmed product removed from DOM")
 
-            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", delete_btn)
-            wait_for_page_load(driver, timeout=0.5)
-
-            try:
-                delete_btn.click()
-            except Exception:
-                logger.debug("Regular click failed, using JS click")
-                driver.execute_script("arguments[0].click();", delete_btn)
-
-            wait.until(EC.staleness_of(product_line))
-            logger.debug("Confirmed product removed from DOM")
-
-            return True, removed_item
+                    return True, removed_item
+                except Exception as e:
+                    if "stale element" in str(e).lower() and click_attempt < max_click_retries - 1:
+                        logger.info(f"Stale element on click attempt {click_attempt + 1}, refetching product_lines and retrying...")
+                        continue
+                    logger.error(f"Error finding/clicking delete button for item {item_index} (attempt {click_attempt + 1}): {e}")
+                    return False, removed_item
         except Exception as e:
-            logger.error(f"Error finding/clicking delete button for item {item_index}: {e}")
-            return False, removed_item
+            logger.error(f"Error removing product: {e}")
+            return False, {}
 
     except Exception as e:
         logger.error(f"Error removing product: {e}")
@@ -134,7 +141,7 @@ def run_test(driver):
         return
 
     # Get initial items
-    items_before = get_cart_items_with_details(driver, display=True)
+    get_cart_items_with_details(driver, display=True)
 
     # Remove 3 products (or less if not enough items) - RANDOMLY
     removed_count = 0
