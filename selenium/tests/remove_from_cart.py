@@ -89,53 +89,42 @@ def remove_product_from_cart(driver, items_before, item_index):
 
         try:
             wait_for_page_load(driver, timeout=1)
+            max_click_retries = 5
+            for click_attempt in range(max_click_retries):
+                try:
+                    product_lines = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
 
-            product_lines = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")))
+                    if item_index >= len(product_lines):
+                        logger.error(f"Item index {item_index} out of range, only {len(product_lines)} products in DOM")
+                        return False, removed_item
 
-            if item_index >= len(product_lines):
-                logger.error(f"Item index {item_index} out of range, only {len(product_lines)} products in DOM")
-                return False, removed_item
+                    product_line = product_lines[item_index]
 
-            product_line = product_lines[item_index]
+                    try:
+                        delete_btn = WebDriverWait(product_line, 5).until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']"))
+                        )
+                    except Exception as e:
+                        logger.error(f"Failed to locate delete button for item {item_index}: {e}")
+                        continue
+                    
+                    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", delete_btn)
+                    
+                    delete_btn.click()
 
-            # Refind the button fresh from the driver (not from stale product_line)
-            # to avoid stale element issues - the cart DOM is constantly being re-rendered
-            delete_btn = wait.until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']"))
-            )
-            
-            # Get the correct product-row and its delete button
-            product_rows = driver.find_elements(By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")
-            if item_index >= len(product_rows):
-                logger.error(f"Item index {item_index} out of range after refind, only {len(product_rows)} products in DOM")
-                return False, removed_item
-            
-            product_line = product_rows[item_index]
-            delete_btn = product_line.find_element(By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']")
+                    wait.until(EC.staleness_of(product_line))
+                    logger.debug("Confirmed product removed from DOM")
 
-            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", delete_btn)
-            
-            # Try regular click first
-            try:
-                logger.info("Attempting regular click on delete button")
-                delete_btn.click()
-            except Exception as e:
-                logger.debug(f"Regular click failed: {e}, retrying with refind and JS click...")
-                # If regular click fails, refind from driver and try JS click
-                product_rows = driver.find_elements(By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")
-                if item_index < len(product_rows):
-                    delete_btn = product_rows[item_index].find_element(By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']")
-                    driver.execute_script("arguments[0].click();", delete_btn)
-                else:
-                    raise Exception(f"Product row {item_index} not found in DOM after refind")
-
-            wait.until(EC.staleness_of(product_line))
-            logger.debug("Confirmed product removed from DOM")
-
-            return True, removed_item
+                    return True, removed_item
+                except Exception as e:
+                    if "stale element" in str(e).lower() and click_attempt < max_click_retries - 1:
+                        logger.info(f"Stale element on click attempt {click_attempt + 1}, refetching product_lines and retrying...")
+                        continue
+                    logger.error(f"Error finding/clicking delete button for item {item_index} (attempt {click_attempt + 1}): {e}")
+                    return False, removed_item
         except Exception as e:
-            logger.error(f"Error finding/clicking delete button for item {item_index}: {e}")
-            return False, removed_item
+            logger.error(f"Error removing product: {e}")
+            return False, {}
 
     except Exception as e:
         logger.error(f"Error removing product: {e}")
