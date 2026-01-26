@@ -98,18 +98,36 @@ def remove_product_from_cart(driver, items_before, item_index):
 
             product_line = product_lines[item_index]
 
-            delete_btn = WebDriverWait(product_line, 5).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']"))
+            # Refind the button fresh from the driver (not from stale product_line)
+            # to avoid stale element issues - the cart DOM is constantly being re-rendered
+            delete_btn = wait.until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']"))
             )
+            
+            # Get the correct product-row and its delete button
+            product_rows = driver.find_elements(By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")
+            if item_index >= len(product_rows):
+                logger.error(f"Item index {item_index} out of range after refind, only {len(product_rows)} products in DOM")
+                return False, removed_item
+            
+            product_line = product_rows[item_index]
+            delete_btn = product_line.find_element(By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']")
 
             driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", delete_btn)
-            wait_for_page_load(driver, timeout=0.5)
-
+            
+            # Try regular click first
             try:
+                logger.info("Attempting regular click on delete button")
                 delete_btn.click()
-            except Exception:
-                logger.debug("Regular click failed, using JS click")
-                driver.execute_script("arguments[0].click();", delete_btn)
+            except Exception as e:
+                logger.debug(f"Regular click failed: {e}, retrying with refind and JS click...")
+                # If regular click fails, refind from driver and try JS click
+                product_rows = driver.find_elements(By.CSS_SELECTOR, "ul.cart-items [data-testid='product-row']")
+                if item_index < len(product_rows):
+                    delete_btn = product_rows[item_index].find_element(By.CSS_SELECTOR, "[data-testid='cart-item-remove-btn']")
+                    driver.execute_script("arguments[0].click();", delete_btn)
+                else:
+                    raise Exception(f"Product row {item_index} not found in DOM after refind")
 
             wait.until(EC.staleness_of(product_line))
             logger.debug("Confirmed product removed from DOM")
@@ -134,7 +152,7 @@ def run_test(driver):
         return
 
     # Get initial items
-    items_before = get_cart_items_with_details(driver, display=True)
+    get_cart_items_with_details(driver, display=True)
 
     # Remove 3 products (or less if not enough items) - RANDOMLY
     removed_count = 0
