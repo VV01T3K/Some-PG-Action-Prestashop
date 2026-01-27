@@ -1,6 +1,12 @@
 #!/bin/sh
 set -e
 
+# Ensure cache directories exist with proper permissions
+mkdir -p /var/www/html/var/cache
+mkdir -p /var/www/html/themes/custom_action/assets/cache
+chown -R www-data:www-data /var/www/html/var/cache
+chown -R www-data:www-data /var/www/html/themes/custom_action/assets/cache
+
 PARAMS_FILE="/var/www/html/app/config/parameters.php"
 BACKUP_FILE="/tmp/db_backup.sql.gz.enc"
 
