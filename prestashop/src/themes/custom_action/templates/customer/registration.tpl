@@ -37,5 +37,22 @@
        *}
       {render file='customer/_partials/customer-form.tpl' ui=$register_form}
     </section>
+    
+    {* Google Analytics 4 - Registration Form Submit Event *}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        
+        // Find the registration form
+        const registrationForm = document.querySelector('form[action*="register"]') || document.querySelector('.register-form form');
+        
+        if (registrationForm) {
+          registrationForm.addEventListener('submit', function(e) {
+            // Set flag in localStorage to track successful registration
+            localStorage.setItem('registration_completed', 'true');
+            localStorage.setItem('registration_timestamp', new Date().getTime());
+          });
+        } 
+      });
+    </script>
   {/block}
 {/block}

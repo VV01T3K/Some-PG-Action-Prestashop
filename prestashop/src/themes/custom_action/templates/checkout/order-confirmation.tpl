@@ -110,5 +110,40 @@
     <section id="content-hook-order-confirmation-footer">
       {hook h='displayOrderConfirmation2'}
     </section>
+    
+    {* Google Analytics 4 - Purchase Event
+    <script>
+      console.log('GA4 Purchase Script Loaded');
+      console.log('gtag available:', typeof gtag !== 'undefined');
+      
+      if (typeof gtag !== 'undefined') {
+        console.log('Sending purchase event...');
+        
+        var purchaseData = {
+          transaction_id: '{$order.details.reference|escape:'quotes'}',
+          value: Number(parseFloat('{$order.totals.total.value}'.replace(/[^\d.,]/g, '').replace(',', '.')).toFixed(2)),
+          currency: '{$currency.iso_code}',
+          tax: Number(parseFloat('{if isset($order.totals.total_tax)}{$order.totals.total_tax.value}{else}0{/if}'.replace(/[^\d.,]/g, '').replace(',', '.')).toFixed(2)),
+          shipping: Number(parseFloat('{if isset($order.totals.total_shipping)}{$order.totals.total_shipping.value}{else}0{/if}'.replace(/[^\d.,]/g, '').replace(',', '.')).toFixed(2)),
+          items: [
+            {foreach from=$order.products item=product name=products}
+            {ldelim}
+              item_id: '{$product.reference|escape:'quotes'}',
+              item_name: '{$product.name|strip_tags|escape:'quotes'}',
+              price: Number(parseFloat('{$product.price}'.replace(/[^\d.,]/g, '').replace(',', '.')).toFixed(2)),
+              quantity: parseInt('{$product.quantity}')
+            {rdelim}{if !$smarty.foreach.products.last},{/if}
+            {/foreach}
+          ]
+        };
+        
+        console.log('Purchase data:', purchaseData);
+        gtag('event', 'purchase', purchaseData);
+        console.log('GA4: Purchase event sent successfully');
+      } else {
+        console.error('GA4: gtag is not defined!');
+      }
+    </script> *}
+
   {/block}
 {/block}

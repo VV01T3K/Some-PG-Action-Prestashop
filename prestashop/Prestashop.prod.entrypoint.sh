@@ -73,4 +73,15 @@ EOSQL
     echo "Shop URL updated to: ${SHOP_DOMAIN}:${SHOP_PORT}"
 fi
 
+echo "\n* Almost ! Starting web server now\n";
+
+if [ -d /tmp/init-scripts/ ]; then
+    echo "\n* Running init script(s)..."
+    for i in `ls /tmp/init-scripts/`;do
+        /tmp/init-scripts/$i
+    done
+else
+    echo "\n* No init script found, let's continue..."
+fi
+
 exec php-fpm

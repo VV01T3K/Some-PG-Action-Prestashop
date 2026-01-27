@@ -261,6 +261,34 @@
                       if (!cartProductIds.includes(parseInt(productId))) {
                         cartProductIds.push(parseInt(productId));
                       }
+                      
+                      // Google Analytics 4 - Track add to cart for promotional products
+                      
+                      if (typeof gtag !== 'undefined') {
+                        // Check if product is on promotion (has discount)
+                        const productCard = document.querySelector(`[data-id-product="${productId}"]`);
+                        
+                        const hasPromo = productCard && productCard.querySelector('[data-testid="product-card-price-discount"]');
+                        
+                        if (hasPromo) {
+                          const productName = productCard.querySelector('[data-testid="product-card-title"]')?.textContent?.trim() || '';
+                          const productPriceWhole = productCard.querySelector('[data-testid="product-card-price-whole"]')?.textContent?.trim() || '0';
+                          const productPriceFractional = productCard.querySelector('[data-testid="product-card-price-fractional"]')?.textContent?.trim() || '00';
+                          const discountPercent = productCard.querySelector('[data-testid="product-card-price-discount-percentage"]')?.textContent?.trim() || '';
+                          
+                          // Combine whole and fractional parts to create decimal price
+                          const productPrice = Number(parseFloat(productPriceWhole + '.' + productPriceFractional).toFixed(2));
+                          
+                          gtag('event', 'add_promotion_to_cart', {
+                            'item_id': productId,
+                            'item_name': productName,
+                            'discount': discountPercent,
+                            'price': productPrice,
+                            'quantity': 1,
+                          });
+                        } 
+                      } 
+                      
                       // Emit PrestaShop event
                       if (window.prestashop && window.prestashop.emit) {
                         window.prestashop.emit('updateCart', {

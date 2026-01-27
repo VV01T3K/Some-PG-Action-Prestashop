@@ -170,4 +170,24 @@ style="font-size: 14px;" href="{$link->getPageLink('customerservice')}"><span cl
     }
   })();
   </script>
+
+  {* Google Analytics 4 - Banner/Logo Button Click Event *}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // Find the header logo/banner button
+      const bannerButton = document.querySelector('[data-testid="header-logo"]');
+      
+      if (bannerButton) {
+        bannerButton.addEventListener('click', function(e) {
+          
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'clicked_on_banner', {
+              'element': 'header_logo'
+            });
+          }
+        });
+      } 
+    });
+  </script>
 {/block}
