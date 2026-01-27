@@ -81,7 +81,7 @@
 
 	@staticFiles path /static/*
 
-	@static path_regexp \.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot|pdf|txt|mp4|webm)$
+	@static path_regexp \.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot|pdf|txt|mp4|webm|js|css)$
 
 	handle @staticFiles {
 		root * /static
