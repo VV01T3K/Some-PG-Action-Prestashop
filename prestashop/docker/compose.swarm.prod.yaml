@@ -1,18 +1,3 @@
-# PG Student Cluster - Production Deployment
-#
-# Deployment:
-#   docker stack deploy -c compose.swarm.prod.yaml BE_19781 --with-registry-auth
-#
-# Create database first:
-#   - SSH tunnel: ssh -L 9099:student-swarm01.maas:9099 be@172.20.83.101
-#   - Open phpMyAdmin: http://localhost:9099
-#   - Create database: BE_19781
-#   - Credentials: root / student
-#
-# Access your app:
-#   ssh -L 8443:student-swarm01.maas:19542 be@172.20.83.101
-#   Open: https://localhost:8443
-
 services:
   caddy:
     image: ghcr.io/vv01t3k/some-pg-action-prestashop/caddy:latest
@@ -20,9 +5,9 @@ services:
     ports:
       - 19781:443
     volumes:
-      - BE_19781_prestashop_src:/var/www/html:ro
+      - BE_197815_prestashop_src:/var/www/html:ro
     environment:
-      SHOP_DOMAIN: shop.example.com
+      SHOP_DOMAIN: shop.pg.wojtecs.com
       SHOP_PORT: 19781
     networks:
       - backend
@@ -44,11 +29,11 @@ services:
     image: ghcr.io/vv01t3k/some-pg-action-prestashop/prestashop:latest
     hostname: prestashop
     volumes:
-      - BE_19781_prestashop_src:/var/www/html
+      - BE_197815_prestashop_src:/var/www/html
     environment:
-      DB_HOST: giberish
+      DB_HOST: admin-mysql_db
       DB_PORT: 3306
-      DB_NAME: giberish
+      DB_NAME: BE_197815_prestashop
       DB_USER: root
       DB_PASSWORD: student
       DB_BACKUP_KEY: OHVpHhQ5z0ke5HCulYXecBXBeA1Q4G1Wm7h6CSXIofI=
@@ -56,7 +41,7 @@ services:
       SHOP_PORT: 19781
     networks:
       - backend
-      # - db-network
+      - admin-mysql_default
     deploy:
       replicas: 1
       restart_policy:
@@ -110,15 +95,12 @@ services:
           memory: 32M
 
 volumes:
-  BE_19781_prestashop_src:
+  BE_197815_prestashop_src:
 
 
 networks:
   backend:
-    name: BE_19781_backend
+    name: BE_197815_backend
     driver: overlay
-  # db-network:
-  #   name: shared-db-network
-  #   external: true
-
-# docker stack deploy -c compose.swarm.prod.yaml BE_19781 --with-registry-auth
+  admin-mysql_default:
+    external: true
