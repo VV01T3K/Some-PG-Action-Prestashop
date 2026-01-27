@@ -95,10 +95,15 @@ case "$1" in
       done
     fi
 
+    # Convert MariaDB 10.11+ collations to MySQL 5.7 compatible ones
     if [ "$IN_CONTAINER" = true ]; then
-      openssl enc -d -aes-256-cbc -pbkdf2 -pass pass:"$DB_BACKUP_KEY" -in "$FILE" | gunzip | mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASS" "$DB"
+      openssl enc -d -aes-256-cbc -pbkdf2 -pass pass:"$DB_BACKUP_KEY" -in "$FILE" | gunzip | \
+        sed 's/utf8mb4_uca1400_ai_ci/utf8mb4_unicode_ci/g' | \
+        mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASS" "$DB"
     else
-      openssl enc -d -aes-256-cbc -pbkdf2 -pass pass:"$DB_BACKUP_KEY" -in "$FILE" | gunzip | docker exec -i "$DB_HOST" mariadb -u"$DB_USER" -p"$DB_PASS" "$DB"
+      openssl enc -d -aes-256-cbc -pbkdf2 -pass pass:"$DB_BACKUP_KEY" -in "$FILE" | gunzip | \
+        sed 's/utf8mb4_uca1400_ai_ci/utf8mb4_unicode_ci/g' | \
+        docker exec -i "$DB_HOST" mariadb -u"$DB_USER" -p"$DB_PASS" "$DB"
     fi
     log "Database restored"
     ;;
