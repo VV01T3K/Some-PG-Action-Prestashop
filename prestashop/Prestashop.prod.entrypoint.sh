@@ -12,7 +12,7 @@ BACKUP_FILE="/tmp/db_backup.sql.gz.enc"
 
 # Restore database from backup if it exists
 if [ -f "$BACKUP_FILE" ]; then
-    echo "Found database backup, initiating restore..."
+    echo "Found database backup, checking if restore is needed..."
 
     # Wait for database to be available
     echo "Waiting for database to be available..."
@@ -28,14 +28,22 @@ if [ -f "$BACKUP_FILE" ]; then
         sleep 1
     done
 
-    # Restore database using db.sh script
-    echo "Restoring database from backup..."
-    cd /tmp
-    /usr/local/bin/db.sh --silent restore "$BACKUP_FILE"
+    # Check if database already has data (ps_configuration table exists and has rows)
+    DB_HAS_DATA=$(mysql -h"${DB_HOST:-db}" -u"${DB_USER:-root}" -p"${DB_PASSWORD:-dev}" \
+        -N -s -e "SELECT COUNT(*) FROM ps_configuration LIMIT 1" "${DB_NAME:-prestashop}" 2>/dev/null || echo "0")
 
-    # Delete backup file after successful restore
+    if [ "$DB_HAS_DATA" = "0" ]; then
+        # Restore database using db.sh script
+        echo "Database is empty, restoring from backup..."
+        cd /tmp
+        /usr/local/bin/db.sh --silent restore "$BACKUP_FILE"
+        echo "Database restore complete"
+    else
+        echo "Database already has data ($DB_HAS_DATA rows in ps_configuration), skipping restore"
+    fi
+
+    # Delete backup file to save space
     rm -f "$BACKUP_FILE"
-    echo "Database restore complete, backup file deleted"
 else
     echo "No database backup found, skipping restore"
 fi

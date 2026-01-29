@@ -3,7 +3,9 @@ services:
     image: ghcr.io/vv01t3k/some-pg-action-prestashop/caddy:latest
     hostname: caddy
     ports:
-      - 19781:443
+      - target: 443
+        published: 19781
+        mode: host
     volumes:
       - BE_197815_prestashop_src:/var/www/html:ro
     environment:
@@ -13,6 +15,9 @@ services:
       - backend
     deploy:
       replicas: 1
+      placement:
+        constraints:
+          - node.hostname == student-swarm01
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -21,17 +26,13 @@ services:
         limits:
           cpus: '0.5'
           memory: 256M
-        reservations:
-          cpus: '0.1'
-          memory: 64M
-
   prestashop:
     image: ghcr.io/vv01t3k/some-pg-action-prestashop/prestashop:latest
     hostname: prestashop
     volumes:
       - BE_197815_prestashop_src:/var/www/html
     environment:
-      DB_HOST: admin-mysql_db
+      DB_HOST: student-swarm01.maas
       DB_PORT: 3306
       DB_NAME: BE_197815_prestashop
       DB_USER: root
@@ -41,9 +42,11 @@ services:
       SHOP_PORT: 19781
     networks:
       - backend
-      - admin-mysql_default
     deploy:
       replicas: 1
+      placement:
+        constraints:
+          - node.hostname != student-swarm04
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -52,10 +55,6 @@ services:
         limits:
           cpus: '1.0'
           memory: 1024M
-        reservations:
-          cpus: '0.25'
-          memory: 256M
-
   valkey:
     image: valkey/valkey:9-alpine
     hostname: valkey
@@ -72,9 +71,6 @@ services:
         limits:
           cpus: '0.5'
           memory: 256M
-        reservations:
-          cpus: '0.1'
-          memory: 64M
   mailpit:
     image: axllent/mailpit:latest
     hostname: mailhog
@@ -90,17 +86,9 @@ services:
         limits:
           cpus: '0.25'
           memory: 128M
-        reservations:
-          cpus: '0.05'
-          memory: 32M
-
 volumes:
   BE_197815_prestashop_src:
-
-
 networks:
   backend:
     name: BE_197815_backend
     driver: overlay
-  admin-mysql_default:
-    external: true
