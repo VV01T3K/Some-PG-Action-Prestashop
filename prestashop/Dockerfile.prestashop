@@ -24,7 +24,7 @@ RUN rm -rf /var/www/html/* /tmp/data-ps
 COPY --chown=www-data:www-data src /var/www/html
 COPY Prestashop.prod.entrypoint.sh /tmp/docker_run.sh
 COPY backup/db.sh /usr/local/bin/db.sh
-COPY backup/backup_20260125_203353.sql.gz.enc /tmp/db_backup.sql.gz.enc
+COPY backup/backup_20260129_121208.sql.gz.enc /tmp/db_backup.sql.gz.enc
 RUN chmod +x /tmp/docker_run.sh && \
     chmod +x /usr/local/bin/db.sh
 
