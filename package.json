@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "bun presta:restart",
-    "all:setup": "cp .env.example .env && (cd selenium && bun deps) && (cd prestashop/docker && docker compose -f compose.swarm.db.yaml -f compose.swarm.dev.yaml pull) && (docker swarm init || echo 'Swarm already initialized') && echo 'Setup complete. You can now run bun swarm:up to start the services.'",
+    "all:setup": "cp .env.example .env && ([ -n \"$HOST_IP\" ] && echo \"\n# Host IP for selenium containers to reach the shop\nHOST_IP=$HOST_IP\" >> .env || true) && (cd selenium && bun deps) && (cd prestashop/docker && docker compose -f compose.swarm.db.yaml -f compose.swarm.dev.yaml pull) && (docker swarm init || echo 'Swarm already initialized') && echo 'Setup complete. You can now run bun swarm:up to start the services.'",
     "all:deps": "bun presta:deps && (cd scrapper && bun deps) && (cd selenium && bun deps)",
     "all:del": "bun presta:del && (cd selenium && bun sel:down) && (rm -rf scrapper-results)",
     "all:down": "bun presta:down && (cd selenium && bun sel:down)",

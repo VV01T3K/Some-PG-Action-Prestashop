@@ -8,7 +8,7 @@ x-node-environment: &node-env
 
 x-hosts: &hosts
   - "host.docker.internal:host-gateway"
-  - "${SHOP_DOMAIN-shop.pg.wojtecs.com}:host-gateway"
+  - "${SHOP_DOMAIN-shop.pg.wojtecs.com}:${HOST_IP:-host-gateway}"
 
 services:
   selenium-hub:

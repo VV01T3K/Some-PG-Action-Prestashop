@@ -41,7 +41,7 @@
 			]
 		}
 	},
-	"postCreateCommand": "HOST_IP=$(getent hosts host.docker.internal | awk '{print $1}') && echo \"$HOST_IP shop.pg.wojtecs.com\" | sudo tee -a /etc/hosts && bun run all:setup"
+	"postCreateCommand": "export HOST_IP=$(getent hosts host.docker.internal | awk '{print $1}') && echo \"$HOST_IP shop.pg.wojtecs.com\" | sudo tee -a /etc/hosts && bun run all:setup"
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
